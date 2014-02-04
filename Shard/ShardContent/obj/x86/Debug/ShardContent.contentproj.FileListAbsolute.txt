@@ -1,0 +1,2 @@
+C:\Users\150835\Desktop\EmployeeDatabase\EmployeeDatabase\EmployeeDatabaseContent\obj\x86\Debug\ResolveAssemblyReference.cache
+C:\Users\150835\Desktop\Shard\Shard\ShardContent\obj\x86\Debug\ResolveAssemblyReference.cache
