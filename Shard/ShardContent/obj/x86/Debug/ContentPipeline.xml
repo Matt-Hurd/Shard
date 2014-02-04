@@ -7,10 +7,10 @@
       <TargetProfile>HiDef</TargetProfile>
       <BuildConfiguration>Debug</BuildConfiguration>
       <CompressContent>false</CompressContent>
-      <RootDirectory>C:\Users\150835\Desktop\Shard\Shard\ShardContent\</RootDirectory>
-      <LoggerRootDirectory>C:\Users\150835\Desktop\Shard\Shard\Shard\</LoggerRootDirectory>
-      <IntermediateDirectory>C:\Users\150835\Desktop\Shard\Shard\ShardContent\obj\x86\Debug\</IntermediateDirectory>
-      <OutputDirectory>C:\Users\150835\Desktop\Shard\Shard\Shard\bin\x86\Debug\Content\</OutputDirectory>
+      <RootDirectory>C:\Users\150835\Desktop\GitHub\Shard\Shard\ShardContent\</RootDirectory>
+      <LoggerRootDirectory>C:\Users\150835\Desktop\GitHub\Shard\Shard\Shard\</LoggerRootDirectory>
+      <IntermediateDirectory>C:\Users\150835\Desktop\GitHub\Shard\Shard\ShardContent\obj\x86\Debug\</IntermediateDirectory>
+      <OutputDirectory>C:\Users\150835\Desktop\GitHub\Shard\Shard\Shard\bin\x86\Debug\Content\</OutputDirectory>
     </Settings>
     <Assemblies>
       <Assembly>
