@@ -48,9 +48,9 @@ namespace Shard
             try
             {
                 objConnect = new DatabaseConnection();
-                conString = Properties.Settings.Default.DatabaseConnectionString;
+                conString = EmployeeDatabase.Properties.Settings.Default.DatabaseConnectionString;
                 objConnect.Connection_string = conString;
-                objConnect.Sql = Properties.Settings.Default.SQL_Employee;
+                objConnect.Sql = EmployeeDatabase.Properties.Settings.Default.SQL_LoginInformation;
                 ds = objConnect.GetConnection;
                 MaxRows = ds.Tables[0].Rows.Count;
 

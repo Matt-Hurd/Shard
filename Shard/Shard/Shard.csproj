@@ -111,12 +111,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DatabaseConnection.cs" />
-    <Compile Include="EmployeeDatabaseInterfaceForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="EmployeeDatabaseInterfaceForm.Designer.cs">
-      <DependentUpon>EmployeeDatabaseInterfaceForm.cs</DependentUpon>
-    </Compile>
     <Compile Include="GameObject.cs" />
     <Compile Include="LoginForm.cs">
       <SubType>Form</SubType>
@@ -148,7 +142,9 @@
     </Content>
     <Content Include="Game.ico" />
     <Content Include="GameThumbnail.png" />
-    <Content Include="Resources\end.png" />
+    <Content Include="ShardDatabase.mdf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ShardContent\ShardContent.contentproj">
@@ -192,9 +188,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="EmployeeDatabaseInterfaceForm.resx">
-      <DependentUpon>EmployeeDatabaseInterfaceForm.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="LoginForm.resx">
       <DependentUpon>LoginForm.cs</DependentUpon>
     </EmbeddedResource>
