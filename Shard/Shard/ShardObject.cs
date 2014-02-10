@@ -14,6 +14,9 @@ namespace Shard
 {
     abstract class ShardObject : GameObject
     {
+        private Rectangle sourceRectangle;
+        private Vector2 dimensions;
+
         private int energyAmount;
         private int oreAmount;
         private int oxygenAmount;
@@ -75,8 +78,64 @@ namespace Shard
 
         #endregion
 
+        #region Dimensions and Source
+
+        public virtual Rectangle ImageSource
+        {
+            get
+            {
+                return sourceRectangle;
+            }
+            set
+            {
+                sourceRectangle = value;
+            }
+        }
+
+        public virtual float Width
+        {
+            get
+            {
+                return dimensions.X;
+            }
+            set
+            {
+                dimensions.X = (float)value;
+            }
+        }
+
+        public virtual float Height
+        {
+            get
+            {
+                return dimensions.Y;
+            }
+            set
+            {
+                dimensions.Y = (float)value;
+            }
+        }
+
+#endregion
+
+        public override Rectangle GetBounds()
+        {
+            return new Rectangle((int)X, (int)Y, (int)Width, (int)Height);
+        }
+
+        public override bool Intersects(GameObject gameObject)
+        {
+            return GetBounds().Intersects(gameObject.GetBounds());
+        }
+
+        public override void Draw(SpriteBatch spriteBatch, Texture2D spritesheet)
+        {
+            Rectangle correctedPosition = new Rectangle((int)X + (int)Width / 2, (int)Y + (int)Height / 2, (int)Width, (int)Height);
+            spriteBatch.Draw(spritesheet, correctedPosition, ImageSource, Color.White, (float)Direction, new Vector2(Width / 2, Height / 2), SpriteEffects.None, 0f);
+        }
+
         //Potential to be overriden not necessary for many objects
-        public void destroy(List<GameObject> gameObjects)
+        public void Destroy(List<GameObject> gameObjects)
         {
             //Add resource drops to gameObjects based on resource amounts
             //Remove self from List of gameObjects

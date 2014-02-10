@@ -125,29 +125,29 @@ namespace Shard
         #endregion
 
         //Should be Ovverriden
-        public void move()
+        public void Move()
         {
             this.X += Math.Cos(direction) * velocity;
             this.Y += Math.Sin(direction) * velocity;
         }
 
-        public void move(double distance)
+        public void Move(double distance)
         {
             this.X += Math.Cos(direction) * distance;
             this.Y += Math.Sin(direction) * distance;
         }
 
         //Should be Overriden 
-        public void update(List<GameObject> gameObjects, GameTime gameTime)
+        public void Update(List<GameObject> gameObjects, GameTime gameTime)
         {
-            move();
+            Move();
         }
 
-        public abstract Rectangle getBounds();
+        public abstract Rectangle GetBounds();
 
-        public abstract bool intersects(GameObject gameObject);
+        public abstract bool Intersects(GameObject gameObject);
 
-        public abstract void draw(SpriteBatch spriteBatch, Texture2D sprite);
+        public abstract void Draw(SpriteBatch spriteBatch, Texture2D sprite);
 
     }
 }
