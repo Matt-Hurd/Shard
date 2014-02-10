@@ -14,6 +14,7 @@ namespace Shard
 {
     abstract class GameObject
     {
+        private int id;
         private double x;
         private double y;
         private double direction;
@@ -35,6 +36,19 @@ namespace Shard
         //public void setDirection(double direction) { this.direction = direction; }
         //public void setVelocity(double velocity) { this.velocity = velocity; }
         //public void setRotationalVel(double rotationVelocity) { this.rotationVelocity = rotationVelocity; }
+
+        public virtual int ID
+        {
+            get
+            {
+                return id;
+            }
+            set
+            {
+                if (value > 0)
+                    id = value;
+            }
+        }
 
         public virtual double X
         {
@@ -116,9 +130,15 @@ namespace Shard
             this.X += Math.Cos(direction) * velocity;
             this.Y += Math.Sin(direction) * velocity;
         }
-        
+
+        public void move(double distance)
+        {
+            this.X += Math.Cos(direction) * distance;
+            this.Y += Math.Sin(direction) * distance;
+        }
+
         //Should be Overriden 
-        public void update()
+        public void update(List<GameObject> gameObjects, GameTime gameTime)
         {
             move();
         }
@@ -127,7 +147,7 @@ namespace Shard
 
         public abstract bool intersects(GameObject gameObject);
 
-        public abstract void draw(SpriteBatch spriteBatch, Texture2D spritesheet);
+        public abstract void draw(SpriteBatch spriteBatch, Texture2D sprite);
 
     }
 }
