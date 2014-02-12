@@ -27,8 +27,8 @@ namespace Shard
             try
             {
                 databaseConnect = new DatabaseConnection();
-                databaseConnect.Connection_string = EmployeeDatabase.Properties.Settings.Default.DatabaseConnectionString;
-                databaseConnect.Sql = EmployeeDatabase.Properties.Settings.Default.SQL_LoginInformation;
+                databaseConnect.Connection_string = Shard.Properties.Settings.Default.DatabaseConnectionString;
+                databaseConnect.Sql = Shard.Properties.Settings.Default.SQL_LoginInformation;
                 dataset = databaseConnect.GetConnection;
                 numRows = dataset.Tables[0].Rows.Count;
             }

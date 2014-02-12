@@ -22,6 +22,28 @@ namespace Shard
         private int oxygenAmount;
         private int waterAmount;
 
+        public ShardObject() : this(0,0)
+        {
+            
+        }
+
+        public ShardObject(int xPosition, int yPosition)
+        {
+            this.sourceRectangle = new Rectangle(0, 0, 1, 1);
+            this.Width = 1;
+            this.Height = 1;
+            this.X = xPosition;
+            this.Y = yPosition;
+            this.Velocity = 0;
+            this.Direction = 0;
+            this.Health = 1;
+            this.RotationVelocity = 0;
+            this.Energy = 0;
+            this.Ore = 0;
+            this.Oxygen = 0;
+            this.Water = 0;
+        }
+
         #region Resource Amount Mutation
 
         public virtual int Energy
@@ -133,6 +155,11 @@ namespace Shard
             Rectangle correctedPosition = new Rectangle((int)X + (int)Width / 2, (int)Y + (int)Height / 2, (int)Width, (int)Height);
             spriteBatch.Draw(spritesheet, correctedPosition, ImageSource, Color.White, (float)Direction, new Vector2(Width / 2, Height / 2), SpriteEffects.None, 0f);
         }
+
+        //public override void Draw(SpriteBatch spriteBatch, Texture2D spritesheet)
+        //{
+        //    spriteBatch.Draw(spritesheet, GetBounds(), ImageSource, Color.White);
+        //}
 
         //Potential to be overriden not necessary for many objects
         public void Destroy(List<GameObject> gameObjects)

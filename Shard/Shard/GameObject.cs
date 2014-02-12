@@ -141,6 +141,7 @@ namespace Shard
         public void Update(List<GameObject> gameObjects, GameTime gameTime)
         {
             Move();
+            Direction += RotationVelocity;
         }
 
         public abstract Rectangle GetBounds();
