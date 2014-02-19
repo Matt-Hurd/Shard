@@ -24,6 +24,14 @@ namespace Shard
         KeyboardState previousKeyboard;
         GamePadState previousGamePad;
 
+        //Options
+        private bool realisticSpaceMovement;
+        private bool automaticDeceleration;
+
+        //Visual Graphics
+        protected bool debugVisible;
+        protected SpriteFont debugFont;
+
         List<GameObject> gameObjects;
         Ship player;
 
@@ -73,14 +81,19 @@ namespace Shard
                 Console.Out.Write(err.Message);
             }
 
-#endregion
+            #endregion
+
+            //Default Options
+            debugVisible = true;
+            realisticSpaceMovement = true;
+            automaticDeceleration = true;
 
             gameObjects = new List<GameObject>();
 
-            player = new Ship(100,100);
+            player = new Ship(100, 100);
             player.Width = 32;
             player.Height = 32;
-            player.ImageSource = new Rectangle(0,0,32,32);
+            player.ImageSource = new Rectangle(0, 0, 32, 32);
 
             base.Initialize();
         }
@@ -95,6 +108,10 @@ namespace Shard
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
             // TODO: use this.Content to load your game content here
+
+            debugFont = Content.Load<SpriteFont>("debugWindowFont");
+
+            //Spritesheet Loading
             spritesheet = Content.Load<Texture2D>("playerShip1_colored");
         }
 
@@ -123,33 +140,104 @@ namespace Shard
 
             // TODO: Add your update logic here
 
-            //Rotation
-            if (currentKeyboard.IsKeyDown(Keys.Left))
-                player.Direction -= 0.05;
-            if (currentKeyboard.IsKeyDown(Keys.Right))
-                player.Direction += 0.05;
+            //Rotation Control
+            double rotationalIncrement = .001;
+            double directionalChangeIncrement = .05;
+
+            if (realisticSpaceMovement)
+            {
+                if (currentKeyboard.IsKeyDown(Keys.Left))
+                    player.RotationalVelocity -= rotationalIncrement;
+                if (currentKeyboard.IsKeyDown(Keys.Right))
+                    player.RotationalVelocity += rotationalIncrement;
+            }
+            else
+            {
+                if (currentKeyboard.IsKeyDown(Keys.Left))
+                    player.Direction -= directionalChangeIncrement;
+                if (currentKeyboard.IsKeyDown(Keys.Right))
+                    player.Direction += directionalChangeIncrement;
+
+                player.Velocity = player.Velocity; //Looks weird, is necessary
+            }
 
             //Movement
             double maxVelocity = 3;
+            double velocityIncrement = .1;
 
-            if (currentKeyboard.IsKeyDown(Keys.Up) && !currentKeyboard.IsKeyDown(Keys.Down))
-                player.Velocity += .1;
-            else if (currentKeyboard.IsKeyDown(Keys.Down) && !currentKeyboard.IsKeyDown(Keys.Up))
-                player.Velocity -= .1;
-            else if (!currentKeyboard.IsKeyDown(Keys.Down) && !currentKeyboard.IsKeyDown(Keys.Up))
+            
+            //Changes must be made directly to horizontal/vertical velocity of ship to simulate movement within space
+            if (realisticSpaceMovement)
             {
-                if(player.Velocity > 0)
-                    player.Velocity -= .05;
-                if (player.Velocity < 0)
-                    player.Velocity += .05;
-                if (player.Velocity < .1 && player.Velocity > -.1)
-                    player.Velocity = 0;
+                if (currentKeyboard.IsKeyDown(Keys.Up))
+                {
+                    player.HorizontalVelocity += Math.Cos(player.Direction) * velocityIncrement;
+                    player.VerticalVelocity += Math.Sin(player.Direction) * velocityIncrement;
+                }
+                else if (currentKeyboard.IsKeyDown(Keys.Down))
+                {
+                    player.HorizontalVelocity -= Math.Cos(player.Direction) * velocityIncrement;
+                    player.VerticalVelocity -= Math.Sin(player.Direction) * velocityIncrement;
+                }
+            }
+            else //Ship Movement without velocity/rotation preservation
+            {
+                if (currentKeyboard.IsKeyDown(Keys.Up))
+                    player.Velocity += velocityIncrement;
+                else if (currentKeyboard.IsKeyDown(Keys.Down)) // <-- Problems
+                {
+                    player.HorizontalVelocity -= Math.Cos(player.Direction) * velocityIncrement;
+                    player.VerticalVelocity -= Math.Sin(player.Direction) * velocityIncrement;
+                }
             }
 
+            //Automatic Deceleration of Player Ship Movement
+            if (automaticDeceleration)
+            {
+                if (!currentKeyboard.IsKeyDown(Keys.Down) && !currentKeyboard.IsKeyDown(Keys.Up))
+                {
+                    if(realisticSpaceMovement)
+                    {
+                        if (player.Velocity < velocityIncrement)
+                            player.Velocity = 0;
+                        else
+                        {
+                            if(player.HorizontalVelocity > 0)
+                                player.HorizontalVelocity -= Math.Cos(player.Direction) * velocityIncrement / 2.0;
+                            else if(player.HorizontalVelocity < 0)
+                                player.HorizontalVelocity += Math.Cos(player.Direction) * velocityIncrement / 2.0;
+
+                            if(player.VerticalVelocity > 0)
+                                player.VerticalVelocity -= Math.Sin(player.Direction) * velocityIncrement / 2.0;
+                            else if (player.VerticalVelocity < 0)
+                                player.VerticalVelocity += Math.Sin(player.Direction) * velocityIncrement / 2.0;
+                        }
+                    }
+                    else
+                    {
+                        if (player.Velocity < velocityIncrement)
+                            player.Velocity = 0;
+                        else if (player.Velocity >= velocityIncrement)
+                            player.Velocity -= velocityIncrement / 2.0;
+                    }
+                }
+            }
+
+            //Maximum Velocity Control
             if (player.Velocity > maxVelocity)
-                player.Velocity = maxVelocity;
-            else if (player.Velocity < -maxVelocity)
-                player.Velocity = -maxVelocity;
+            {
+                int horizontalVelocitySign = GetSign(player.HorizontalVelocity);
+                int verticalVelocitySign = GetSign(player.VerticalVelocity);
+
+                player.HorizontalVelocity = Math.Cos(player.Direction) * maxVelocity;
+                player.VerticalVelocity = Math.Sin(player.Direction) * maxVelocity;
+
+                if (GetSign(player.HorizontalVelocity) != horizontalVelocitySign)
+                    player.HorizontalVelocity *= -1;
+                if (GetSign(player.VerticalVelocity) != verticalVelocitySign)
+                    player.VerticalVelocity *= -1;
+                
+            }
 
             player.Update(new List<GameObject>(), gameTime);
 
@@ -169,6 +257,20 @@ namespace Shard
             base.Update(gameTime);
         }
 
+        #region Helper Methods
+
+        private int GetSign(double value)
+        {
+            if (value < 0)
+                return -1;
+            if (value == 0)
+                return 0;
+            else
+                return 1;
+        }
+
+        #endregion
+
         /// <summary>
         /// This is called when the game should draw itself.
         /// </summary>
@@ -179,11 +281,31 @@ namespace Shard
 
             // TODO: Add your drawing code here
             spriteBatch.Begin();
+            DrawDebugWindow(spriteBatch, Color.Red);
             player.Draw(spriteBatch, spritesheet);
             //spriteBatch.Draw(spritesheet, new Rectangle(32,32,32,32), new Rectangle(0,0,32,32), Color.White);
             spriteBatch.End();
 
             base.Draw(gameTime);
+        }
+
+        //precondition: spriteBatch.Begin() has been called
+        protected void DrawDebugWindow(SpriteBatch spriteBatch, Color textColor)
+        {
+            if (debugVisible)
+            {
+                List<string> debugLines = new List<string>();
+                debugLines.Add("Player Ship Coordinates: (" + player.X + ", " + player.Y + ")");
+                debugLines.Add("xVelocity: " + player.HorizontalVelocity + "   yVelocity: " + player.VerticalVelocity);
+                debugLines.Add("Total Velocity: " + player.Velocity);
+
+                Vector2 offset = new Vector2(4,2);
+                foreach(string line in debugLines)
+                {
+                    spriteBatch.DrawString(debugFont, line, offset, textColor);
+                    offset.Y += debugFont.MeasureString(line).Y - 1;
+                }
+            }
         }
     }
 }

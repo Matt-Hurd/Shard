@@ -18,8 +18,9 @@ namespace Shard
         private double x;
         private double y;
         private double direction;
-        private double velocity;
-        private double rotationVelocity;
+        private double horizontalVelocity;
+        private double verticalVelocity;
+        private double rotationalVelocity;
         private double health;
 
         #region Mutating and Returning Fields
@@ -90,23 +91,48 @@ namespace Shard
         {
             get
             {
-                return velocity;
+                return Math.Sqrt(HorizontalVelocity * HorizontalVelocity + VerticalVelocity * VerticalVelocity);
             }
             set
             {
-                velocity = value;
+                horizontalVelocity = Math.Cos(Direction) * value;
+                verticalVelocity = Math.Sin(Direction) * value;
             }
         }
 
-        public virtual double RotationVelocity
+        public virtual double HorizontalVelocity
         {
             get
             {
-                return rotationVelocity;
+                return horizontalVelocity;
             }
             set
             {
-                rotationVelocity = value;
+                horizontalVelocity = value;
+            }
+        }
+
+        public virtual double VerticalVelocity
+        {
+            get
+            {
+                return verticalVelocity;
+            }
+            set
+            {
+                verticalVelocity = value;
+            }
+        }
+
+        public virtual double RotationalVelocity
+        {
+            get
+            {
+                return rotationalVelocity;
+            }
+            set
+            {
+                rotationalVelocity = value;
             }
         }
 
@@ -127,8 +153,8 @@ namespace Shard
         //Should be Ovverriden
         public void Move()
         {
-            this.X += Math.Cos(direction) * velocity;
-            this.Y += Math.Sin(direction) * velocity;
+            this.X += horizontalVelocity;
+            this.Y += verticalVelocity;
         }
 
         public void Move(double distance)
@@ -141,7 +167,7 @@ namespace Shard
         public void Update(List<GameObject> gameObjects, GameTime gameTime)
         {
             Move();
-            Direction += RotationVelocity;
+            Direction += RotationalVelocity;
         }
 
         public abstract Rectangle GetBounds();

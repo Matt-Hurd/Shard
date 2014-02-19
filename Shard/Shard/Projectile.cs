@@ -15,7 +15,6 @@ namespace Shard
     class Projectile : ShardObject
     {
         private int damage; //Duh
-        private Point target; //The location that this projectile is attempting to reach using "dumb motion", if null then just obey velocity
 
         public Projectile() : this(0,0)
         { }
@@ -23,7 +22,6 @@ namespace Shard
         public Projectile(int xPosition, int yPosition) : base(xPosition, yPosition)
         {
             this.damage = 1;
-            this.target = new Point(-1,-1); ;
         }
 
     }

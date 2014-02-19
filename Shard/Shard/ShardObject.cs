@@ -37,7 +37,7 @@ namespace Shard
             this.Velocity = 0;
             this.Direction = 0;
             this.Health = 1;
-            this.RotationVelocity = 0;
+            this.RotationalVelocity = 0;
             this.Energy = 0;
             this.Ore = 0;
             this.Oxygen = 0;
