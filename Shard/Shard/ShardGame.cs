@@ -86,8 +86,8 @@ namespace Shard
 
             //Default Options
             debugVisible = true;
-            realisticSpaceMovement = true;
-            automaticDeceleration = false;
+            realisticSpaceMovement = false;
+            automaticDeceleration = true;
 
             gameObjects = new List<GameObject>();
 
@@ -142,15 +142,15 @@ namespace Shard
             // TODO: Add your update logic here
 
             //Rotation Control
-            double rotationalIncrement = .001;
+            double rotationalVelocityIncrement = .001;
             double directionalChangeIncrement = .05;
 
             if (realisticSpaceMovement)
             {
                 if (currentKeyboard.IsKeyDown(Keys.Left))
-                    player.RotationalVelocity -= rotationalIncrement;
+                    player.RotationalVelocity -= rotationalVelocityIncrement;
                 if (currentKeyboard.IsKeyDown(Keys.Right))
-                    player.RotationalVelocity += rotationalIncrement;
+                    player.RotationalVelocity += rotationalVelocityIncrement;
             }
             else
             {
@@ -159,7 +159,7 @@ namespace Shard
                 if (currentKeyboard.IsKeyDown(Keys.Right))
                     player.Direction += directionalChangeIncrement;
 
-                player.Velocity = player.Velocity; //Looks weird, is necessary
+                //player.Velocity = player.Velocity; //Looks weird, is necessary
             }
 
             //Movement
@@ -177,14 +177,17 @@ namespace Shard
                 }
                 else if (currentKeyboard.IsKeyDown(Keys.Down))
                 {
-                    player.HorizontalVelocity -= Math.Cos(player.Direction) * velocityIncrement;
-                    player.VerticalVelocity -= Math.Sin(player.Direction) * velocityIncrement;
+                    player.HorizontalVelocity += Math.Cos(player.Direction + Math.PI) * velocityIncrement;
+                    player.VerticalVelocity += Math.Sin(player.Direction + Math.PI) * velocityIncrement;
                 }
             }
             else //Ship Movement without velocity/rotation preservation
             {
                 if (currentKeyboard.IsKeyDown(Keys.Up))
-                    player.Velocity += velocityIncrement;
+                {
+                    player.HorizontalVelocity += Math.Cos(player.Direction) * velocityIncrement;
+                    player.VerticalVelocity += Math.Sin(player.Direction) * velocityIncrement;
+                }
                 else if (currentKeyboard.IsKeyDown(Keys.Down)) // <-- Problems
                 {
                     player.HorizontalVelocity -= Math.Cos(player.Direction) * velocityIncrement;
@@ -198,14 +201,14 @@ namespace Shard
                 //Player Rotation Deceleration
                 if (!currentKeyboard.IsKeyDown(Keys.Left) && !currentKeyboard.IsKeyDown(Keys.Right))
                 {
-                    if (Math.Abs(player.RotationalVelocity) < rotationalIncrement)
+                    if (Math.Abs(player.RotationalVelocity) < rotationalVelocityIncrement)
                         player.RotationalVelocity = 0;
                     else
                     {
                         if (GetSign(player.RotationalVelocity) > 0)
-                            player.RotationalVelocity -= rotationalIncrement / 2;
+                            player.RotationalVelocity -= rotationalVelocityIncrement / 2;
                         else if(GetSign(player.RotationalVelocity) < 0)
-                            player.RotationalVelocity += rotationalIncrement / 2;
+                            player.RotationalVelocity += rotationalVelocityIncrement / 2;
                     }
                 }
 
@@ -244,8 +247,18 @@ namespace Shard
                         }
                         else
                         {
-                            if (player.Velocity >= velocityIncrement)
-                                player.Velocity -= velocityIncrement / 2.0;
+                            if (player.HorizontalVelocity > 0)
+                                player.HorizontalVelocity -= velocityIncrement / 2.0;
+                            else if (player.HorizontalVelocity < 0)
+                                player.HorizontalVelocity += velocityIncrement / 2.0;
+
+                            if (player.VerticalVelocity > 0)
+                                player.VerticalVelocity -= velocityIncrement / 2.0;
+                            else if (player.VerticalVelocity < 0)
+                                player.VerticalVelocity += velocityIncrement / 2.0;
+                            
+                            //if (player.Velocity >= velocityIncrement)
+                                //player.Velocity -= velocityIncrement / 2.0;
                         }
                     }
                 }
