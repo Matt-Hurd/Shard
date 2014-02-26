@@ -33,7 +33,7 @@ namespace Shard
         private DataSet MyDataSet()
         {
             SqlConnection con = new SqlConnection(strCon);
-            con.Open();
+            //con.Open(); this broke everything
             da_1 = new SqlDataAdapter(sql_string, con);
             DataSet dat_set = new DataSet();
             da_1.Fill(dat_set, "Table_Data_1");
