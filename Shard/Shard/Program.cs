@@ -11,9 +11,14 @@ namespace Shard
         /// </summary>
         static void Main(string[] args)
         {
-            Application.EnableVisualStyles();
-            Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new LoginForm());
+            using (ShardGame game = new ShardGame())
+            {
+                game.Run();
+            }
+
+            //Application.EnableVisualStyles();
+            //Application.SetCompatibleTextRenderingDefault(false);
+            //Application.Run(new LoginForm());
         }
     }
 #endif

@@ -20,6 +20,7 @@ namespace Shard
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
         Texture2D spritesheet;
+        GameImageSourceDirectory sourceDirectory;
 
         KeyboardState previousKeyboard;
         GamePadState previousGamePad;
@@ -66,27 +67,27 @@ namespace Shard
 
             #region Database Connection
 
-            try
-            {
-                objConnect = new DatabaseConnection();
-                conString = Shard.Properties.Settings.Default.DatabaseConnectionString;
-                objConnect.Connection_string = conString;
-                objConnect.Sql = Shard.Properties.Settings.Default.SQL_LoginInformation;
-                ds = objConnect.GetConnection;
-                MaxRows = ds.Tables[0].Rows.Count;
+            //try
+            //{
+            //    objConnect = new DatabaseConnection();
+            //    conString = Shard.Properties.Settings.Default.DatabaseConnectionString;
+            //    objConnect.Connection_string = conString;
+            //    objConnect.Sql = Shard.Properties.Settings.Default.SQL_LoginInformation;
+            //    ds = objConnect.GetConnection;
+            //    MaxRows = ds.Tables[0].Rows.Count;
 
-                //NavigateRecords();
-            }
-            catch (Exception err)
-            {
-                Console.Out.Write(err.Message);
-            }
+            //    //NavigateRecords();
+            //}
+            //catch (Exception err)
+            //{
+            //    Console.Out.Write(err.Message);
+            //}
 
             #endregion
 
             //Default Options
             debugVisible = true;
-            realisticSpaceMovement = false;
+            realisticSpaceMovement = true;
             automaticDeceleration = true;
 
             gameObjects = new List<GameObject>();
@@ -113,7 +114,10 @@ namespace Shard
             debugFont = Content.Load<SpriteFont>("debugWindowFont");
 
             //Spritesheet Loading
-            spritesheet = Content.Load<Texture2D>("playerShip1_colored");
+            spritesheet = Content.Load<Texture2D>("spritesheet_shard_i1");
+            sourceDirectory = new GameImageSourceDirectory();
+            sourceDirectory.LoadSourcesFromFile("spritesheet_shard_i1.txt");
+            player.ImageSource = sourceDirectory.GetSourceRectangle("asteroid_large1_shaded");
         }
 
         /// <summary>
@@ -142,15 +146,22 @@ namespace Shard
             // TODO: Add your update logic here
 
             //Rotation Control
+            double maximumRotationalVelocity = Math.PI / 16.0;
             double rotationalVelocityIncrement = .001;
             double directionalChangeIncrement = .05;
 
             if (realisticSpaceMovement)
             {
                 if (currentKeyboard.IsKeyDown(Keys.Left))
-                    player.RotationalVelocity -= rotationalVelocityIncrement;
+                {
+                    if(player.RotationalVelocity > -maximumRotationalVelocity)
+                        player.RotationalVelocity -= rotationalVelocityIncrement;
+                }
                 if (currentKeyboard.IsKeyDown(Keys.Right))
-                    player.RotationalVelocity += rotationalVelocityIncrement;
+                {
+                    if(player.RotationalVelocity < maximumRotationalVelocity)
+                        player.RotationalVelocity += rotationalVelocityIncrement;
+                }
             }
             else
             {
@@ -350,7 +361,7 @@ namespace Shard
                 List<string> debugLines = new List<string>();
                 debugLines.Add("Player Ship Coordinates: (" + player.X + ", " + player.Y + ")");
                 debugLines.Add("xVelocity: " + player.HorizontalVelocity + "   yVelocity: " + player.VerticalVelocity);
-                debugLines.Add("Total Velocity: " + player.Velocity);
+                debugLines.Add("Rotational Velocity: " + player.RotationalVelocity);
 
                 Vector2 offset = new Vector2(4, 2);
                 foreach (string line in debugLines)

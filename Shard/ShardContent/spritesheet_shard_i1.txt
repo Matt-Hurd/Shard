@@ -1,0 +1,6 @@
+asteroid_large1_shaded = 0 0 64 64
+asteroid_medium1_shaded = 64 0 32 32
+playerShip1_colored = 64 32 32 32
+shipBullet = 112 0 6 6
+shipMissile = 96 0 16 16
+smallAsteroid1_shaded = 96 16 16 16
