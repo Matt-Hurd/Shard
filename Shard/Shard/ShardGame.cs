@@ -66,22 +66,22 @@ namespace Shard
             this.IsMouseVisible = true;
 
             #region Database Connection
+            //UNCOMMENTED, MAYBE FIX DATABASE
+            try
+            {
+                objConnect = new DatabaseConnection();
+                conString = Shard.Properties.Settings.Default.DatabaseConnectionString;
+                objConnect.Connection_string = conString;
+                objConnect.Sql = Shard.Properties.Settings.Default.SQL_LoginInformation;
+                ds = objConnect.GetConnection;
+                MaxRows = ds.Tables[0].Rows.Count;
 
-            //try
-            //{
-            //    objConnect = new DatabaseConnection();
-            //    conString = Shard.Properties.Settings.Default.DatabaseConnectionString;
-            //    objConnect.Connection_string = conString;
-            //    objConnect.Sql = Shard.Properties.Settings.Default.SQL_LoginInformation;
-            //    ds = objConnect.GetConnection;
-            //    MaxRows = ds.Tables[0].Rows.Count;
-
-            //    //NavigateRecords();
-            //}
-            //catch (Exception err)
-            //{
-            //    Console.Out.Write(err.Message);
-            //}
+                //NavigateRecords();
+            }
+            catch (Exception err)
+            {
+                Console.Out.Write(err.Message);
+            }
 
             #endregion
 
