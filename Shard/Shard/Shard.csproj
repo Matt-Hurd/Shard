@@ -111,6 +111,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DatabaseConnection.cs" />
+    <Compile Include="Debris.cs" />
     <Compile Include="GameImageSourceDirectory.cs" />
     <Compile Include="GameObject.cs" />
     <Compile Include="LoginForm.cs">

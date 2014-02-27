@@ -33,7 +33,7 @@ namespace Shard
         protected bool debugVisible;
         protected SpriteFont debugFont;
 
-        List<GameObject> gameObjects;
+        List<ShardObject> shardObjects;
         Ship player;
 
         #region Database Fields
@@ -88,14 +88,13 @@ namespace Shard
             //Default Options
             debugVisible = true;
             realisticSpaceMovement = true;
-            automaticDeceleration = true;
+            automaticDeceleration = false;
 
-            gameObjects = new List<GameObject>();
+            shardObjects = new List<ShardObject>();
 
             player = new Ship(100, 100);
             player.Width = 32;
             player.Height = 32;
-            player.ImageSource = new Rectangle(0, 0, 32, 32);
 
             base.Initialize();
         }
@@ -116,8 +115,23 @@ namespace Shard
             //Spritesheet Loading
             spritesheet = Content.Load<Texture2D>("spritesheet_shard_i1");
             sourceDirectory = new GameImageSourceDirectory();
-            sourceDirectory.LoadSourcesFromFile("spritesheet_shard_i1.txt");
-            player.ImageSource = sourceDirectory.GetSourceRectangle("asteroid_large1_shaded");
+            sourceDirectory.LoadSourcesFromFile(@"Content/spritesheet_shard_i1.txt");
+            player.ImageSource = sourceDirectory.GetSourceRectangle("playerShip1_colored");
+
+            //Add a bunch of debris for testing purposes
+            int numDebris = 20;
+            Random random = new Random();
+            for (int i = 0; i < numDebris; i++)
+            {
+                Debris debris = new Debris(random.Next(GraphicsDevice.Viewport.Width), random.Next(GraphicsDevice.Viewport.Height));
+                debris.Direction = random.NextDouble() * Math.PI * 2;
+                debris.ImageSource = sourceDirectory.GetSourceRectangle("asteroid_medium1_shaded");
+                debris.Width = debris.ImageSource.Width;
+                debris.Height = debris.ImageSource.Height;
+                shardObjects.Add(debris);
+            }
+
+            //player.ImageSource = new Rectangle(64, 32, 32, 32);
         }
 
         /// <summary>
@@ -347,6 +361,10 @@ namespace Shard
             spriteBatch.Begin();
             DrawDebugWindow(spriteBatch, Color.Red);
             player.Draw(spriteBatch, spritesheet);
+            foreach (ShardObject so in shardObjects)
+            {
+                so.Draw(spriteBatch, spritesheet);
+            }
             //spriteBatch.Draw(spritesheet, new Rectangle(32,32,32,32), new Rectangle(0,0,32,32), Color.White);
             spriteBatch.End();
 
