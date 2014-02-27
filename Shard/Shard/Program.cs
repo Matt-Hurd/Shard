@@ -11,16 +11,14 @@ namespace Shard
         /// </summary>
         static void Main(string[] args)
         {
-            /* UNCOMMENT TO SKIP LOGIN
             using (ShardGame game = new ShardGame())
             {
                 game.Run();
             }
-            */
 
-            Application.EnableVisualStyles();
-            Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new LoginForm());
+            //Application.EnableVisualStyles();
+            //Application.SetCompatibleTextRenderingDefault(false);
+            //Application.Run(new LoginForm());
         }
     }
 #endif
