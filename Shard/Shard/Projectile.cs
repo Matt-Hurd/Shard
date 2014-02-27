@@ -24,5 +24,17 @@ namespace Shard
             this.damage = 1;
         }
 
+        public virtual int Damage
+        {
+            get
+            {
+                return this.damage;
+            }
+            set
+            {
+                this.damage = value;
+            }
+        }
+
     }
 }

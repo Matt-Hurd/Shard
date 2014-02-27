@@ -150,7 +150,7 @@ namespace Shard
 
         #endregion
 
-        //Should be Ovverriden
+        //Should be Overriden
         public void Move()
         {
             this.X += horizontalVelocity;

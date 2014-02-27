@@ -23,6 +23,7 @@ namespace Shard
         GameImageSourceDirectory sourceDirectory;
 
         KeyboardState previousKeyboard;
+        MouseState previousMouse;
         GamePadState previousGamePad;
 
         //Options
@@ -64,6 +65,10 @@ namespace Shard
             // TODO: Add your initialization logic here
             this.Window.Title = "Shard";
             this.IsMouseVisible = true;
+
+            previousGamePad = GamePad.GetState(PlayerIndex.One);
+            previousKeyboard = Keyboard.GetState();
+            previousMouse = Mouse.GetState();
 
             #region Database Connection
 
@@ -152,12 +157,15 @@ namespace Shard
         {
             GamePadState currentGamePad = GamePad.GetState(PlayerIndex.One);
             KeyboardState currentKeyboard = Keyboard.GetState();
+            MouseState currentMouse = Mouse.GetState();
 
             // Exit Game
             if (currentGamePad.Buttons.Back == ButtonState.Pressed || currentKeyboard.IsKeyDown(Keys.Escape))
                 this.Exit();
 
             // TODO: Add your update logic here
+
+            #region Movement and Rotation Control
 
             //Rotation Control
             double maximumRotationalVelocity = Math.PI / 16.0;
@@ -301,23 +309,26 @@ namespace Shard
                 player.VerticalVelocity = maxVelocity * GetSign(player.VerticalVelocity);
             }
 
-            ////Broken
-            //if (player.Velocity > maxVelocity && !realisticSpaceMovement)
-            //{
-            //    int horizontalVelocitySign = GetSign(player.HorizontalVelocity);
-            //    int verticalVelocitySign = GetSign(player.VerticalVelocity);
+            #endregion
 
-            //    player.HorizontalVelocity = Math.Cos(player.Direction) * maxVelocity;
-            //    player.VerticalVelocity = Math.Sin(player.Direction) * maxVelocity;
-
-            //    if (GetSign(player.HorizontalVelocity) != horizontalVelocitySign)
-            //        player.HorizontalVelocity *= -1;
-            //    if (GetSign(player.VerticalVelocity) != verticalVelocitySign)
-            //        player.VerticalVelocity *= -1;
-
-            //}
+            //Shooting
+            if (currentMouse.LeftButton.Equals(ButtonState.Pressed))
+            {
+                Projectile p = new Projectile((int)player.X, (int)player.Y);
+                p.ImageSource = sourceDirectory.GetSourceRectangle("shipBullet");
+                p.Width = p.ImageSource.Width;
+                p.Height = p.ImageSource.Height;
+                p.Direction = player.Direction; //Math.Atan2(currentMouse.Y - player.Y, currentMouse.X - player.X);
+                p.Velocity = .5;
+                shardObjects.Add(p);
+            }
 
             player.Update(new List<GameObject>(), gameTime);
+
+            foreach (ShardObject so in shardObjects)
+            {
+                so.Update(new List<GameObject>(),gameTime);
+            }
 
             if (player.X > GraphicsDevice.Viewport.Width)
                 player.X = 0;
@@ -380,6 +391,7 @@ namespace Shard
                 debugLines.Add("Player Ship Coordinates: (" + player.X + ", " + player.Y + ")");
                 debugLines.Add("xVelocity: " + player.HorizontalVelocity + "   yVelocity: " + player.VerticalVelocity);
                 debugLines.Add("Rotational Velocity: " + player.RotationalVelocity);
+                debugLines.Add("ShardObject Size: " + shardObjects.Count);
 
                 Vector2 offset = new Vector2(4, 2);
                 foreach (string line in debugLines)

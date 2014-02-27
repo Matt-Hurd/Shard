@@ -162,7 +162,7 @@ namespace Shard
         //}
 
         //Potential to be overriden not necessary for many objects
-        public void Destroy(List<GameObject> gameObjects)
+        public void Destroy(List<GameObject> shardObjects)
         {
             //Add resource drops to gameObjects based on resource amounts
             //Remove self from List of gameObjects
