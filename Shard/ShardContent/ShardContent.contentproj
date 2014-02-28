@@ -60,6 +60,7 @@
       <Name>spritesheet_shard_i1</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Compile>
     <None Include="spritesheet_shard_i1.txt">
       <Name>spritesheet_shard_i1</Name>

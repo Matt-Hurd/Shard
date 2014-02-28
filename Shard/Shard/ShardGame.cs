@@ -29,6 +29,7 @@ namespace Shard
         //Options
         private bool realisticSpaceMovement;
         private bool automaticDeceleration;
+        private bool mouseDirectionalControl;
 
         //Visual Graphics
         protected bool debugVisible;
@@ -94,6 +95,7 @@ namespace Shard
             debugVisible = true;
             realisticSpaceMovement = true;
             automaticDeceleration = false;
+            mouseDirectionalControl = false;
 
             shardObjects = new List<ShardObject>();
 
@@ -124,7 +126,7 @@ namespace Shard
             player.ImageSource = sourceDirectory.GetSourceRectangle("playerShip1_colored");
 
             //Add a bunch of debris for testing purposes
-            int numDebris = 20;
+            int numDebris = 30;
             Random random = new Random();
             for (int i = 0; i < numDebris; i++)
             {
@@ -165,37 +167,47 @@ namespace Shard
 
             // TODO: Add your update logic here
 
-            #region Movement and Rotation Control
+            #region Player Rotation
 
-            //Rotation Control
             double maximumRotationalVelocity = Math.PI / 16.0;
             double rotationalVelocityIncrement = .001;
             double directionalChangeIncrement = .05;
 
-            if (realisticSpaceMovement)
+            if (!mouseDirectionalControl)
             {
-                if (currentKeyboard.IsKeyDown(Keys.Left))
+                if (realisticSpaceMovement)
                 {
-                    if(player.RotationalVelocity > -maximumRotationalVelocity)
-                        player.RotationalVelocity -= rotationalVelocityIncrement;
+                    if (currentKeyboard.IsKeyDown(Keys.Left))
+                    {
+                        if (player.RotationalVelocity > -maximumRotationalVelocity)
+                            player.RotationalVelocity -= rotationalVelocityIncrement;
+                    }
+                    if (currentKeyboard.IsKeyDown(Keys.Right))
+                    {
+                        if (player.RotationalVelocity < maximumRotationalVelocity)
+                            player.RotationalVelocity += rotationalVelocityIncrement;
+                    }
                 }
-                if (currentKeyboard.IsKeyDown(Keys.Right))
+                else
                 {
-                    if(player.RotationalVelocity < maximumRotationalVelocity)
-                        player.RotationalVelocity += rotationalVelocityIncrement;
+                    if (currentKeyboard.IsKeyDown(Keys.Left))
+                        player.Direction -= directionalChangeIncrement;
+                    if (currentKeyboard.IsKeyDown(Keys.Right))
+                        player.Direction += directionalChangeIncrement;
+
+                    //player.Velocity = player.Velocity; //Looks weird, is necessary
                 }
             }
             else
             {
-                if (currentKeyboard.IsKeyDown(Keys.Left))
-                    player.Direction -= directionalChangeIncrement;
-                if (currentKeyboard.IsKeyDown(Keys.Right))
-                    player.Direction += directionalChangeIncrement;
-
-                //player.Velocity = player.Velocity; //Looks weird, is necessary
+                player.RotationalVelocity = 0;
+                player.Direction = Math.Atan2(currentMouse.Y - player.Y, currentMouse.X - player.X);
             }
 
-            //Movement
+            #endregion
+
+            #region Player Movement
+
             double maxVelocity = 3;
             double velocityIncrement = .1;
 
@@ -314,12 +326,13 @@ namespace Shard
             //Shooting
             if (currentMouse.LeftButton.Equals(ButtonState.Pressed))
             {
-                Projectile p = new Projectile((int)player.X, (int)player.Y);
+                Projectile p = new Projectile((int)player.X + (int)player.Width / 2, (int)player.Y + (int)player.Height / 2);
                 p.ImageSource = sourceDirectory.GetSourceRectangle("shipBullet");
                 p.Width = p.ImageSource.Width;
                 p.Height = p.ImageSource.Height;
                 p.Direction = player.Direction; //Math.Atan2(currentMouse.Y - player.Y, currentMouse.X - player.X);
-                p.Velocity = .5;
+                p.RotationalVelocity = player.RotationalVelocity;
+                p.Velocity = 8;
                 shardObjects.Add(p);
             }
 
@@ -370,12 +383,12 @@ namespace Shard
 
             // TODO: Add your drawing code here
             spriteBatch.Begin();
-            DrawDebugWindow(spriteBatch, Color.Red);
-            player.Draw(spriteBatch, spritesheet);
             foreach (ShardObject so in shardObjects)
             {
                 so.Draw(spriteBatch, spritesheet);
             }
+            player.Draw(spriteBatch, spritesheet);
+            DrawDebugWindow(spriteBatch, Color.Red);
             //spriteBatch.Draw(spritesheet, new Rectangle(32,32,32,32), new Rectangle(0,0,32,32), Color.White);
             spriteBatch.End();
 
