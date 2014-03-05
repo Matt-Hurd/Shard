@@ -93,8 +93,8 @@ namespace Shard
 
             //Default Options
             debugVisible = true;
-            realisticSpaceMovement = true;
-            automaticDeceleration = false;
+            realisticSpaceMovement = false;
+            automaticDeceleration = true;
             mouseDirectionalControl = false;
 
             shardObjects = new List<ShardObject>();
@@ -177,12 +177,12 @@ namespace Shard
             {
                 if (realisticSpaceMovement)
                 {
-                    if (currentKeyboard.IsKeyDown(Keys.Left))
+                    if (currentKeyboard.IsKeyDown(Keys.Left) || currentKeyboard.IsKeyDown(Keys.A))
                     {
                         if (player.RotationalVelocity > -maximumRotationalVelocity)
                             player.RotationalVelocity -= rotationalVelocityIncrement;
                     }
-                    if (currentKeyboard.IsKeyDown(Keys.Right))
+                    if (currentKeyboard.IsKeyDown(Keys.Right) || currentKeyboard.IsKeyDown(Keys.D))
                     {
                         if (player.RotationalVelocity < maximumRotationalVelocity)
                             player.RotationalVelocity += rotationalVelocityIncrement;
@@ -190,9 +190,9 @@ namespace Shard
                 }
                 else
                 {
-                    if (currentKeyboard.IsKeyDown(Keys.Left))
+                    if (currentKeyboard.IsKeyDown(Keys.Left) || currentKeyboard.IsKeyDown(Keys.A))
                         player.Direction -= directionalChangeIncrement;
-                    if (currentKeyboard.IsKeyDown(Keys.Right))
+                    if (currentKeyboard.IsKeyDown(Keys.Right) || currentKeyboard.IsKeyDown(Keys.D))
                         player.Direction += directionalChangeIncrement;
 
                     //player.Velocity = player.Velocity; //Looks weird, is necessary
@@ -206,7 +206,7 @@ namespace Shard
 
             #endregion
 
-            #region Player Movement
+            #region Player Movement and Deceleration Implementation
 
             double maxVelocity = 3;
             double velocityIncrement = .1;
@@ -215,12 +215,12 @@ namespace Shard
             //Changes must be made directly to horizontal/vertical velocity of ship to simulate movement within space
             if (realisticSpaceMovement)
             {
-                if (currentKeyboard.IsKeyDown(Keys.Up))
+                if (currentKeyboard.IsKeyDown(Keys.Up) || currentKeyboard.IsKeyDown(Keys.W))
                 {
                     player.HorizontalVelocity += Math.Cos(player.Direction) * velocityIncrement;
                     player.VerticalVelocity += Math.Sin(player.Direction) * velocityIncrement;
                 }
-                else if (currentKeyboard.IsKeyDown(Keys.Down))
+                else if (currentKeyboard.IsKeyDown(Keys.Down) || currentKeyboard.IsKeyDown(Keys.S))
                 {
                     player.HorizontalVelocity += Math.Cos(player.Direction + Math.PI) * velocityIncrement;
                     player.VerticalVelocity += Math.Sin(player.Direction + Math.PI) * velocityIncrement;
@@ -228,12 +228,12 @@ namespace Shard
             }
             else //Ship Movement without velocity/rotation preservation
             {
-                if (currentKeyboard.IsKeyDown(Keys.Up))
+                if (currentKeyboard.IsKeyDown(Keys.Up) || currentKeyboard.IsKeyDown(Keys.W))
                 {
                     player.HorizontalVelocity += Math.Cos(player.Direction) * velocityIncrement;
                     player.VerticalVelocity += Math.Sin(player.Direction) * velocityIncrement;
                 }
-                else if (currentKeyboard.IsKeyDown(Keys.Down)) // <-- Problems
+                else if (currentKeyboard.IsKeyDown(Keys.Down) || currentKeyboard.IsKeyDown(Keys.S)) // <-- Potentially Fixed Problems
                 {
                     player.HorizontalVelocity -= Math.Cos(player.Direction) * velocityIncrement;
                     player.VerticalVelocity -= Math.Sin(player.Direction) * velocityIncrement;
@@ -244,7 +244,7 @@ namespace Shard
             if (automaticDeceleration)
             {
                 //Player Rotation Deceleration
-                if (!currentKeyboard.IsKeyDown(Keys.Left) && !currentKeyboard.IsKeyDown(Keys.Right))
+                if (!currentKeyboard.IsKeyDown(Keys.Left) && !currentKeyboard.IsKeyDown(Keys.Right) && !currentKeyboard.IsKeyDown(Keys.W) && !currentKeyboard.IsKeyDown(Keys.S))
                 {
                     if (Math.Abs(player.RotationalVelocity) < rotationalVelocityIncrement)
                         player.RotationalVelocity = 0;
@@ -258,7 +258,7 @@ namespace Shard
                 }
 
                 //Player Movement Deceleration
-                if (!currentKeyboard.IsKeyDown(Keys.Down) && !currentKeyboard.IsKeyDown(Keys.Up))
+                if (!currentKeyboard.IsKeyDown(Keys.Down) && !currentKeyboard.IsKeyDown(Keys.Up) && !currentKeyboard.IsKeyDown(Keys.W) && !currentKeyboard.IsKeyDown(Keys.S))
                 {
                     if (player.Velocity < velocityIncrement)
                         player.Velocity = 0;
@@ -324,7 +324,7 @@ namespace Shard
             #endregion
 
             //Shooting
-            if (currentMouse.LeftButton.Equals(ButtonState.Pressed))
+            if ((currentMouse.LeftButton.Equals(ButtonState.Pressed) && mouseDirectionalControl) || (currentKeyboard.IsKeyDown(Keys.Space) && !mouseDirectionalControl))
             {
                 Projectile p = new Projectile((int)player.X + (int)player.Width / 2, (int)player.Y + (int)player.Height / 2);
                 p.ImageSource = sourceDirectory.GetSourceRectangle("shipBullet");
