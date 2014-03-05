@@ -1,9 +1,14 @@
 ﻿using System;
+using System.Data;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
+using Microsoft.Xna.Framework.Content;
+using Microsoft.Xna.Framework.GamerServices;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Media;
 
 namespace Shard
 {
@@ -13,6 +18,8 @@ namespace Shard
         private Vector3 _Pos;
 
         private Matrix _ViewMatrix;
+
+        private int winX, winY;
 
         private float _Zoom;
 
@@ -29,6 +36,12 @@ namespace Shard
             BuildViewMatrix();
         }
 
+        public void setWindow(int x, int y)
+        {
+            winX = x;
+            winY = y;
+        }
+
         public void AddPos(float X, float Y, float Z)
         {
             _Pos += new Vector3(X, Y, Z);
@@ -37,7 +50,7 @@ namespace Shard
 
         public void SetPos(float X, float Y, float Z)
         {
-            _Pos = new Vector3(X, Y, Z);
+            _Pos = new Vector3(X + _Off.X, Y + _Off.Y, Z);
             BuildViewMatrix();
         }
 
@@ -99,8 +112,8 @@ namespace Shard
             Matrix tmp = Matrix.Identity;
 
             // Center camera about camera position
-            float uX = 1280 / _Zoom;
-            float uY = 720 / _Zoom;
+            float uX = winX / _Zoom;
+            float uY = winY / _Zoom;
 
             tmp = Matrix.Multiply(Matrix.CreateScale(_Zoom), tmp);
 

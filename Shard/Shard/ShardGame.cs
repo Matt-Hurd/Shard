@@ -21,10 +21,12 @@ namespace Shard
         SpriteBatch spriteBatch;
         Texture2D spritesheet;
         GameImageSourceDirectory sourceDirectory;
-
+        
         KeyboardState previousKeyboard;
         MouseState previousMouse;
         GamePadState previousGamePad;
+
+        int winX, winY;
 
         //Options
         private bool realisticSpaceMovement;
@@ -55,6 +57,7 @@ namespace Shard
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
+            
         }
 
         /// <summary>
@@ -72,7 +75,6 @@ namespace Shard
             previousGamePad = GamePad.GetState(PlayerIndex.One);
             previousKeyboard = Keyboard.GetState();
             previousMouse = Mouse.GetState();
-            camera = new Camera(.5f, .5f);
 
             #region Database Connection
 
@@ -102,11 +104,26 @@ namespace Shard
 
             shardObjects = new List<ShardObject>();
 
-            player = new Ship(100, 100);
+            player = new Ship(0, 0);
             player.Width = 32;
             player.Height = 32;
 
+            camera = new Camera(player.Width / 2, player.Height / 2);
+
+            camera.setWindow(GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height);
+
             base.Initialize();
+        }
+
+        //Converts pixels to coords
+        private void TraceScreenCoord(int x, int y, out float unitx, out float unity)
+        {
+            // Convert the pixel coordinate to units
+            Matrix inv = Matrix.Invert(camera.GetViewMatrix());
+            Vector2 pixel = new Vector2(x, y);
+            Vector2 unit = Vector2.Transform(pixel, inv);
+            unitx = unit.X + 0.5f;
+            unity = unit.Y + 0.5f;
         }
 
         /// <summary>
@@ -355,7 +372,7 @@ namespace Shard
             if (player.Y + player.Height < 0)
                 player.Y = GraphicsDevice.Viewport.Height;
 
-            camera.SetPos((float)player.X + 250, (float)player.Y + 150, 0);
+            camera.SetPos((float)player.X, (float)player.Y, 0);
 
             //Update Previous States
             previousGamePad = currentGamePad;
@@ -414,6 +431,7 @@ namespace Shard
                 Vector2 offset = new Vector2(4, 2);
                 foreach (string line in debugLines)
                 {
+                    
                     spriteBatch.DrawString(debugFont, line, offset, textColor);
                     offset.Y += debugFont.MeasureString(line).Y - 1;
                 }
