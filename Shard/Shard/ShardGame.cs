@@ -38,6 +38,8 @@ namespace Shard
         List<ShardObject> shardObjects;
         Ship player;
 
+        Camera camera;
+
         #region Database Fields
         DatabaseConnection objConnect;
         string conString;
@@ -70,6 +72,7 @@ namespace Shard
             previousGamePad = GamePad.GetState(PlayerIndex.One);
             previousKeyboard = Keyboard.GetState();
             previousMouse = Mouse.GetState();
+            camera = new Camera(.5f, .5f);
 
             #region Database Connection
 
@@ -352,6 +355,8 @@ namespace Shard
             if (player.Y + player.Height < 0)
                 player.Y = GraphicsDevice.Viewport.Height;
 
+            camera.SetPos((float)player.X + 250, (float)player.Y + 150, 0);
+
             //Update Previous States
             previousGamePad = currentGamePad;
             previousKeyboard = currentKeyboard;
@@ -382,7 +387,7 @@ namespace Shard
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
             // TODO: Add your drawing code here
-            spriteBatch.Begin();
+            spriteBatch.Begin(SpriteSortMode.FrontToBack, null, null, null, null, null, camera.GetViewMatrix());
             foreach (ShardObject so in shardObjects)
             {
                 so.Draw(spriteBatch, spritesheet);
