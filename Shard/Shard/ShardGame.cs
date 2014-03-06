@@ -356,6 +356,17 @@ namespace Shard
                 shardObjects.Add(p);
             }
 
+            if (currentMouse.ScrollWheelValue > previousMouse.ScrollWheelValue)
+            {
+                camera.SetZoom(2);
+                camera.PreformZoom(.1f);
+            }
+            if (currentMouse.ScrollWheelValue < previousMouse.ScrollWheelValue)
+            {
+                camera.SetZoom(1);
+                camera.PreformZoom(.1f);
+            }
+
             player.Update(new List<GameObject>(), gameTime);
 
             foreach (ShardObject so in shardObjects)
@@ -409,9 +420,11 @@ namespace Shard
             {
                 so.Draw(spriteBatch, spritesheet);
             }
-            player.Draw(spriteBatch, spritesheet);
             DrawDebugWindow(spriteBatch, Color.Red);
             //spriteBatch.Draw(spritesheet, new Rectangle(32,32,32,32), new Rectangle(0,0,32,32), Color.White);
+            spriteBatch.End();
+            spriteBatch.Begin(SpriteSortMode.FrontToBack, null, null, null, null, null, camera.GetViewMatrix());
+            player.Draw(spriteBatch, spritesheet);
             spriteBatch.End();
 
             base.Draw(gameTime);
