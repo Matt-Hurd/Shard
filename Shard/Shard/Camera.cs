@@ -80,7 +80,7 @@ namespace Shard
 
         public void SetPosition(float X, float Y, float Z)
         {
-            position = new Vector3(X, Y, Z);
+            position = new Vector3(X + offset.X, Y + offset.X, Z);
             BuildViewMatrix();
         }
 
