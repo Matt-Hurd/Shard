@@ -74,10 +74,6 @@ namespace Shard
             previousKeyboard = Keyboard.GetState();
             previousMouse = Mouse.GetState();
 
-            camera = new Camera(.5f, .5f);
-            camera.ScreenWidth = GraphicsDevice.Viewport.Width;
-            camera.ScreenHeight = GraphicsDevice.Viewport.Height;
-
             #region Database Connection
 
             //try
@@ -109,6 +105,10 @@ namespace Shard
             player = new Ship(0, 0);
             player.Width = 32;
             player.Height = 32;
+
+            camera = new Camera(player.Width / 2, player.Height / 2);
+            camera.ScreenWidth = GraphicsDevice.Viewport.Width;
+            camera.ScreenHeight = GraphicsDevice.Viewport.Height;
 
 
             base.Initialize();
@@ -211,7 +211,7 @@ namespace Shard
                 float unitx = 0;
                 float unity = 0;
                 TraceScreenCoord((int)currentMouse.X, (int)currentMouse.Y, out unitx, out unity);
-                player.Direction = (float)Math.Atan2(unity - player.Y, unitx - player.X);
+                player.Direction = (float)Math.Atan2(unity - (player.Y + player.Height / 2), unitx - (player.X + player.Width / 2));
                 //player.RotationalVelocity = 0;
                 //player.Direction = Math.Atan2(currentMouse.Y - player.Y, currentMouse.X - player.X);
             }
