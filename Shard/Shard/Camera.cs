@@ -19,13 +19,7 @@ namespace Shard
 
         private int screenWidth, screenHeight;
 
-<<<<<<< HEAD
-        private int winX, winY;
-
-        private float _Zoom;
-=======
         private Matrix viewMatrix;
->>>>>>> More Camera!
 
         private float zoom;
 
@@ -44,19 +38,9 @@ namespace Shard
             BuildViewMatrix();
         }
 
-<<<<<<< HEAD
-        public void setWindow(int x, int y)
-        {
-            winX = x;
-            winY = y;
-        }
-
-        public void AddPos(float X, float Y, float Z)
-=======
         #region Modifying Fields
 
         public virtual int ScreenWidth
->>>>>>> More Camera!
         {
             get
             {
@@ -73,9 +57,6 @@ namespace Shard
 
         public virtual int ScreenHeight
         {
-<<<<<<< HEAD
-            _Pos = new Vector3(X + _Off.X, Y + _Off.Y, Z);
-=======
             get
             {
                 return this.screenHeight;
@@ -94,7 +75,6 @@ namespace Shard
         public void AddPosition(float X, float Y, float Z)
         {
             position += new Vector3(X, Y, Z);
->>>>>>> More Camera!
             BuildViewMatrix();
         }
 
@@ -175,13 +155,8 @@ namespace Shard
             Matrix tmp = Matrix.Identity;
 
             // Center camera about camera position
-<<<<<<< HEAD
-            float uX = winX / _Zoom;
-            float uY = winY / _Zoom;
-=======
-            float uX = screenWidth / zoom;
-            float uY = screenHeight / zoom;
->>>>>>> More Camera!
+            float uX = screenWidth / Zoom;
+            float uY = screenHeight / Zoom;
 
             tmp = Matrix.Multiply(Matrix.CreateScale(zoom), tmp);
 

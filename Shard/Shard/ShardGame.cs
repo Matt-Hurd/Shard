@@ -26,8 +26,6 @@ namespace Shard
         MouseState previousMouse;
         GamePadState previousGamePad;
 
-        int winX, winY;
-
         //Options
         private bool realisticSpaceMovement;
         private bool automaticDeceleration;
@@ -43,13 +41,13 @@ namespace Shard
         protected Camera camera;
 
         #region Database Fields
-        DatabaseConnection objConnect;
-        string conString;
+        //DatabaseConnection objConnect;
+        //string conString;
 
-        DataSet ds;
+        //DataSet ds;
         //DataRow dRow;
 
-        int MaxRows;
+        //int MaxRows;
         //int inc = 0;
         #endregion
 
@@ -75,12 +73,10 @@ namespace Shard
             previousGamePad = GamePad.GetState(PlayerIndex.One);
             previousKeyboard = Keyboard.GetState();
             previousMouse = Mouse.GetState();
-<<<<<<< HEAD
-=======
+
             camera = new Camera(.5f, .5f);
             camera.ScreenWidth = GraphicsDevice.Viewport.Width;
             camera.ScreenHeight = GraphicsDevice.Viewport.Height;
->>>>>>> More Camera!
 
             #region Database Connection
 
@@ -116,20 +112,7 @@ namespace Shard
 
             camera = new Camera(player.Width / 2, player.Height / 2);
 
-            camera.setWindow(GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height);
-
             base.Initialize();
-        }
-
-        //Converts pixels to coords
-        private void TraceScreenCoord(int x, int y, out float unitx, out float unity)
-        {
-            // Convert the pixel coordinate to units
-            Matrix inv = Matrix.Invert(camera.GetViewMatrix());
-            Vector2 pixel = new Vector2(x, y);
-            Vector2 unit = Vector2.Transform(pixel, inv);
-            unitx = unit.X + 0.5f;
-            unity = unit.Y + 0.5f;
         }
 
         /// <summary>
@@ -368,12 +351,12 @@ namespace Shard
 
             if (currentMouse.ScrollWheelValue > previousMouse.ScrollWheelValue)
             {
-                camera.SetZoom(2);
+                camera.Zoom = 2;
                 camera.PreformZoom(.1f);
             }
             if (currentMouse.ScrollWheelValue < previousMouse.ScrollWheelValue)
             {
-                camera.SetZoom(1);
+                camera.Zoom = 1;
                 camera.PreformZoom(.1f);
             }
 
@@ -393,11 +376,7 @@ namespace Shard
             if (player.Y + player.Height < 0)
                 player.Y = GraphicsDevice.Viewport.Height;
 
-<<<<<<< HEAD
-            camera.SetPos((float)player.X, (float)player.Y, 0);
-=======
             camera.SetPosition((float)player.X, (float)player.Y, 0);
->>>>>>> More Camera!
 
             //Update Previous States
             previousGamePad = currentGamePad;
@@ -457,12 +436,10 @@ namespace Shard
             {
                 so.Draw(spriteBatch, spritesheet);
             }
-<<<<<<< HEAD
-=======
+
             spriteBatch.End();
             spriteBatch.Begin(SpriteSortMode.FrontToBack, null, null, null, null, null, camera.GetViewMatrix());
             player.Draw(spriteBatch, spritesheet);
->>>>>>> More Camera!
             DrawDebugWindow(spriteBatch, Color.Red);
             //spriteBatch.Draw(spritesheet, new Rectangle(32,32,32,32), new Rectangle(0,0,32,32), Color.White);
             spriteBatch.End();

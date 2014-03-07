@@ -15,7 +15,6 @@ namespace Shard
     class GameImageSourceDirectory
     {
         private Dictionary<string, Rectangle> sourceRectangles;
-        private Texture2D imagesheet;
 
         public GameImageSourceDirectory()
         {
