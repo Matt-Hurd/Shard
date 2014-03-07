@@ -14,26 +14,12 @@ namespace Shard
 {
     class Debris : ShardObject
     {
-        private int health;
-
         public Debris() : this(0, 0) { }
 
         public Debris(int xPosition, int yPosition)
             : base(xPosition, yPosition)
         {
-            health = 1;
-        }
-
-        public virtual int Health
-        {
-            get
-            {
-                return this.health;
-            }
-            set
-            {
-                this.health = value;
-            }
+            Health = 1;
         }
 
     }

@@ -37,10 +37,10 @@ namespace Shard
         protected bool debugVisible;
         protected SpriteFont debugFont;
 
-        List<ShardObject> shardObjects;
+        List<ShardObject> shardObjects; //Probably won't be able to use
         Ship player;
 
-        Camera camera;
+        protected Camera camera;
 
         #region Database Fields
         DatabaseConnection objConnect;
@@ -75,6 +75,12 @@ namespace Shard
             previousGamePad = GamePad.GetState(PlayerIndex.One);
             previousKeyboard = Keyboard.GetState();
             previousMouse = Mouse.GetState();
+<<<<<<< HEAD
+=======
+            camera = new Camera(.5f, .5f);
+            camera.ScreenWidth = GraphicsDevice.Viewport.Width;
+            camera.ScreenHeight = GraphicsDevice.Viewport.Height;
+>>>>>>> More Camera!
 
             #region Database Connection
 
@@ -100,7 +106,7 @@ namespace Shard
             debugVisible = true;
             realisticSpaceMovement = false;
             automaticDeceleration = true;
-            mouseDirectionalControl = false;
+            mouseDirectionalControl = true;
 
             shardObjects = new List<ShardObject>();
 
@@ -220,8 +226,12 @@ namespace Shard
             }
             else
             {
-                player.RotationalVelocity = 0;
-                player.Direction = Math.Atan2(currentMouse.Y - player.Y, currentMouse.X - player.X);
+                float unitx = 0;
+                float unity = 0;
+                TraceScreenCoord((int)currentMouse.X, (int)currentMouse.Y, out unitx, out unity);
+                player.Direction = (float)Math.Atan2(unity - player.Y, unitx - player.X);
+                //player.RotationalVelocity = 0;
+                //player.Direction = Math.Atan2(currentMouse.Y - player.Y, currentMouse.X - player.X);
             }
 
             #endregion
@@ -383,13 +393,40 @@ namespace Shard
             if (player.Y + player.Height < 0)
                 player.Y = GraphicsDevice.Viewport.Height;
 
+<<<<<<< HEAD
             camera.SetPos((float)player.X, (float)player.Y, 0);
+=======
+            camera.SetPosition((float)player.X, (float)player.Y, 0);
+>>>>>>> More Camera!
 
             //Update Previous States
             previousGamePad = currentGamePad;
             previousKeyboard = currentKeyboard;
+            previousMouse = currentMouse;
 
             base.Update(gameTime);
+        }
+
+        private void TraceScreenCoord(int x, int y, out float unitx, out float unity)
+        {
+            //Convert the pixel coordinate to units
+            Matrix inv = Matrix.Invert(camera.GetViewMatrix());
+            Vector2 pixel = new Vector2(x,y);
+            Vector2 unit = Vector2.Transform(pixel, inv);
+            unitx = unit.X + 0.5f;
+            unity = unit.Y + 0.5f;
+        }
+
+        protected Vector2 ScreenToWorld(Vector2 coordinate)
+        {
+            Vector2 correctedCoords = new Vector2(0,0);
+            return correctedCoords;
+        }
+
+        protected Vector2 WorldToScreen(Vector2 coordinate)
+        {
+            Vector2 correctedCoords = new Vector2(0, 0);
+            return correctedCoords;
         }
 
         #region Helper Methods
@@ -416,10 +453,16 @@ namespace Shard
 
             // TODO: Add your drawing code here
             spriteBatch.Begin(SpriteSortMode.FrontToBack, null, null, null, null, null, camera.GetViewMatrix());
-            foreach (ShardObject so in shardObjects)
+            foreach(ShardObject so in shardObjects)
             {
                 so.Draw(spriteBatch, spritesheet);
             }
+<<<<<<< HEAD
+=======
+            spriteBatch.End();
+            spriteBatch.Begin(SpriteSortMode.FrontToBack, null, null, null, null, null, camera.GetViewMatrix());
+            player.Draw(spriteBatch, spritesheet);
+>>>>>>> More Camera!
             DrawDebugWindow(spriteBatch, Color.Red);
             //spriteBatch.Draw(spritesheet, new Rectangle(32,32,32,32), new Rectangle(0,0,32,32), Color.White);
             spriteBatch.End();

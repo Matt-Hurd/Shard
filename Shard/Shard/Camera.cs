@@ -14,28 +14,37 @@ namespace Shard
 {
     public class Camera
     {
-        private Vector2 _Off;
-        private Vector3 _Pos;
+        private Vector2 offset;
+        private Vector3 position;
 
-        private Matrix _ViewMatrix;
+        private int screenWidth, screenHeight;
 
+<<<<<<< HEAD
         private int winX, winY;
 
         private float _Zoom;
+=======
+        private Matrix viewMatrix;
+>>>>>>> More Camera!
 
-        private bool Zooming;
-        private float ZoomStart, ZoomA, ZoomB;
-        private int ZoomVal;
+        private float zoom;
+
+        private bool isZooming;
+        private float zoomStart, zoomA, zoomB;
+        private int zoomValue;
 
         public Camera(float OffsetX, float OffsetY)
         {
-            _Off = new Vector2(OffsetX, OffsetY);
-            _Zoom = 1;
-            ZoomA = _Zoom;
-            ZoomB = _Zoom;
+            offset = new Vector2(OffsetX, OffsetY);
+            screenWidth = 1280;
+            screenHeight = 720;
+            zoom = 1;
+            zoomA = zoom;
+            zoomB = zoom;
             BuildViewMatrix();
         }
 
+<<<<<<< HEAD
         public void setWindow(int x, int y)
         {
             winX = x;
@@ -43,65 +52,119 @@ namespace Shard
         }
 
         public void AddPos(float X, float Y, float Z)
+=======
+        #region Modifying Fields
+
+        public virtual int ScreenWidth
+>>>>>>> More Camera!
         {
-            _Pos += new Vector3(X, Y, Z);
-            BuildViewMatrix();
+            get
+            {
+                return this.screenWidth;
+            }
+            set
+            {
+                if (value >= 0)
+                    this.screenWidth = value;
+                else
+                    this.screenWidth = 0;
+            }
         }
 
-        public void SetPos(float X, float Y, float Z)
+        public virtual int ScreenHeight
         {
+<<<<<<< HEAD
             _Pos = new Vector3(X + _Off.X, Y + _Off.Y, Z);
+=======
+            get
+            {
+                return this.screenHeight;
+            }
+            set
+            {
+                if (value >= 0)
+                    this.screenHeight = value;
+                else
+                    this.screenHeight = 0;
+            }
+        }
+
+        #endregion
+
+        public void AddPosition(float X, float Y, float Z)
+        {
+            position += new Vector3(X, Y, Z);
+>>>>>>> More Camera!
             BuildViewMatrix();
         }
 
-        public void SetZoom(float Zoom)
+        public void SetPosition(float X, float Y, float Z)
         {
-            _Zoom = Zoom;
+            position = new Vector3(X, Y, Z);
             BuildViewMatrix();
+        }
+
+        public virtual Vector3 Position
+        {
+            get
+            {
+                return position;
+            }
+            set
+            {
+                if (value != null)
+                {
+                    position = value;
+                    BuildViewMatrix();
+                }
+            }
+        }
+
+        public virtual float Zoom
+        {
+            get
+            {
+                return zoom;
+            }
+            set
+            {
+                zoom = value;
+                BuildViewMatrix();
+            }
         }
 
         public Matrix GetViewMatrix()
         {
-            return _ViewMatrix;
-        }
-
-        public float GetZoom()
-        {
-            return _Zoom;
-        }
-
-        public Vector3 GetPos()
-        {
-            return _Pos;
+            return viewMatrix;
         }
 
         public void PreformZoom(float Delta)
         {
-            Zooming = true;
-            ZoomStart = (float)DateTime.Now.TimeOfDay.TotalSeconds;
-            ZoomA = _Zoom;
-            ZoomVal += (int)Delta;
-            ZoomVal = (int)MathHelper.Clamp(ZoomVal, 5, 10);
-            ZoomB = (float)Math.Pow(2, ZoomVal);
+            isZooming = true;
+            zoomStart = (float)DateTime.Now.TimeOfDay.TotalSeconds;
+            zoomA = zoom;
+            zoomValue += (int)Delta;
+            zoomValue = (int)MathHelper.Clamp(zoomValue, 5, 10);
+            zoomB = (float)Math.Pow(2, zoomValue);
         }
 
         public void Think(float Delta)
         {
-            if (Zooming)
+            if (isZooming)
             {
                 // Calculate progress
-                float t = (((float)DateTime.Now.TimeOfDay.TotalSeconds) - ZoomStart) / 0.25f;
+                float t = (((float)DateTime.Now.TimeOfDay.TotalSeconds) - zoomStart) / 0.25f;
 
                 // Are we done?
                 if (t >= 1.0f)
                 {
-                    Zooming = false;
+                    isZooming = false;
                     t = 1.0f;
                 }
                 else
                 {
                     // Update zoom value
-                    SetZoom(MathHelper.SmoothStep(ZoomA, ZoomB, t));
+                    Zoom = (MathHelper.SmoothStep(zoomA, zoomB, t));
                 }
             }
         }
@@ -112,15 +175,20 @@ namespace Shard
             Matrix tmp = Matrix.Identity;
 
             // Center camera about camera position
+<<<<<<< HEAD
             float uX = winX / _Zoom;
             float uY = winY / _Zoom;
+=======
+            float uX = screenWidth / zoom;
+            float uY = screenHeight / zoom;
+>>>>>>> More Camera!
 
-            tmp = Matrix.Multiply(Matrix.CreateScale(_Zoom), tmp);
+            tmp = Matrix.Multiply(Matrix.CreateScale(zoom), tmp);
 
-            tmp = Matrix.Multiply(Matrix.CreateTranslation((uX * 0.5f) - _Pos.X, (uY * 0.5f) - _Pos.Y, 0), tmp);
+            tmp = Matrix.Multiply(Matrix.CreateTranslation((uX * 0.5f) - position.X, (uY * 0.5f) - position.Y, 0), tmp);
 
             // Done
-            _ViewMatrix = tmp;
+            viewMatrix = tmp;
         }
     }
 }
