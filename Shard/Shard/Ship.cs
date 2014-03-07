@@ -46,5 +46,21 @@ namespace Shard
                 this.gunLevel = value;
             }
         }
+
+        public Vector2 Center
+        {
+            get
+            {
+                return new Vector2((float)(X + Width / 2 - 2), (float)(Y - 1 + Height / 2));
+            }
+        }
+
+        public Vector2 ShipFront
+        {
+            get
+            {
+                return new Vector2((float)(Center.X + ((Width - 10) / 2 * Math.Cos(Direction))), (float)(Center.Y + ((Height - 10) / 2 * Math.Sin(Direction))));
+            }
+        }
     }
 }

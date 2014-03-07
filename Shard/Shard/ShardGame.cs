@@ -110,7 +110,6 @@ namespace Shard
             player.Width = 32;
             player.Height = 32;
 
-            camera = new Camera(player.Width / 2, player.Height / 2);
 
             base.Initialize();
         }
@@ -339,11 +338,11 @@ namespace Shard
             //Shooting
             if ((currentMouse.LeftButton.Equals(ButtonState.Pressed) && mouseDirectionalControl) || (currentKeyboard.IsKeyDown(Keys.Space) && !mouseDirectionalControl))
             {
-                Projectile p = new Projectile((int)player.X + (int)player.Width / 2, (int)player.Y + (int)player.Height / 2);
+                Projectile p = new Projectile((int)(player.ShipFront.X) + (int)(Math.Sin(-player.Direction)), (int)(player.ShipFront.Y) + (int)(Math.Cos(player.Direction)));
                 p.ImageSource = sourceDirectory.GetSourceRectangle("shipBullet");
                 p.Width = p.ImageSource.Width;
                 p.Height = p.ImageSource.Height;
-                p.Direction = player.Direction; //Math.Atan2(currentMouse.Y - player.Y, currentMouse.X - player.X);
+                p.Direction = player.Direction;
                 p.RotationalVelocity = player.RotationalVelocity;
                 p.Velocity = 8;
                 shardObjects.Add(p);
