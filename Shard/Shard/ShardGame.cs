@@ -35,8 +35,8 @@ namespace Shard
         protected bool debugVisible;
         protected SpriteFont debugFont;
 
-        List<ShardObject> shardObjects; //Probably won't be able to use
-        Ship player;
+        List<ShardObject> shardObjects; //Probably won't be able to use as a ShardObject List
+        Ship player; 
 
         protected Camera camera;
 
@@ -249,6 +249,23 @@ namespace Shard
                 {
                     player.HorizontalVelocity -= Math.Cos(player.Direction) * velocityIncrement;
                     player.VerticalVelocity -= Math.Sin(player.Direction) * velocityIncrement;
+                }
+
+                //Strafing Movement, only works when Mouse Directional Control is enabled
+                if (mouseDirectionalControl)
+                {
+                    double directionOfStrafe = player.Direction;
+                    if ((currentKeyboard.IsKeyDown(Keys.Left) && !currentKeyboard.IsKeyDown(Keys.Right)) || (currentKeyboard.IsKeyDown(Keys.A) && !currentKeyboard.IsKeyDown(Keys.D)))
+                        directionOfStrafe = player.Direction - MathHelper.PiOver2;
+                    else if ((currentKeyboard.IsKeyDown(Keys.Right) && !currentKeyboard.IsKeyDown(Keys.Left)) || (currentKeyboard.IsKeyDown(Keys.D) && !currentKeyboard.IsKeyDown(Keys.A)))
+                        directionOfStrafe = player.Direction + MathHelper.PiOver2;
+
+                    if (directionOfStrafe != player.Direction)
+                    {
+                        player.HorizontalVelocity += Math.Cos(directionOfStrafe) * velocityIncrement;
+                        player.VerticalVelocity += Math.Sin(directionOfStrafe) * velocityIncrement;
+                    }
+                    
                 }
             }
 
