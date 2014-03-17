@@ -42,6 +42,7 @@ namespace Shard
             this.Ore = 0;
             this.Oxygen = 0;
             this.Water = 0;
+            SetValid(true);
         }
 
         #region Resource Amount Mutation
@@ -145,6 +146,25 @@ namespace Shard
             return new Rectangle((int)X, (int)Y, (int)Width, (int)Height);
         }
 
+        public override void Update(List<GameObject> gameObjects, GameTime gameTime)
+        {
+            List<ShardObject> validShardObjects = new List<ShardObject>();
+            foreach (GameObject gameObject in gameObjects)
+            {
+                if (gameObject is ShardObject)
+                    validShardObjects.Add((ShardObject)gameObject);
+            }
+            Update(validShardObjects, gameTime);
+        }
+
+        public virtual void Update(List<ShardObject> shardObjects, GameTime gameTime)
+        {
+            Move();
+            Direction += RotationalVelocity;
+            if (Health <= 0)
+                SetValid(false);
+        }
+
         public override bool Intersects(GameObject gameObject)
         {
             return GetBounds().Intersects(gameObject.GetBounds());
@@ -162,10 +182,10 @@ namespace Shard
         //}
 
         //Potential to be overriden not necessary for many objects
-        public void Destroy(List<GameObject> shardObjects)
+        public void Destroy(List<ShardObject> shardObjects)
         {
-            //Add resource drops to gameObjects based on resource amounts
-            //Remove self from List of gameObjects
+            //Add resource drops to shardObjects based on resource amounts
+            SetValid(false);
         }
     }
 }

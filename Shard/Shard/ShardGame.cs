@@ -103,8 +103,6 @@ namespace Shard
             shardObjects = new List<ShardObject>();
 
             player = new Ship(0, 0);
-            player.Width = 32;
-            player.Height = 32;
 
             camera = new Camera(player.Width / 2, player.Height / 2);
             camera.ScreenWidth = GraphicsDevice.Viewport.Width;
@@ -132,6 +130,8 @@ namespace Shard
             sourceDirectory = new GameImageSourceDirectory();
             sourceDirectory.LoadSourcesFromFile(@"Content/spritesheet_shard_i1.txt");
             player.ImageSource = sourceDirectory.GetSourceRectangle("playerShip1_colored");
+            player.Width = player.ImageSource.Width;
+            player.Height = player.ImageSource.Height;
 
             //Add a bunch of debris for testing purposes
             int numDebris = 30;
@@ -139,6 +139,7 @@ namespace Shard
             for (int i = 0; i < numDebris; i++)
             {
                 Debris debris = new Debris(random.Next(GraphicsDevice.Viewport.Width), random.Next(GraphicsDevice.Viewport.Height));
+                debris.Health = 100;
                 debris.Direction = random.NextDouble() * Math.PI * 2;
                 debris.ImageSource = sourceDirectory.GetSourceRectangle("asteroid_medium1_shaded");
                 debris.Width = debris.ImageSource.Width;
@@ -378,13 +379,21 @@ namespace Shard
 
             player.Update(new List<GameObject>(), gameTime);
 
+            //Update all ShardObjects
             foreach (ShardObject so in shardObjects)
             {
-                so.Update(new List<GameObject>(),gameTime);
+                so.Update(shardObjects , gameTime);
             }
 
-            if (player.X > GraphicsDevice.Viewport.Width)
-                player.X = 0;
+            //Remove ShardObjects declared invalid after the last update cycle
+            for (int i = 0; i < shardObjects.Count; i++)
+            {
+                if (!shardObjects[i].IsValid())
+                    shardObjects.RemoveAt(i);
+            }
+
+                if (player.X > GraphicsDevice.Viewport.Width)
+                    player.X = 0;
             if (player.X + player.Width < 0)
                 player.X = GraphicsDevice.Viewport.Width;
             if (player.Y > GraphicsDevice.Viewport.Height)

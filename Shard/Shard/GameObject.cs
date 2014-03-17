@@ -15,6 +15,7 @@ namespace Shard
     abstract class GameObject
     {
         private int id;
+        private bool valid;
         private double x;
         private double y;
         private double direction;
@@ -25,6 +26,16 @@ namespace Shard
 
         #region Mutating and Returning Fields
 
+        public bool IsValid()
+        {
+            return valid;
+        }
+
+        public void SetValid(bool isValid)
+        {
+            this.valid = isValid;
+        }
+        
         //public double GetX() { return this.x; }
         //public double GetY() { return this.y; }
         //public double GetDirection() { return this.direction; }
@@ -164,10 +175,16 @@ namespace Shard
         }
 
         //Should be Overriden 
-        public void Update(List<GameObject> gameObjects, GameTime gameTime)
+        public virtual void Update(List<GameObject> gameObjects, GameTime gameTime)
         {
             Move();
             Direction += RotationalVelocity;
+        }
+
+        public virtual bool Equals(GameObject gameObject) //Does not consider ID for equality
+        {
+            return this.GetBounds().Equals(gameObject.GetBounds()) && this.Direction == gameObject.Direction && this.HorizontalVelocity == gameObject.HorizontalVelocity &&
+                this.VerticalVelocity == gameObject.VerticalVelocity && this.RotationalVelocity == gameObject.RotationalVelocity && this.Health == gameObject.Health;
         }
 
         public abstract Rectangle GetBounds();

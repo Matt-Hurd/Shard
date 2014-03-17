@@ -1,0 +1,11 @@
+asteroid_large1_shaded = 0 0 64 64
+asteroid_medium1_shaded = 64 0 32 32
+asteroid_medium3_shaded = 64 32 32 32
+icon_fuel = 96 32 16 16
+icon_ore = 96 48 16 16
+icon_oxygen = 112 32 16 16
+icon_water = 112 48 16 16
+playerShip1_colored = 96 0 32 32
+shipBullet = 16 64 6 6
+shipMissile = 0 64 16 16
+smallAsteroid1_shaded = 0 80 16 16
