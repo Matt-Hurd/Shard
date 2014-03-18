@@ -34,5 +34,11 @@ namespace Shard
             this.Oxygen = amountOxygen;
             this.Water = amountWater;
         }
+
+        public override void Destroy(List<ShardObject> shardObjects, GameImageSourceDirectory sourceDirectory)
+        {
+            //base.Destroy(shardObjects, sourceDirectory); Don't do this!
+            SetValid(false);
+        }
     }
 }

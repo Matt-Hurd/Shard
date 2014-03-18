@@ -15,6 +15,8 @@ namespace Shard
     class Projectile : ShardObject
     {
         private int damage; //The Damage the bullet will attempt to deal on collision with a damagable object
+        private int currentLifetime;
+        private int maxLifetime;
 
         public Projectile() : this(0,0)
         { }
@@ -22,7 +24,8 @@ namespace Shard
         public Projectile(int xPosition, int yPosition) : base(xPosition, yPosition)
         {
             this.damage = 1;
-            Health = 200; //Projectiles use Health as a life timer, when it reaches 0 they are marked invalid
+            currentLifetime = 0; //Projectiles use a life timer, when it reaches maxLifetime they are marked invalid
+            maxLifetime = 125; 
         }
 
         public virtual int Damage
@@ -40,18 +43,23 @@ namespace Shard
         public override void Update(List<ShardObject> shardObjects, GameTime gameTime)
         {
             base.Update(shardObjects, gameTime);
-            foreach (ShardObject shardObject in shardObjects)
+            if (currentLifetime >= maxLifetime)
+                SetValid(false);
+            if (currentLifetime > 2)
             {
-                if (shardObject is Debris)
+                foreach (ShardObject shardObject in shardObjects)
                 {
-                    if (GetBounds().Intersects(shardObject.GetBounds()))
+                    if (!(shardObject is Projectile) && !(shardObject is Resource))
                     {
-                        shardObject.Health -= Damage;
-                        this.Destroy(shardObjects);
+                        if (GetBounds().Intersects(shardObject.GetBounds()))
+                        {
+                            shardObject.Health -= Damage;
+                            this.SetValid(false);
+                        }
                     }
                 }
             }
-            Health -= 1;
+            currentLifetime++;
         }
 
     }

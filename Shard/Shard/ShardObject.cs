@@ -182,9 +182,43 @@ namespace Shard
         //}
 
         //Potential to be overriden not necessary for many objects
-        public void Destroy(List<ShardObject> shardObjects)
+        public virtual void Destroy(List<ShardObject> shardObjects, GameImageSourceDirectory sourceDirectory)
         {
             //Add resource drops to shardObjects based on resource amounts
+            Random randomPositionVariance = new Random();
+            if (energyAmount > 0)
+            {
+                Resource energy = new Resource((int)X + (int)(randomPositionVariance.NextDouble() * Width), (int)Y + (int)(randomPositionVariance.NextDouble() * Height), energyAmount, 0, 0, 0);
+                energy.ImageSource = sourceDirectory.GetSourceRectangle("icon_fuel");
+                energy.Width = energy.ImageSource.Width;
+                energy.Height = energy.ImageSource.Height;
+                shardObjects.Add(energy);
+            }
+            if (oreAmount > 0)
+            {
+                Resource ore = new Resource((int)X + (int)(randomPositionVariance.NextDouble() * Width), (int)Y + (int)(randomPositionVariance.NextDouble() * Height), 0, oreAmount, 0, 0);
+                ore.ImageSource = sourceDirectory.GetSourceRectangle("icon_ore");
+                ore.Width = ore.ImageSource.Width;
+                ore.Height = ore.ImageSource.Height;
+                shardObjects.Add(ore);
+            }
+            if (oxygenAmount > 0)
+            {
+                Resource oxygen = new Resource((int)X + (int)(randomPositionVariance.NextDouble() * Width), (int)Y + (int)(randomPositionVariance.NextDouble() * Height), 0, 0, oxygenAmount, 0);
+                oxygen.ImageSource = sourceDirectory.GetSourceRectangle("icon_oxygen");
+                oxygen.Width = oxygen.ImageSource.Width;
+                oxygen.Height = oxygen.ImageSource.Height;
+                shardObjects.Add(oxygen);
+            }
+            if (waterAmount > 0)
+            {
+                Resource water = new Resource((int)X + (int)(randomPositionVariance.NextDouble() * Width), (int)Y + (int)(randomPositionVariance.NextDouble() * Height), 0, 0, 0, waterAmount);
+                water.ImageSource = sourceDirectory.GetSourceRectangle("icon_water");
+                water.Width = water.ImageSource.Width;
+                water.Height = water.ImageSource.Height;
+                shardObjects.Add(water);
+            }
+            
             SetValid(false);
         }
     }

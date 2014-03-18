@@ -51,7 +51,7 @@ namespace Shard
         {
             get
             {
-                return new Vector2((float)(X + Width / 2 - 2), (float)(Y - 1 + Height / 2));
+                return new Vector2((float)(X + Width / 2), (float)(Y + Height / 2));
             }
         }
 
@@ -60,6 +60,25 @@ namespace Shard
             get
             {
                 return new Vector2((float)(Center.X + ((Width - 10) / 2 * Math.Cos(Direction))), (float)(Center.Y + ((Height - 10) / 2 * Math.Sin(Direction))));
+            }
+        }
+
+        public override void Update(List<ShardObject> shardObjects, GameTime gameTime)
+        {
+            base.Update(shardObjects, gameTime);
+            foreach (ShardObject shardObject in shardObjects)
+            {
+                if (shardObject is Resource)
+                {
+                    if (GetBounds().Intersects(shardObject.GetBounds()))
+                    {
+                        this.Energy += shardObject.Energy;
+                        this.Ore += shardObject.Ore;
+                        this.Oxygen += shardObject.Oxygen;
+                        this.Water += shardObject.Water;
+                        shardObject.SetValid(false);
+                    }
+                }
             }
         }
     }

@@ -126,12 +126,14 @@ namespace Shard
             debugFont = Content.Load<SpriteFont>("debugWindowFont");
 
             //Spritesheet Loading
-            spritesheet = Content.Load<Texture2D>("spritesheet_shard_i1");
+            spritesheet = Content.Load<Texture2D>("spritesheet_shard_i2");
             sourceDirectory = new GameImageSourceDirectory();
-            sourceDirectory.LoadSourcesFromFile(@"Content/spritesheet_shard_i1.txt");
+            sourceDirectory.LoadSourcesFromFile(@"Content/spritesheet_shard_i2.txt");
             player.ImageSource = sourceDirectory.GetSourceRectangle("playerShip1_colored");
             player.Width = player.ImageSource.Width;
             player.Height = player.ImageSource.Height;
+            player.Health = 100;
+            shardObjects.Add(player);
 
             //Add a bunch of debris for testing purposes
             int numDebris = 30;
@@ -140,6 +142,10 @@ namespace Shard
             {
                 Debris debris = new Debris(random.Next(GraphicsDevice.Viewport.Width), random.Next(GraphicsDevice.Viewport.Height));
                 debris.Health = 100;
+                debris.Energy = 10;
+                debris.Ore = 10;
+                debris.Oxygen = 10;
+                debris.Water = 10;
                 debris.Direction = random.NextDouble() * Math.PI * 2;
                 debris.ImageSource = sourceDirectory.GetSourceRectangle("asteroid_medium1_shaded");
                 debris.Width = debris.ImageSource.Width;
@@ -356,7 +362,7 @@ namespace Shard
             //Shooting
             if ((currentMouse.LeftButton.Equals(ButtonState.Pressed) && mouseDirectionalControl) || (currentKeyboard.IsKeyDown(Keys.Space) && !mouseDirectionalControl))
             {
-                Projectile p = new Projectile((int)(player.ShipFront.X) + (int)(Math.Sin(-player.Direction)), (int)(player.ShipFront.Y) + (int)(Math.Cos(player.Direction)));
+                Projectile p = new Projectile((int)(player.ShipFront.X), (int)(player.ShipFront.Y));
                 p.ImageSource = sourceDirectory.GetSourceRectangle("shipBullet");
                 p.Width = p.ImageSource.Width;
                 p.Height = p.ImageSource.Height;
@@ -370,14 +376,14 @@ namespace Shard
             {
                 camera.Zoom = 2;
                 camera.PreformZoom(.1f);
-            }
+            }                     
             if (currentMouse.ScrollWheelValue < previousMouse.ScrollWheelValue)
             {
                 camera.Zoom = 1;
                 camera.PreformZoom(.1f);
             }
 
-            player.Update(new List<GameObject>(), gameTime);
+            //player.Update(new List<GameObject>(), gameTime);
 
             //Update all ShardObjects
             foreach (ShardObject so in shardObjects)
@@ -389,7 +395,10 @@ namespace Shard
             for (int i = 0; i < shardObjects.Count; i++)
             {
                 if (!shardObjects[i].IsValid())
+                {
+                    shardObjects[i].Destroy(shardObjects, sourceDirectory);
                     shardObjects.RemoveAt(i);
+                }
             }
 
                 if (player.X > GraphicsDevice.Viewport.Width)
@@ -463,8 +472,7 @@ namespace Shard
             }
 
             spriteBatch.End();
-            spriteBatch.Begin(SpriteSortMode.FrontToBack, null, null, null, null, null, camera.GetViewMatrix());
-            player.Draw(spriteBatch, spritesheet);
+            spriteBatch.Begin();
             DrawDebugWindow(spriteBatch, Color.Red);
             //spriteBatch.Draw(spritesheet, new Rectangle(32,32,32,32), new Rectangle(0,0,32,32), Color.White);
             spriteBatch.End();
@@ -482,8 +490,9 @@ namespace Shard
             {
                 List<string> debugLines = new List<string>();
                 debugLines.Add("Player Ship Coordinates: (" + player.X + ", " + player.Y + ")");
-                debugLines.Add("xVelocity: " + player.HorizontalVelocity + "   yVelocity: " + player.VerticalVelocity);
-                debugLines.Add("Rotational Velocity: " + player.RotationalVelocity);
+                debugLines.Add("Resources: " + player.Energy + " " + player.Ore + " " + player.Oxygen + " " + player.Water);
+                //debugLines.Add("xVelocity: " + player.HorizontalVelocity + "   yVelocity: " + player.VerticalVelocity);
+                //debugLines.Add("Rotational Velocity: " + player.RotationalVelocity);
                 debugLines.Add("ShardObject Size: " + shardObjects.Count);
 
                 Vector2 offset = new Vector2(4, 2);
