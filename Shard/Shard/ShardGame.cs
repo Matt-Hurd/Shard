@@ -274,6 +274,24 @@ namespace Shard
                     }
                     
                 }
+                for (int i = 0; i < shardObjects.Count; i++)
+                {
+                    if (shardObjects[i] is Debris)
+                    {
+                        if (player.GetBounds().Intersects(shardObjects[i].GetBounds()))
+                        {
+                            //player.HorizontalVelocity *= -1;
+                            //player.VerticalVelocity *= -1;
+
+                            float y=shardObjects[i].GetBounds().Center.Y-player.Center.Y;
+                            float x=shardObjects[i].GetBounds().Center.X-player.Center.X;
+                            double ang = Math.Atan2(y, x);
+
+                            player.HorizontalVelocity = -Math.Cos(ang);
+                            player.VerticalVelocity = -Math.Sin(ang);
+                        }
+                    }
+                }
             }
 
             //Automatic Deceleration of Player Ship Movement and Rotation
@@ -401,14 +419,14 @@ namespace Shard
                 }
             }
 
-                if (player.X > GraphicsDevice.Viewport.Width)
-                    player.X = 0;
-            if (player.X + player.Width < 0)
-                player.X = GraphicsDevice.Viewport.Width;
-            if (player.Y > GraphicsDevice.Viewport.Height)
-                player.Y = 0;
-            if (player.Y + player.Height < 0)
-                player.Y = GraphicsDevice.Viewport.Height;
+            //    if (player.X > GraphicsDevice.Viewport.Width)
+            //        player.X = 0;
+            //if (player.X + player.Width < 0)
+            //    player.X = GraphicsDevice.Viewport.Width;
+            //if (player.Y > GraphicsDevice.Viewport.Height)
+            //    player.Y = 0;
+            //if (player.Y + player.Height < 0)
+            //    player.Y = GraphicsDevice.Viewport.Height;
 
             camera.SetPosition((float)player.X, (float)player.Y, 0);
 
