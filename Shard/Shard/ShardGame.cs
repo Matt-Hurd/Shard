@@ -268,6 +268,13 @@ namespace Shard
                     }
                     
                 }
+
+                foreach (Debris d in shardObjects)
+                    if (player.GetBounds().Intersects(d.GetBounds()))
+                    {
+                        player.HorizontalVelocity *= -1;
+                        player.VerticalVelocity *= -1;
+                    }
             }
 
             //Automatic Deceleration of Player Ship Movement and Rotation
@@ -392,14 +399,14 @@ namespace Shard
                     shardObjects.RemoveAt(i);
             }
 
-                if (player.X > GraphicsDevice.Viewport.Width)
-                    player.X = 0;
-            if (player.X + player.Width < 0)
-                player.X = GraphicsDevice.Viewport.Width;
-            if (player.Y > GraphicsDevice.Viewport.Height)
-                player.Y = 0;
-            if (player.Y + player.Height < 0)
-                player.Y = GraphicsDevice.Viewport.Height;
+            //    if (player.X > GraphicsDevice.Viewport.Width)
+            //        player.X = 0;
+            //if (player.X + player.Width < 0)
+            //    player.X = GraphicsDevice.Viewport.Width;
+            //if (player.Y > GraphicsDevice.Viewport.Height)
+            //    player.Y = 0;
+            //if (player.Y + player.Height < 0)
+            //    player.Y = GraphicsDevice.Viewport.Height;
 
             camera.SetPosition((float)player.X, (float)player.Y, 0);
 
