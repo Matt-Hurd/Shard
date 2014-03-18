@@ -70,7 +70,7 @@ namespace Shard
             {
                 if (shardObject is Resource)
                 {
-                    if (GetBounds().Intersects(shardObject.GetBounds()))
+                    if (shardObject.IsValid() && this.GetBounds().Intersects(shardObject.GetBounds()))
                     {
                         this.Energy += shardObject.Energy;
                         this.Ore += shardObject.Ore;
