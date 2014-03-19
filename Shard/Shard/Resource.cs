@@ -35,6 +35,14 @@ namespace Shard
             this.Water = amountWater;
         }
 
+        public override void Draw(SpriteBatch spriteBatch, Texture2D spritesheet)
+        {
+            double temp = Direction;
+            Direction = 0;
+            base.Draw(spriteBatch, spritesheet);
+            Direction = temp;
+        }
+
         public override void Destroy(List<ShardObject> shardObjects, GameImageSourceDirectory sourceDirectory)
         {
             //base.Destroy(shardObjects, sourceDirectory); Don't do this!

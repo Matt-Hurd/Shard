@@ -20,6 +20,7 @@ namespace Shard
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
         Texture2D spritesheet;
+        Texture2D background;
         GameImageSourceDirectory sourceDirectory;
         
         KeyboardState previousKeyboard;
@@ -31,9 +32,11 @@ namespace Shard
         private bool automaticDeceleration;
         private bool mouseDirectionalControl;
 
-        //Visual Graphics
+        //Visual Graphics Options
         protected bool debugVisible;
         protected SpriteFont debugFont;
+
+        protected bool staticBackground;
 
         List<ShardObject> shardObjects; //Probably won't be able to use as a ShardObject List
         Ship player; 
@@ -95,7 +98,10 @@ namespace Shard
             #endregion
 
             //Default Options
+            //Visual
             debugVisible = true;
+            staticBackground = true;
+            //In-Game
             realisticSpaceMovement = false;
             automaticDeceleration = true;
             mouseDirectionalControl = true;
@@ -126,14 +132,21 @@ namespace Shard
             debugFont = Content.Load<SpriteFont>("debugWindowFont");
 
             //Spritesheet Loading
-            spritesheet = Content.Load<Texture2D>("spritesheet_shard_i2");
+            spritesheet = Content.Load<Texture2D>("Spritesheets//spritesheet_shard_i2");
             sourceDirectory = new GameImageSourceDirectory();
-            sourceDirectory.LoadSourcesFromFile(@"Content/spritesheet_shard_i2.txt");
+            sourceDirectory.LoadSourcesFromFile(@"Content/Spritesheets//spritesheet_shard_i2.txt");
+
+            //Background Loading
+            background = Content.Load<Texture2D>("Backgrounds//seamlessNebulaBackground");
+
+            //Player Creation
             player.ImageSource = sourceDirectory.GetSourceRectangle("playerShip1_colored");
             player.Width = player.ImageSource.Width;
             player.Height = player.ImageSource.Height;
             player.Health = 100;
             shardObjects.Add(player);
+
+
 
             //Add a bunch of debris for testing purposes
             int numDebris = 30;
@@ -380,14 +393,15 @@ namespace Shard
             //Shooting
             if ((currentMouse.LeftButton.Equals(ButtonState.Pressed) && mouseDirectionalControl) || (currentKeyboard.IsKeyDown(Keys.Space) && !mouseDirectionalControl))
             {
-                Projectile p = new Projectile((int)(player.ShipFront.X), (int)(player.ShipFront.Y));
-                p.ImageSource = sourceDirectory.GetSourceRectangle("shipBullet");
-                p.Width = p.ImageSource.Width;
-                p.Height = p.ImageSource.Height;
-                p.Direction = player.Direction;
-                p.RotationalVelocity = player.RotationalVelocity;
-                p.Velocity = 8;
-                shardObjects.Add(p);
+                player.Shoot(shardObjects, sourceDirectory);
+                //Projectile p = new Projectile((int)(player.ShipFront.X), (int)(player.ShipFront.Y));
+                //p.ImageSource = sourceDirectory.GetSourceRectangle("shipBullet");
+                //p.Width = p.ImageSource.Width;
+                //p.Height = p.ImageSource.Height;
+                //p.Direction = player.Direction;
+                //p.RotationalVelocity = player.RotationalVelocity;
+                //p.Velocity = 8;
+                //shardObjects.Add(p);
             }
 
             if (currentMouse.ScrollWheelValue > previousMouse.ScrollWheelValue)
@@ -483,17 +497,30 @@ namespace Shard
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
             // TODO: Add your drawing code here
+
+            //Draw the Background
+            if(staticBackground)
+                spriteBatch.Begin();
+            else
+                spriteBatch.Begin(SpriteSortMode.FrontToBack, null, null, null, null, null, camera.GetViewMatrix());
+            spriteBatch.Draw(background, background.Bounds, Color.White);
+            spriteBatch.End();
+
+            //Draw all ShardObjects
             spriteBatch.Begin(SpriteSortMode.FrontToBack, null, null, null, null, null, camera.GetViewMatrix());
             foreach(ShardObject so in shardObjects)
             {
                 so.Draw(spriteBatch, spritesheet);
             }
-
             spriteBatch.End();
+
+            //Draw the Debug Window
             spriteBatch.Begin();
             DrawDebugWindow(spriteBatch, Color.Red);
             //spriteBatch.Draw(spritesheet, new Rectangle(32,32,32,32), new Rectangle(0,0,32,32), Color.White);
             spriteBatch.End();
+
+            //Draw the Player
             spriteBatch.Begin(SpriteSortMode.FrontToBack, null, null, null, null, null, camera.GetViewMatrix());
             player.Draw(spriteBatch, spritesheet);
             spriteBatch.End();

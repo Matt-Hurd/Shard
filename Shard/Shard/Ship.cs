@@ -35,6 +35,8 @@ namespace Shard
             this.gunLevel = 0;
         }
 
+        #region Modifying and Returning Fields
+
         public virtual int GunLevel
         {
             get
@@ -63,6 +65,46 @@ namespace Shard
             }
         }
 
+        #endregion
+
+        public virtual Projectile GetGunBullet(GameImageSourceDirectory sourceDirectory)
+        {
+            Projectile p = new Projectile((int)(this.ShipFront.X), (int)(this.ShipFront.Y));
+            p.Direction = this.Direction;
+            p.RotationalVelocity = this.RotationalVelocity;
+            switch (GunLevel)
+            {
+                case 0:
+                case 1:
+                    p.ImageSource = sourceDirectory.GetSourceRectangle("shipBullet");
+                    p.Direction = SwayDirection(p.Direction, MathHelper.ToRadians(2.0f));
+                    p.Velocity = 8;
+                    p.Damage = 1;
+                    break;
+                default:
+                    p.ImageSource = sourceDirectory.GetSourceRectangle("shipBullet");
+                    p.Direction = SwayDirection(p.Direction, MathHelper.ToRadians(2.0f));
+                    p.Velocity = 8;
+                    p.Damage = 1;
+                    break;
+            }
+            p.Width = p.ImageSource.Width;
+            p.Height = p.ImageSource.Height;
+            return p;
+        }
+
+        protected virtual double SwayDirection(double direction, double maximumSway)
+        {
+            Random random = new Random();
+            double swayAmount = random.NextDouble() * maximumSway * 2;
+            return (direction - maximumSway) + swayAmount;
+        }
+
+        public virtual void Shoot(List<ShardObject> shardObjects, GameImageSourceDirectory sourceDirectory)
+        {
+            shardObjects.Add(GetGunBullet(sourceDirectory));
+        }
+        
         public override void Update(List<ShardObject> shardObjects, GameTime gameTime)
         {
             base.Update(shardObjects, gameTime);

@@ -1,8 +1,5 @@
-Content\playerShip1_colored.xnb
-Content\spritesheet_shard_i1.xnb
 Content\debugWindowFont.xnb
-Content\spritesheet_shard_i2.xnb
-Content\spritesheet_shard_i1.png
-Content\spritesheet_shard_i1.txt
-Content\spritesheet_shard_i2.txt
+Content\Spritesheets\spritesheet_shard_i2.xnb
+Content\Backgrounds\seamlessNebulaBackground.xnb
+Content\Spritesheets\spritesheet_shard_i2.txt
 ShardDatabase.mdf

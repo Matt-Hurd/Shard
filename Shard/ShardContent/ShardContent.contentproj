@@ -42,13 +42,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="playerShip1_colored.png">
-      <Name>playerShip1_colored</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="debugWindowFont.spritefont">
       <Name>debugWindowFont</Name>
       <Importer>FontDescriptionImporter</Importer>
@@ -56,27 +49,22 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="spritesheet_shard_i1.png">
-      <Name>spritesheet_shard_i1</Name>
+    <Compile Include="Spritesheets\spritesheet_shard_i2.png">
+      <Name>spritesheet_shard_i2</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Compile>
-    <None Include="spritesheet_shard_i1.txt">
-      <Name>spritesheet_shard_i1</Name>
+    <None Include="Spritesheets\spritesheet_shard_i2.txt">
+      <Name>spritesheet_shard_i2</Name>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="spritesheet_shard_i2.png">
-      <Name>spritesheet_shard_i2</Name>
+    <Compile Include="Backgrounds\seamlessNebulaBackground.jpg">
+      <Name>seamlessNebulaBackground</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
-    <None Include="spritesheet_shard_i2.txt">
-      <Name>spritesheet_shard_i2</Name>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\$(XnaFrameworkVersion)\Microsoft.Xna.GameStudio.ContentPipeline.targets" />
   <!--  To modify your build process, add your task inside one of the targets below and uncomment it. 
