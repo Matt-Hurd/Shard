@@ -12,6 +12,12 @@ using Microsoft.Xna.Framework.Media;
 
 namespace Shard
 {
+
+    /* Quadtree Code Implementation is taken and modified from an article titled "Quick Tip: Use Quadtrees to Detect Likely Collisions in 2D Space" by Steven Lambert
+     * Published: 3 Sep 2012
+     * URL: http://gamedevelopment.tutsplus.com/tutorials/quick-tip-use-quadtrees-to-detect-likely-collisions-in-2d-space--gamedev-374 
+     */
+
     class Quadtree
     {
 
