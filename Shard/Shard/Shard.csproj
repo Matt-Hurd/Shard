@@ -124,6 +124,7 @@
     <Compile Include="Projectile.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Program.cs" />
+    <Compile Include="Quadtree.cs" />
     <Compile Include="Resource.cs" />
     <Compile Include="Resources.Designer.cs">
       <AutoGen>True</AutoGen>

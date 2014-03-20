@@ -27,6 +27,8 @@ namespace Shard
         MouseState previousMouse;
         GamePadState previousGamePad;
 
+        Quadtree collisionQuadtree;
+
         //Options
         private bool realisticSpaceMovement;
         private bool automaticDeceleration;
@@ -113,6 +115,8 @@ namespace Shard
             camera = new Camera(player.Width / 2, player.Height / 2);
             camera.ScreenWidth = GraphicsDevice.Viewport.Width;
             camera.ScreenHeight = GraphicsDevice.Viewport.Height;
+
+            collisionQuadtree = new Quadtree(0, new Rectangle(0, 0, (int)camera.ScreenWidth, (int)camera.ScreenHeight));
 
 
             base.Initialize();
@@ -417,10 +421,20 @@ namespace Shard
 
             //player.Update(new List<GameObject>(), gameTime);
 
-            //Update all ShardObjects
+            //Throw all ShardObjects into a Quadtree for collision optimization purposes
+            collisionQuadtree.Clear();
             foreach (ShardObject so in shardObjects)
             {
-                so.Update(shardObjects , gameTime);
+                collisionQuadtree.Insert(so);
+            }
+
+            //Update all ShardObjects using potentially colliding objects
+            List<ShardObject> potentialCollisions = new List<ShardObject>();
+            foreach (ShardObject so in shardObjects)
+            {
+                potentialCollisions.Clear();
+                collisionQuadtree.Retrieve(potentialCollisions, so);
+                so.Update(potentialCollisions , gameTime);
             }
 
             //Remove ShardObjects declared invalid after the last update cycle
