@@ -147,18 +147,18 @@ namespace Shard
             player.ImageSource = sourceDirectory.GetSourceRectangle("playerShip1_colored");
             player.Width = player.ImageSource.Width;
             player.Height = player.ImageSource.Height;
-            player.Health = 100;
+            player.Health = 10000;
             shardObjects.Add(player);
 
 
 
             //Add a bunch of debris for testing purposes
-            int numDebris = 30;
+            int numDebris = 1;
             Random random = new Random();
             for (int i = 0; i < numDebris; i++)
             {
                 Debris debris = new Debris(random.Next(GraphicsDevice.Viewport.Width), random.Next(GraphicsDevice.Viewport.Height));
-                debris.Health = 100;
+                debris.Health = 100000;
                 debris.Energy = 10;
                 debris.Ore = 10;
                 debris.Oxygen = 10;
@@ -169,6 +169,14 @@ namespace Shard
                 debris.Height = debris.ImageSource.Height;
                 shardObjects.Add(debris);
             }
+
+            //Add evil ships
+            EnemyShip evil = new EnemyShip(500,500);
+            evil.Health = 500;
+            evil.ImageSource = sourceDirectory.GetSourceRectangle("playerShip1_colored");
+            evil.Width = evil.ImageSource.Width;
+            evil.Height = evil.ImageSource.Height;
+            shardObjects.Add(evil);
 
             //player.ImageSource = new Rectangle(64, 32, 32, 32);
         }
@@ -408,6 +416,25 @@ namespace Shard
                 //shardObjects.Add(p);
             }
 
+            //Vacuum Button
+            if (currentKeyboard.IsKeyDown(Keys.V))
+            {
+                int vacuumWidth = (int)player.Width * 5;
+                int vacuumHeight = (int)player.Height * 5;
+                Rectangle vacuumBounds = new Rectangle((int)player.Center.X - vacuumWidth / 2, (int)player.Center.Y - vacuumHeight / 2, vacuumWidth, vacuumHeight);
+                foreach (ShardObject so in shardObjects)
+                {
+                    if (so is Resource)
+                    {
+                        if (vacuumBounds.Intersects(so.GetBounds()))
+                        {
+                            so.PointTowards(player.Center);
+                            so.Velocity = 4;
+                        }
+                    }
+                }
+            }
+
             if (currentMouse.ScrollWheelValue > previousMouse.ScrollWheelValue)
             {
                 camera.Zoom = 2;
@@ -425,16 +452,23 @@ namespace Shard
             collisionQuadtree.Clear();
             foreach (ShardObject so in shardObjects)
             {
-                collisionQuadtree.Insert(so);
+                if(camera.ScreenContains(so.GetBounds()))
+                    collisionQuadtree.Insert(so);
             }
 
             //Update all ShardObjects using potentially colliding objects
             List<ShardObject> potentialCollisions = new List<ShardObject>();
-            foreach (ShardObject so in shardObjects)
+            for (int i = 0; i < shardObjects.Count; i++ )
             {
+                ShardObject so = shardObjects[i];
                 potentialCollisions.Clear();
                 collisionQuadtree.Retrieve(potentialCollisions, so);
-                so.Update(potentialCollisions , gameTime);
+                if (so is EnemyShip)
+                {
+                    ((EnemyShip)so).ProcessPlayer(player);
+                    ((EnemyShip)so).Shoot(shardObjects, sourceDirectory);
+                }
+                so.Update(potentialCollisions, gameTime);
             }
 
             //Remove ShardObjects declared invalid after the last update cycle

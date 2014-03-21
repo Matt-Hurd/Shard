@@ -49,14 +49,6 @@ namespace Shard
             }
         }
 
-        public Vector2 Center
-        {
-            get
-            {
-                return new Vector2((float)(X + Width / 2), (float)(Y + Height / 2));
-            }
-        }
-
         public Vector2 ShipFront
         {
             get

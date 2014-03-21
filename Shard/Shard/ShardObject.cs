@@ -115,6 +115,14 @@ namespace Shard
             }
         }
 
+        public Vector2 Center
+        {
+            get
+            {
+                return new Vector2((float)(X + Width / 2), (float)(Y + Height / 2));
+            }
+        }
+
         public virtual float Width
         {
             get
@@ -163,6 +171,11 @@ namespace Shard
             Direction += RotationalVelocity;
             if (Health <= 0)
                 SetValid(false);
+        }
+
+        public void PointTowards(Vector2 point)
+        {
+            this.Direction = Math.Atan2(point.Y - this.Center.Y, point.X - this.Center.X);
         }
 
         public override bool Intersects(GameObject gameObject)

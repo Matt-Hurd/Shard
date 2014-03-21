@@ -113,6 +113,8 @@
     <Compile Include="Camera.cs" />
     <Compile Include="DatabaseConnection.cs" />
     <Compile Include="Debris.cs" />
+    <Compile Include="EnemyShip.cs" />
+    <Compile Include="EuclideanMath.cs" />
     <Compile Include="GameImageSourceDirectory.cs" />
     <Compile Include="GameObject.cs" />
     <Compile Include="LoginForm.cs">

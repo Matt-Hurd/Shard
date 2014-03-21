@@ -84,6 +84,29 @@ namespace Shard
             BuildViewMatrix();
         }
 
+        public bool ScreenContains(Rectangle bounds)
+        {
+            return bounds.Intersects(Screen);
+        }
+
+        public virtual Rectangle Screen
+        {
+            get
+            {
+                return new Rectangle((int)(Position.X - ScreenWidth / 2), (int)(Position.Y - ScreenHeight / 2), ScreenWidth, ScreenHeight);
+            }
+            set
+            {
+                if (value != null)
+                {
+                    position.X = value.X;
+                    position.Y = value.Y;
+                    screenWidth = value.Width;
+                    ScreenHeight = value.Height;
+                }
+            }
+        }
+
         public virtual Vector3 Position
         {
             get
