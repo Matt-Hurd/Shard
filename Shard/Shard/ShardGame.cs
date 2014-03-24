@@ -153,12 +153,12 @@ namespace Shard
 
 
             //Add a bunch of debris for testing purposes
-            int numDebris = 1;
+            int numDebris = 30;
             Random random = new Random();
             for (int i = 0; i < numDebris; i++)
             {
                 Debris debris = new Debris(random.Next(GraphicsDevice.Viewport.Width), random.Next(GraphicsDevice.Viewport.Height));
-                debris.Health = 100000;
+                debris.Health = 100;
                 debris.Energy = 10;
                 debris.Ore = 10;
                 debris.Oxygen = 10;
@@ -252,8 +252,8 @@ namespace Shard
 
             #region Player Movement and Deceleration Implementation
 
-            double maxVelocity = 3;
-            double velocityIncrement = .1;
+            double maxVelocity = player.GetMaxSpeed();
+            double velocityIncrement = maxVelocity / 30.0;
 
 
             //Changes must be made directly to horizontal/vertical velocity of ship to simulate movement within space

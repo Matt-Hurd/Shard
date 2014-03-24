@@ -14,12 +14,31 @@ namespace Shard
 {
     class EnemyShip : Ship
     {
-        public EnemyShip(int xPosition, int yPosition) : base(xPosition, yPosition) { }
+        private double activationRange;
+
+        public EnemyShip(int xPosition, int yPosition) : base(xPosition, yPosition) 
+        {
+            ActivationRange = 1000.0;
+        }
+
+        public virtual double ActivationRange
+        {
+            get
+            {
+                return activationRange;
+            }
+            set
+            {
+                if (value > 0)
+                    activationRange = value;
+                else
+                    activationRange = 0;
+            }
+        }
 
         public virtual void ProcessPlayer(Ship player)
         {
-            double range = 1000.0;
-            if (EuclideanMath.DistanceBetween(player.Center, this.Center) < range) //Only acts against player if within range
+            if (EuclideanMath.DistanceBetween(player.Center, this.Center) < ActivationRange) //Only acts against player if within range
             {
                 PointTowards(player.Center);
             }
@@ -27,7 +46,7 @@ namespace Shard
 
         public override void Update(List<ShardObject> shardObjects, GameTime gameTime)
         {
-            Velocity = .5;
+            Velocity = GetMaxSpeed();
             base.Update(shardObjects, gameTime);
         }
     }

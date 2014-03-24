@@ -14,11 +14,13 @@ namespace Shard
 {
     class Ship : ShardObject
     {
-        //int speedLevel;
+        protected int speedLevel;
         //int armorLevel;
-        int gunLevel;
+        protected int gunLevel;
         //int missileLevel;
         //int laserLevel;
+
+        protected int reloadTime;
 
         public Ship(int xPosition, int yPosition)
         {
@@ -33,6 +35,7 @@ namespace Shard
             this.Oxygen = 0;
             this.Water = 0;
             this.gunLevel = 0;
+            this.reloadTime = 0;
         }
 
         #region Modifying and Returning Fields
@@ -45,7 +48,25 @@ namespace Shard
             }
             set
             {
-                this.gunLevel = value;
+                if (value > 0)
+                    this.gunLevel = value;
+                else
+                    value = 0;
+            }
+        }
+
+        public virtual int SpeedLevel
+        {
+            get
+            {
+                return speedLevel;
+            }
+            set
+            {
+                if (value > 0)
+                    this.speedLevel = value;
+                else
+                    value = 0;
             }
         }
 
@@ -53,11 +74,13 @@ namespace Shard
         {
             get
             {
-                return new Vector2((float)(Center.X + ((Width - 10) / 2 * Math.Cos(Direction))), (float)(Center.Y + ((Height - 10) / 2 * Math.Sin(Direction))));
+                return new Vector2((float)(Center.X + (Width / 2 * Math.Cos(Direction))), (float)(Center.Y + (Height / 2 * Math.Sin(Direction))));
             }
         }
 
         #endregion
+
+        #region Shooting and Bullets
 
         public virtual Projectile GetGunBullet(GameImageSourceDirectory sourceDirectory)
         {
@@ -82,7 +105,21 @@ namespace Shard
             }
             p.Width = p.ImageSource.Width;
             p.Height = p.ImageSource.Height;
+            p.X -= p.Width/2;
+            p.Y -= p.Height/2;
             return p;
+        }
+
+        public virtual int GetReloadTime()
+        {
+            switch (GunLevel)
+            {
+                case 0:
+                case 1:
+                    return 30;
+                default:
+                    return 0;
+            }
         }
 
         protected virtual double SwayDirection(double direction, double maximumSway)
@@ -94,12 +131,31 @@ namespace Shard
 
         public virtual void Shoot(List<ShardObject> shardObjects, GameImageSourceDirectory sourceDirectory)
         {
-            shardObjects.Add(GetGunBullet(sourceDirectory));
+            if (reloadTime <= 0)
+            {
+                shardObjects.Add(GetGunBullet(sourceDirectory));
+                reloadTime = this.GetReloadTime();
+            }
         }
-        
+
+        #endregion
+
+        public virtual double GetMaxSpeed()
+        {
+            switch (SpeedLevel)
+            {
+                case 0:
+                case 1:
+                    return 3.0;
+                default:
+                    return 3.0;
+            }
+        }
+
         public override void Update(List<ShardObject> shardObjects, GameTime gameTime)
         {
             base.Update(shardObjects, gameTime);
+            reloadTime -= 1;
             foreach (ShardObject shardObject in shardObjects)
             {
                 if (shardObject is Resource)

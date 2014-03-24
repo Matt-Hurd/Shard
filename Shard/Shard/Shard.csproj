@@ -115,6 +115,7 @@
     <Compile Include="Debris.cs" />
     <Compile Include="EnemyShip.cs" />
     <Compile Include="EuclideanMath.cs" />
+    <Compile Include="Follower.cs" />
     <Compile Include="GameImageSourceDirectory.cs" />
     <Compile Include="GameObject.cs" />
     <Compile Include="LoginForm.cs">
