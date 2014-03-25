@@ -158,7 +158,7 @@ namespace Shard
             for (int i = 0; i < numDebris; i++)
             {
                 Debris debris = new Debris(random.Next(GraphicsDevice.Viewport.Width), random.Next(GraphicsDevice.Viewport.Height));
-                debris.Health = 100;
+                debris.Health = 5;
                 debris.Energy = 10;
                 debris.Ore = 10;
                 debris.Oxygen = 10;
@@ -171,8 +171,8 @@ namespace Shard
             }
 
             //Add evil ships
-            EnemyShip evil = new EnemyShip(500,500);
-            evil.Health = 500;
+            EnemyShip evil = new Follower(500,500);
+            evil.Health = 100;
             evil.ImageSource = sourceDirectory.GetSourceRectangle("playerShip1_colored");
             evil.Width = evil.ImageSource.Width;
             evil.Height = evil.ImageSource.Height;

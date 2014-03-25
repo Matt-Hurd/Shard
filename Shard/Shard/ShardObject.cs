@@ -22,6 +22,8 @@ namespace Shard
         private int oxygenAmount;
         private int waterAmount;
 
+        private bool isSolid;
+
         public ShardObject() : this(0,0)
         {
             
@@ -42,6 +44,7 @@ namespace Shard
             this.Ore = 0;
             this.Oxygen = 0;
             this.Water = 0;
+            this.isSolid = true;
             SetValid(true);
         }
 
@@ -149,6 +152,18 @@ namespace Shard
 
 #endregion
 
+        public virtual bool Solid
+        {
+            get
+            {
+                return isSolid;
+            }
+            set
+            {
+                isSolid = value;
+            }
+        }
+
         public override Rectangle GetBounds()
         {
             return new Rectangle((int)X, (int)Y, (int)Width, (int)Height);
@@ -207,6 +222,7 @@ namespace Shard
                 energy.ImageSource = sourceDirectory.GetSourceRectangle("icon_fuel");
                 energy.Width = energy.ImageSource.Width;
                 energy.Height = energy.ImageSource.Height;
+                energy.Solid = false;
                 shardObjects.Add(energy);
             }
             if (oreAmount > 0)
@@ -217,6 +233,7 @@ namespace Shard
                 ore.ImageSource = sourceDirectory.GetSourceRectangle("icon_ore");
                 ore.Width = ore.ImageSource.Width;
                 ore.Height = ore.ImageSource.Height;
+                ore.Solid = false;
                 shardObjects.Add(ore);
             }
             if (oxygenAmount > 0)
@@ -227,6 +244,7 @@ namespace Shard
                 oxygen.ImageSource = sourceDirectory.GetSourceRectangle("icon_oxygen");
                 oxygen.Width = oxygen.ImageSource.Width;
                 oxygen.Height = oxygen.ImageSource.Height;
+                oxygen.Solid = false;
                 shardObjects.Add(oxygen);
             }
             if (waterAmount > 0)
@@ -237,6 +255,7 @@ namespace Shard
                 water.ImageSource = sourceDirectory.GetSourceRectangle("icon_water");
                 water.Width = water.ImageSource.Width;
                 water.Height = water.ImageSource.Height;
+                water.Solid = false;
                 shardObjects.Add(water);
             }
             

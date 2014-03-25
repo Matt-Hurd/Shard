@@ -49,7 +49,7 @@ namespace Shard
             {
                 foreach (ShardObject shardObject in shardObjects)
                 {
-                    if (!(shardObject is Projectile) && !(shardObject is Resource))
+                    if (!(shardObject is Projectile) && shardObject.Solid)
                     {
                         if (GetBounds().Intersects(shardObject.GetBounds()))
                         {

@@ -36,12 +36,19 @@ namespace Shard
             }
         }
 
-        public virtual void ProcessPlayer(Ship player)
+        public bool ProcessPlayer(Ship player)
         {
             if (EuclideanMath.DistanceBetween(player.Center, this.Center) < ActivationRange) //Only acts against player if within range
             {
-                PointTowards(player.Center);
+                return HandlePlayerInformation(player);
             }
+            return false;
+        }
+
+        protected virtual bool HandlePlayerInformation(Ship player)
+        {
+            PointTowards(player.Center);
+            return true;
         }
 
         public override void Update(List<ShardObject> shardObjects, GameTime gameTime)

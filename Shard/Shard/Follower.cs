@@ -16,12 +16,9 @@ namespace Shard
     {
         public Follower(int xPosition, int yPosition) : base(xPosition, yPosition) { }
 
-        public override void ProcessPlayer(Ship player)
+        protected override bool HandlePlayerInformation(Ship player)
         {
-            if (EuclideanMath.DistanceBetween(player.Center, this.Center) < ActivationRange) //Only acts against player if within range
-            {
-                PointTowards(player.Center);
-            }
+            return base.HandlePlayerInformation(player);
         }
 
         public override double GetMaxSpeed()

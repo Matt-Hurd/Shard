@@ -133,8 +133,12 @@ namespace Shard
         {
             if (reloadTime <= 0)
             {
-                shardObjects.Add(GetGunBullet(sourceDirectory));
-                reloadTime = this.GetReloadTime();
+                Projectile bullet = GetGunBullet(sourceDirectory);
+                if (bullet != null)
+                {
+                    shardObjects.Add(bullet);
+                    reloadTime = this.GetReloadTime();
+                }
             }
         }
 
