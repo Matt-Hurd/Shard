@@ -305,44 +305,6 @@ namespace Shard
                         player.HorizontalVelocity += Math.Cos(directionOfStrafe) * velocityIncrement;
                         player.VerticalVelocity += Math.Sin(directionOfStrafe) * velocityIncrement;
                     }
-                    
-                }
-                for (int i = 0; i < shardObjects.Count; i++)
-                {
-                    if (shardObjects[i] is Debris)
-                    {
-                        if (player.GetBounds().Intersects(shardObjects[i].GetBounds()))
-                        {
-                            //player.HorizontalVelocity *= -1;
-                            //player.VerticalVelocity *= -1;
-
-                            float y=shardObjects[i].GetBounds().Center.Y-player.Center.Y;
-                            float x=shardObjects[i].GetBounds().Center.X-player.Center.X;
-                            double ang = Math.Atan2(y, x);
-
-                            player.HorizontalVelocity = -Math.Cos(ang);
-                            player.VerticalVelocity = -Math.Sin(ang);
-                            shardObjects[i].HorizontalVelocity = Math.Cos(ang);
-                            shardObjects[i].VerticalVelocity = Math.Sin(ang);
-                        }
-                    }
-                    for (int j = 0; j < shardObjects.Count; j++)
-                    {
-                        if ((shardObjects[j] is Debris) && (shardObjects[i] is Debris))
-                        {
-                            if ((shardObjects[j].GetBounds().Intersects(shardObjects[i].GetBounds())) && (!(shardObjects[j].Equals(shardObjects[i]))))
-                            {
-                                float y2 = shardObjects[i].GetBounds().Center.Y - shardObjects[j].GetBounds().Center.Y;
-                                float x2 = shardObjects[i].GetBounds().Center.X - shardObjects[j].GetBounds().Center.X;
-                                double ang2 = Math.Atan2(y2, x2);
-                                shardObjects[j].HorizontalVelocity = -Math.Cos(ang2);// *player.Velocity;
-                                shardObjects[j].VerticalVelocity = -Math.Sin(ang2);// *player.Velocity;
-
-                                shardObjects[i].HorizontalVelocity = Math.Cos(ang2);
-                                shardObjects[i].VerticalVelocity = Math.Sin(ang2);
-                            }
-                        }
-                    }
                 }
             }
 
