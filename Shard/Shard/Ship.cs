@@ -90,6 +90,7 @@ namespace Shard
             switch (GunLevel)
             {
                 case 0:
+                    return null;
                 case 1:
                     p.ImageSource = sourceDirectory.GetSourceRectangle("shipBullet");
                     p.Direction = SwayDirection(p.Direction, MathHelper.ToRadians(2.0f));
@@ -115,8 +116,9 @@ namespace Shard
             switch (GunLevel)
             {
                 case 0:
+                    return 100;
                 case 1:
-                    return 30;
+                    return 20;
                 default:
                     return 0;
             }

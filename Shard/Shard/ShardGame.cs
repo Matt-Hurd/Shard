@@ -109,11 +109,12 @@ namespace Shard
             //In-Game
             realisticSpaceMovement = false;
             automaticDeceleration = true;
-            mouseDirectionalControl = true;
+            mouseDirectionalControl = false;
 
             shardObjects = new List<ShardObject>();
 
             player = new Ship(0, 0);
+            player.GunLevel = 1;
 
             camera = new Camera(player.Width / 2, player.Height / 2);
             camera.ScreenWidth = GraphicsDevice.Viewport.Width;
@@ -159,7 +160,7 @@ namespace Shard
 
 
             //Add a bunch of debris for testing purposes
-            int numDebris = 30;
+            int numDebris = 1000;
             Random random = new Random();
             for (int i = 0; i < numDebris; i++)
             {
@@ -170,7 +171,7 @@ namespace Shard
                 debris.Oxygen = 10;
                 debris.Water = 10;
                 debris.Direction = random.NextDouble() * Math.PI * 2;
-                debris.ImageSource = sourceDirectory.GetSourceRectangle("asteroid_medium1_shaded");
+                debris.ImageSource = sourceDirectory.GetSourceRectangle("smallAsteroid1_shaded");
                 debris.Width = debris.ImageSource.Width;
                 debris.Height = debris.ImageSource.Height;
                 shardObjects.Add(debris);
@@ -178,7 +179,8 @@ namespace Shard
 
             //Add evil ships
             EnemyShip evil = new Follower(500,500);
-            evil.Health = 100;
+            evil.GunLevel = 0;
+            evil.Health = 10;
             evil.ImageSource = sourceDirectory.GetSourceRectangle("playerShip1_colored");
             evil.Width = evil.ImageSource.Width;
             evil.Height = evil.ImageSource.Height;
@@ -259,7 +261,7 @@ namespace Shard
             #region Player Movement and Deceleration Implementation
 
             double maxVelocity = player.GetMaxSpeed();
-            double velocityIncrement = maxVelocity / 30.0;
+            double velocityIncrement = maxVelocity / 40.0;
 
 
             //Changes must be made directly to horizontal/vertical velocity of ship to simulate movement within space
@@ -428,9 +430,15 @@ namespace Shard
             #endregion
 
             //Shooting
-            if ((currentMouse.LeftButton.Equals(ButtonState.Pressed) && mouseDirectionalControl) || (currentKeyboard.IsKeyDown(Keys.Space) && !mouseDirectionalControl))
+            if ((currentMouse.LeftButton.Equals(ButtonState.Pressed)))
             {
+                double temp = player.Direction;
+                float unitx = 0;
+                float unity = 0;
+                TraceScreenCoord((int)currentMouse.X, (int)currentMouse.Y, out unitx, out unity);
+                player.Direction = (float)Math.Atan2(unity - (player.Y + player.Height / 2), unitx - (player.X + player.Width / 2));
                 player.Shoot(shardObjects, sourceDirectory);
+                player.Direction = temp;
                 //Projectile p = new Projectile((int)(player.ShipFront.X), (int)(player.ShipFront.Y));
                 //p.ImageSource = sourceDirectory.GetSourceRectangle("shipBullet");
                 //p.Width = p.ImageSource.Width;

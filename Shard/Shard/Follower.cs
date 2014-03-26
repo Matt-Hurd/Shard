@@ -14,11 +14,32 @@ namespace Shard
 {
     class Follower : EnemyShip
     {
-        public Follower(int xPosition, int yPosition) : base(xPosition, yPosition) { }
+        /*
+         * Behavior: Follows the player at a distance and attempts to utilize weapons against the player. 
+         */
 
-        protected override bool HandlePlayerInformation(Ship player)
+        private double followingDistance;
+
+        public Follower(int xPosition, int yPosition) : base(xPosition, yPosition) 
         {
-            return base.HandlePlayerInformation(player);
+            followingDistance = 100.0;
+        }
+
+        #region Mutating and Returning Fields
+
+        public virtual double FollowingDistance
+        {
+            get
+            {
+                return followingDistance;
+            }
+            set
+            {
+                if (value > 0)
+                    followingDistance = value;
+                else
+                    followingDistance = 0;
+            }
         }
 
         public override double GetMaxSpeed()
@@ -30,10 +51,38 @@ namespace Shard
             }
         }
 
+        #endregion
+
+        #region Updating State
+
+        protected override bool HandlePlayerInformation(Ship player)
+        {
+            return base.HandlePlayerInformation(player);
+        }
+
+        public override void Shoot(List<ShardObject> shardObjects, GameImageSourceDirectory sourceDirectory)
+        {
+            base.Shoot(shardObjects, sourceDirectory);
+        }
+
         public override void Update(List<ShardObject> shardObjects, GameTime gameTime)
         {
-            Velocity = this.GetMaxSpeed();
+            if (EuclideanMath.DistanceBetween(Player.Center, this.Center) > followingDistance)
+            {
+                double velocityIncrement = GetMaxSpeed() / 40.0;
+                if (Velocity < this.GetMaxSpeed())
+                {
+                    HorizontalVelocity += Math.Cos(this.Direction) * velocityIncrement;
+                    VerticalVelocity += Math.Sin(this.Direction) * velocityIncrement;
+                }
+            }
+            else
+            {
+                Velocity = 0;
+            }
             base.Update(shardObjects, gameTime);
         }
+
+        #endregion
     }
 }
