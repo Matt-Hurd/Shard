@@ -23,5 +23,15 @@ namespace Shard
         {
             return Math.Sqrt(Math.Pow(point2.X - point1.X, 2) + Math.Pow(point2.Y - point1.Y, 2) + Math.Pow(point2.Z - point1.Z, 2));
         }
+
+        public static int GetSign(double value)
+        {
+            if (value < 0)
+                return -1;
+            if (value == 0)
+                return 0;
+            else
+                return 1;
+        }
     }
 }

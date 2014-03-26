@@ -160,7 +160,7 @@ namespace Shard
 
 
             //Add a bunch of debris for testing purposes
-            int numDebris = 1000;
+            int numDebris = 100;
             Random random = new Random();
             for (int i = 0; i < numDebris; i++)
             {
