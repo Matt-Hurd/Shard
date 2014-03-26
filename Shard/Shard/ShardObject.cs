@@ -24,9 +24,10 @@ namespace Shard
 
         private bool isSolid;
 
-        public ShardObject() : this(0,0)
+        public ShardObject()
+            : this(0, 0)
         {
-            
+
         }
 
         public ShardObject(int xPosition, int yPosition)
@@ -88,7 +89,7 @@ namespace Shard
                     oxygenAmount = value;
             }
         }
-        
+
         public virtual int Water
         {
             get
@@ -150,7 +151,7 @@ namespace Shard
             }
         }
 
-#endregion
+        #endregion
 
         public virtual bool Solid
         {
@@ -186,6 +187,23 @@ namespace Shard
             Direction += RotationalVelocity;
             if (Health <= 0)
                 SetValid(false);
+            foreach (ShardObject so in shardObjects)
+            {
+                if (((this is Debris) && (so is Debris)) || (((this is Ship) && (so is Debris)) || ((this is Debris) && (so is Ship))))
+                {
+                    if ((this.GetBounds().Intersects(so.GetBounds())) && (!(this.Equals(so))))
+                    {
+                        float y2 = this.GetBounds().Center.Y - so.GetBounds().Center.Y;
+                        float x2 = this.GetBounds().Center.X - so.GetBounds().Center.X;
+                        double ang2 = Math.Atan2(y2, x2);
+                        so.HorizontalVelocity = -Math.Cos(ang2);// *player.Velocity;
+                        so.VerticalVelocity = -Math.Sin(ang2);// *player.Velocity;
+
+                        this.HorizontalVelocity = Math.Cos(ang2);
+                        this.VerticalVelocity = Math.Sin(ang2);
+                    }
+                }
+            }
         }
 
         public void PointTowards(Vector2 point)
@@ -258,7 +276,7 @@ namespace Shard
                 water.Solid = false;
                 shardObjects.Add(water);
             }
-            
+
             SetValid(false);
         }
     }
