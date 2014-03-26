@@ -53,7 +53,7 @@ namespace Shard
                     {
                         if (GetBounds().Intersects(shardObject.GetBounds()))
                         {
-                            shardObject.Health -= Damage;
+                            shardObject.Health -= Damage; //Make a method run on object to account for armor values?
                             this.SetValid(false);
                         }
                     }
