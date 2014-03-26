@@ -44,6 +44,9 @@ namespace Shard
         Ship player; 
 
         protected Camera camera;
+        protected float zoomZ; 
+        protected int zoomIO;
+        protected bool isZooming;
 
         #region Database Fields
         //DatabaseConnection objConnect;
@@ -115,6 +118,9 @@ namespace Shard
             camera = new Camera(player.Width / 2, player.Height / 2);
             camera.ScreenWidth = GraphicsDevice.Viewport.Width;
             camera.ScreenHeight = GraphicsDevice.Viewport.Height;
+            zoomZ = 1;
+            zoomIO = 2;
+            isZooming = false;
 
             collisionQuadtree = new Quadtree(0, new Rectangle(0, 0, (int)camera.ScreenWidth, (int)camera.ScreenHeight));
 
@@ -454,16 +460,39 @@ namespace Shard
                 }
             }
 
-            if (currentMouse.ScrollWheelValue > previousMouse.ScrollWheelValue)
+            if (currentMouse.ScrollWheelValue > previousMouse.ScrollWheelValue) //Mousewheel UP
             {
-                camera.Zoom = 2;
-                camera.PreformZoom(.1f);
+                isZooming = true;
+                zoomIO = 1; //Sets I/O to zooming IN;
             }                     
-            if (currentMouse.ScrollWheelValue < previousMouse.ScrollWheelValue)
+            if (currentMouse.ScrollWheelValue < previousMouse.ScrollWheelValue) //Mousewheel DOWN
             {
-                camera.Zoom = 1;
-                camera.PreformZoom(.1f);
+                isZooming = true;
+                zoomIO = 0; //Sets I/O to zooming OUT;
             }
+
+            if (isZooming)
+            {
+                if (zoomIO == 1 && !(zoomZ >= 2))
+                {
+                    zoomZ += .1f;
+                    camera.Zoom = zoomZ;
+                }
+                if (zoomIO == 0 && !(zoomZ <= 1))
+                {
+                    zoomZ -= .1f;
+                    camera.Zoom = zoomZ;
+                }
+                if (zoomZ >= 2 && zoomIO == 1)
+                {
+                    isZooming = false;
+                }
+                if (zoomZ <= 1 && zoomIO == 0)
+                {
+                    isZooming = false;
+                }
+            }
+
 
             //player.Update(new List<GameObject>(), gameTime);
 
@@ -512,6 +541,7 @@ namespace Shard
             camera.SetPosition((float)player.X, (float)player.Y, 0);
 
             //Update Previous States
+            
             previousGamePad = currentGamePad;
             previousKeyboard = currentKeyboard;
             previousMouse = currentMouse;
