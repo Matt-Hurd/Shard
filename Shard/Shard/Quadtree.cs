@@ -173,8 +173,11 @@ namespace Shard
                 nodes[index].Retrieve(returnObjects, shardObject);
             }
 
-            foreach(ShardObject so in objects)
-                returnObjects.Add(so);
+            foreach (ShardObject so in objects)
+            {
+                if(!so.Equals(shardObject))
+                    returnObjects.Add(so);
+            }
 
             return returnObjects;
         }

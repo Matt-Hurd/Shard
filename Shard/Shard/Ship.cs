@@ -17,10 +17,11 @@ namespace Shard
         protected int speedLevel;
         //int armorLevel;
         protected int gunLevel;
-        //int missileLevel;
+        protected int missileLevel;
         //int laserLevel;
 
         protected int reloadTime;
+        protected int rearmTime;
 
         public Ship(int xPosition, int yPosition)
         {
@@ -35,7 +36,9 @@ namespace Shard
             this.Oxygen = 0;
             this.Water = 0;
             this.gunLevel = 0;
+            this.missileLevel = 0;
             this.reloadTime = 0;
+            this.rearmTime = 0;
         }
 
         #region Modifying and Returning Fields
@@ -50,6 +53,21 @@ namespace Shard
             {
                 if (value > 0)
                     this.gunLevel = value;
+                else
+                    value = 0;
+            }
+        }
+
+        public virtual int MissileLevel
+        {
+            get
+            {
+                return missileLevel;
+            }
+            set
+            {
+                if (value > 0)
+                    this.missileLevel = value;
                 else
                     value = 0;
             }
@@ -85,6 +103,7 @@ namespace Shard
         public virtual Projectile GetGunBullet(GameImageSourceDirectory sourceDirectory)
         {
             Projectile p = new Projectile((int)(this.ShipFront.X), (int)(this.ShipFront.Y));
+            p.Alignment = this.Alignment;
             p.Direction = this.Direction;
             p.RotationalVelocity = this.RotationalVelocity;
             switch (GunLevel)
@@ -111,9 +130,51 @@ namespace Shard
             return p;
         }
 
+        public virtual Missile GetMissile(GameImageSourceDirectory sourceDirectory)
+        {
+            Missile missile = new Missile((int)(this.ShipFront.X), (int)(this.ShipFront.Y));
+            missile.Alignment = this.Alignment;
+            missile.Direction = this.Direction;
+            missile.RotationalVelocity = 0;
+            switch(MissileLevel)
+            {
+                case 0:
+                    return null;
+                case 1:
+                    missile.ImageSource = sourceDirectory.GetSourceRectangle("shipMissile");
+                    missile.TravelSpeed = 4.0;
+                    missile.Damage = 2;
+                    break;
+                default:
+                    missile.ImageSource = sourceDirectory.GetSourceRectangle("shipMissile");
+                    missile.TravelSpeed = 4.0;
+                    missile.Damage = 2;
+                    break;
+
+            }
+            missile.Width = missile.ImageSource.Width;
+            missile.Height = missile.ImageSource.Height;
+            missile.X -= missile.Width / 2;
+            missile.Y -= missile.Height / 2;
+            return missile;
+        }
+
         public virtual int GetReloadTime()
         {
             switch (GunLevel)
+            {
+                case 0:
+                    return 100;
+                case 1:
+                    return 20;
+                default:
+                    return 0;
+            }
+        }
+
+        public virtual int GetRearmTime()
+        {
+            switch (MissileLevel)
             {
                 case 0:
                     return 100;
@@ -142,6 +203,18 @@ namespace Shard
                     reloadTime = this.GetReloadTime();
                 }
             }
+
+            //Missiles
+            if (rearmTime <= 0)
+            {
+                Missile missile = GetMissile(sourceDirectory);
+                if (missile != null)
+                {
+                    missile.SelectTarget(shardObjects);
+                    shardObjects.Add(missile);
+                    rearmTime = this.GetRearmTime();
+                }
+            }
         }
 
         #endregion
@@ -162,6 +235,7 @@ namespace Shard
         {
             base.Update(shardObjects, gameTime);
             reloadTime -= 1;
+            rearmTime -= 1;
             foreach (ShardObject shardObject in shardObjects)
             {
                 if (shardObject is Resource)

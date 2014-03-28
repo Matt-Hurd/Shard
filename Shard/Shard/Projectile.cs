@@ -18,14 +18,16 @@ namespace Shard
         private int currentLifetime;
         private int maxLifetime;
 
-        public Projectile() : this(0,0)
+        public Projectile()
+            : this(0, 0)
         { }
 
-        public Projectile(int xPosition, int yPosition) : base(xPosition, yPosition)
+        public Projectile(int xPosition, int yPosition)
+            : base(xPosition, yPosition)
         {
             this.damage = 1;
             currentLifetime = 0; //Projectiles use a life timer, when it reaches maxLifetime they are marked invalid
-            maxLifetime = 125; 
+            maxLifetime = 125;
         }
 
         public virtual int Damage
@@ -40,25 +42,32 @@ namespace Shard
             }
         }
 
+        /*
+         * precondition: A ShardObject that collides with this projectile
+         */
+        public virtual void HandleCollision(ShardObject shardObject)
+        {
+            shardObject.ApplyDamage(damage);
+            this.SetValid(false);
+        }
+
         public override void Update(List<ShardObject> shardObjects, GameTime gameTime)
         {
             base.Update(shardObjects, gameTime);
             if (currentLifetime >= maxLifetime)
                 SetValid(false);
-            if (currentLifetime > 2)
+
+            foreach (ShardObject shardObject in shardObjects)
             {
-                foreach (ShardObject shardObject in shardObjects)
+                if (!(shardObject is Projectile) && shardObject.Solid && shardObject.Alignment != this.Alignment)
                 {
-                    if (!(shardObject is Projectile) && shardObject.Solid)
+                    if (GetBounds().Intersects(shardObject.GetBounds()))
                     {
-                        if (GetBounds().Intersects(shardObject.GetBounds()))
-                        {
-                            shardObject.Health -= Damage; //Make a method run on object to account for armor values?
-                            this.SetValid(false);
-                        }
+                        HandleCollision(shardObject);
                     }
                 }
             }
+
             currentLifetime++;
         }
 

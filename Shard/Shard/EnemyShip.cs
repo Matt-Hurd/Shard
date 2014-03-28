@@ -20,6 +20,7 @@ namespace Shard
         public EnemyShip(int xPosition, int yPosition) : base(xPosition, yPosition) 
         {
             ActivationRange = 1000.0;
+            Alignment = Shard.Alignment.EVIL;
             playerReference = null;
         }
 

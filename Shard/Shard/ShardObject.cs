@@ -12,6 +12,11 @@ using Microsoft.Xna.Framework.Media;
 
 namespace Shard
 {
+    public enum Alignment
+    {
+        GOOD, EVIL, NEUTRAL
+    }
+
     abstract class ShardObject : GameObject
     {
         private Rectangle sourceRectangle;
@@ -23,6 +28,7 @@ namespace Shard
         private int waterAmount;
 
         private bool isSolid;
+        private Alignment alignment;
 
         public ShardObject()
             : this(0, 0)
@@ -46,6 +52,7 @@ namespace Shard
             this.Oxygen = 0;
             this.Water = 0;
             this.isSolid = true;
+            this.alignment = Alignment.NEUTRAL;
             SetValid(true);
         }
 
@@ -163,6 +170,27 @@ namespace Shard
             {
                 isSolid = value;
             }
+        }
+
+        public virtual Alignment Alignment
+        {
+            get
+            {
+                return this.alignment;
+            }
+            set
+            {
+                this.alignment = value;
+            }
+        }
+
+
+        /*
+         * Allows for any specifics in the handling of health changes, this should be called instead of changing Health (unless you want the Health to be exactly a desired value)
+         */
+        public virtual void ApplyDamage(int damage)
+        {
+            Health -= damage;
         }
 
         public override Rectangle GetBounds()

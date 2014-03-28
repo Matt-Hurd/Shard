@@ -114,7 +114,9 @@ namespace Shard
             shardObjects = new List<ShardObject>();
 
             player = new Ship(0, 0);
+            player.Alignment = Shard.Alignment.GOOD;
             player.GunLevel = 1;
+            player.MissileLevel = 1;
 
             camera = new Camera(player.Width / 2, player.Height / 2);
             camera.ScreenWidth = GraphicsDevice.Viewport.Width;
@@ -160,11 +162,12 @@ namespace Shard
 
 
             //Add a bunch of debris for testing purposes
-            int numDebris = 100;
+            int numDebris = 10;
             Random random = new Random();
             for (int i = 0; i < numDebris; i++)
             {
                 Debris debris = new Debris(random.Next(GraphicsDevice.Viewport.Width), random.Next(GraphicsDevice.Viewport.Height));
+                debris.Alignment = Shard.Alignment.NEUTRAL;
                 debris.Health = 5;
                 debris.Energy = 10;
                 debris.Ore = 10;
