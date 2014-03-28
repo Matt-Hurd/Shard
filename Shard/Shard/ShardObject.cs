@@ -187,20 +187,35 @@ namespace Shard
             Direction += RotationalVelocity;
             if (Health <= 0)
                 SetValid(false);
-            foreach (ShardObject so in shardObjects)
-            {
-                if (((this is Debris) && (so is Debris)) || (((this is Ship) && (so is Debris)) || ((this is Debris) && (so is Ship))))
-                {
-                    if ((this.GetBounds().Intersects(so.GetBounds())) && (!(this.Equals(so))))
-                    {
-                        float y2 = this.GetBounds().Center.Y - so.GetBounds().Center.Y;
-                        float x2 = this.GetBounds().Center.X - so.GetBounds().Center.X;
-                        double ang2 = Math.Atan2(y2, x2);
-                        so.HorizontalVelocity = -Math.Cos(ang2);// *player.Velocity;
-                        so.VerticalVelocity = -Math.Sin(ang2);// *player.Velocity;
+            checkCollision(shardObjects);
+        }
 
-                        this.HorizontalVelocity = Math.Cos(ang2);
-                        this.VerticalVelocity = Math.Sin(ang2);
+        public void PointTowards(Vector2 point)
+        {
+            this.Direction = Math.Atan2(point.Y - this.Center.Y, point.X - this.Center.X);
+        }
+
+        public void checkCollision(List<ShardObject> x)
+        {
+            bool flag = true;
+            foreach (ShardObject so in x)
+            {
+                if (flag)
+                {
+                    if (((this is Debris) && (so is Debris)) || (((this is Ship) && (so is Debris)) || ((this is Debris) && (so is Ship))))
+                    {
+                        if ((this.GetBounds().Intersects(so.GetBounds())) && (!(this.Equals(so))))
+                        {
+                            float y2 = this.GetBounds().Center.Y - so.GetBounds().Center.Y;
+                            float x2 = this.GetBounds().Center.X - so.GetBounds().Center.X;
+                            double ang2 = Math.Atan2(y2, x2);
+                            so.HorizontalVelocity = -Math.Cos(ang2)/2;// *player.Velocity;
+                            so.VerticalVelocity = -Math.Sin(ang2)/2;// *player.Velocity;
+
+                            this.HorizontalVelocity = (Math.Cos(ang2)) / 2;
+                            this.VerticalVelocity = (Math.Sin(ang2)) / 2;
+                            flag = false;
+                        }
                     }
                 }
                 if (this is Debris)
@@ -211,11 +226,6 @@ namespace Shard
                         this.VerticalVelocity *= -1;
                 }
             }
-        }
-
-        public void PointTowards(Vector2 point)
-        {
-            this.Direction = Math.Atan2(point.Y - this.Center.Y, point.X - this.Center.X);
         }
 
         public override bool Intersects(GameObject gameObject)
