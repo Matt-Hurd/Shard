@@ -176,7 +176,7 @@ namespace Shard
             soundPlayer.LoadSounds();
 
             //Add a bunch of debris for testing purposes
-            int numDebris = 10;
+            int numDebris = 100;
             Random random = new Random();
             for (int i = 0; i < numDebris; i++)
             {
