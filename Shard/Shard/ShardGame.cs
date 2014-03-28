@@ -22,6 +22,8 @@ namespace Shard
         Texture2D spritesheet;
         Texture2D background;
         GameImageSourceDirectory sourceDirectory;
+
+        Song songy;
         
         KeyboardState previousKeyboard;
         MouseState previousMouse;
@@ -41,7 +43,9 @@ namespace Shard
         protected bool staticBackground;
 
         List<ShardObject> shardObjects; //Probably won't be able to use as a ShardObject List
-        Ship player; 
+        Ship player;
+
+        SoundPlayer soundPlayer;
 
         protected Camera camera;
         protected float zoomZ; 
@@ -82,6 +86,12 @@ namespace Shard
             previousKeyboard = Keyboard.GetState();
             previousMouse = Mouse.GetState();
 
+
+            soundPlayer = new SoundPlayer();
+
+            songy = Content.Load<Song>("Sounds/Musicmusic");
+            MediaPlayer.Play(songy);
+
             #region Database Connection
 
             //try
@@ -110,6 +120,8 @@ namespace Shard
             realisticSpaceMovement = false;
             automaticDeceleration = true;
             mouseDirectionalControl = false;
+
+            
 
             shardObjects = new List<ShardObject>();
 
@@ -144,6 +156,8 @@ namespace Shard
 
             debugFont = Content.Load<SpriteFont>("debugWindowFont");
 
+            
+
             //Spritesheet Loading
             spritesheet = Content.Load<Texture2D>("Spritesheets//spritesheet_shard_i2");
             sourceDirectory = new GameImageSourceDirectory();
@@ -159,7 +173,7 @@ namespace Shard
             player.Health = 10000;
             shardObjects.Add(player);
 
-
+            soundPlayer.LoadSounds();
 
             //Add a bunch of debris for testing purposes
             int numDebris = 10;

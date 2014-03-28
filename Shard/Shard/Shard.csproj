@@ -143,6 +143,7 @@
     </Compile>
     <Compile Include="ShardObject.cs" />
     <Compile Include="Ship.cs" />
+    <Compile Include="SoundPlayer.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Game.ico" />
