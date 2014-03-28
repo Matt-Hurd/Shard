@@ -141,6 +141,7 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
+    <Compile Include="ShardGraphic.cs" />
     <Compile Include="ShardObject.cs" />
     <Compile Include="Ship.cs" />
     <Compile Include="SoundPlayer.cs" />

@@ -74,8 +74,11 @@ namespace Shard
         {
             if (targetReference != null)
             {
-                PointTowards(targetReference.Center);
-                Velocity = travelSpeed;
+                if (targetReference.IsValid())
+                {
+                    PointTowards(targetReference.Center);
+                    Velocity = travelSpeed;
+                }
             }
             else
             {
