@@ -180,7 +180,8 @@ namespace Shard
             Random random = new Random();
             for (int i = 0; i < numDebris; i++)
             {
-                Debris debris = new Debris(random.Next(-GraphicsDevice.Viewport.Width,GraphicsDevice.Viewport.Width), random.Next(-GraphicsDevice.Viewport.Height,GraphicsDevice.Viewport.Height));
+                //Debris debris = new Debris(random.Next(-GraphicsDevice.Viewport.Width,GraphicsDevice.Viewport.Width), random.Next(-GraphicsDevice.Viewport.Height,GraphicsDevice.Viewport.Height));
+                Debris debris = new Debris(random.Next(GraphicsDevice.Viewport.Width), random.Next(GraphicsDevice.Viewport.Height));
                 debris.Alignment = Shard.Alignment.NEUTRAL;
                 debris.Health = 5;
                 debris.Energy = 10;
@@ -503,6 +504,8 @@ namespace Shard
                     ((EnemyShip)so).ProcessPlayer(player);
                     ((EnemyShip)so).Shoot(shardObjects, sourceDirectory);
                 }
+                if (so is Debris)
+                    ((Debris)so).checkCollision(potentialCollisions);
                 so.Update(potentialCollisions, gameTime);
             }
 
