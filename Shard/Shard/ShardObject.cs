@@ -19,8 +19,12 @@ namespace Shard
 
     abstract class ShardObject : GameObject
     {
+        private List<ShardObject> shardObjectListReference;
+
         private Rectangle sourceRectangle;
         private Vector2 dimensions;
+
+        private double depth;
 
         private int energyAmount;
         private int oreAmount;
@@ -43,6 +47,7 @@ namespace Shard
             this.Height = 1;
             this.X = xPosition;
             this.Y = yPosition;
+            this.depth = 1.0;
             this.Velocity = 0;
             this.Direction = 0;
             this.Health = 1;
@@ -53,6 +58,7 @@ namespace Shard
             this.Water = 0;
             this.isSolid = true;
             this.alignment = Alignment.NEUTRAL;
+            this.shardObjectListReference = null;
             SetValid(true);
         }
 
@@ -126,6 +132,14 @@ namespace Shard
             }
         }
 
+        public Vector2 Position
+        {
+            get
+            {
+                return new Vector2((float)X, (float)Y);
+            }
+        }
+
         public Vector2 Center
         {
             get
@@ -172,6 +186,18 @@ namespace Shard
             }
         }
 
+        public double Depth
+        {
+            get
+            {
+                return this.depth;
+            }
+            set
+            {
+                this.depth = value;
+            }
+        }
+
         public virtual Alignment Alignment
         {
             get
@@ -184,6 +210,16 @@ namespace Shard
             }
         }
 
+        public bool HasListReference()
+        {
+            return shardObjectListReference != null;
+        }
+
+        public void GiveListReference(List<ShardObject> list)
+        {
+            shardObjectListReference = list;
+        }
+
 
         /*
          * Allows for any specifics in the handling of health changes, this should be called instead of changing Health (unless you want the Health to be exactly a desired value)
@@ -191,6 +227,15 @@ namespace Shard
         public virtual void ApplyDamage(int damage)
         {
             Health -= damage;
+            ShardGraphic sg = new ShardGraphic((int)this.X, (int)this.Y);
+            sg.Alignment = this.Alignment;
+            sg.Text = "" + damage;
+            sg.Health = 3000;
+            sg.TextColor = Color.Red;
+            sg.Depth = 0;
+            sg.SetValid(true);
+            if(HasListReference())
+                shardObjectListReference.Add(sg);
         }
 
         public override Rectangle GetBounds()
@@ -233,7 +278,7 @@ namespace Shard
         public override void Draw(SpriteBatch spriteBatch, Texture2D spritesheet)
         {
             Rectangle correctedPosition = new Rectangle((int)X + (int)Width / 2, (int)Y + (int)Height / 2, (int)Width, (int)Height);
-            spriteBatch.Draw(spritesheet, correctedPosition, ImageSource, Color.White, (float)Direction, new Vector2(Width / 2, Height / 2), SpriteEffects.None, 0f);
+            spriteBatch.Draw(spritesheet, correctedPosition, ImageSource, Color.White, (float)Direction, new Vector2(Width / 2, Height / 2), SpriteEffects.None, (float)Depth);
         }
 
         //public override void Draw(SpriteBatch spriteBatch, Texture2D spritesheet)

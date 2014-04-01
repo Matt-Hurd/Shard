@@ -57,8 +57,9 @@ namespace Shard
             if (currentLifetime >= maxLifetime)
                 SetValid(false);
 
-            foreach (ShardObject shardObject in shardObjects)
+            for (int i = 0; i < shardObjects.Count; i++ )
             {
+                ShardObject shardObject = shardObjects[i];
                 if (!(shardObject is Projectile) && shardObject.Solid && shardObject.Alignment != this.Alignment)
                 {
                     if (GetBounds().Intersects(shardObject.GetBounds()))

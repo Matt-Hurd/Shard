@@ -183,13 +183,13 @@ namespace Shard
                 //Debris debris = new Debris(random.Next(-GraphicsDevice.Viewport.Width,GraphicsDevice.Viewport.Width), random.Next(-GraphicsDevice.Viewport.Height,GraphicsDevice.Viewport.Height));
                 Debris debris = new Debris(random.Next(GraphicsDevice.Viewport.Width), random.Next(GraphicsDevice.Viewport.Height));
                 debris.Alignment = Shard.Alignment.NEUTRAL;
-                debris.Health = 5;
+                debris.Health = 50;
                 debris.Energy = 10;
                 debris.Ore = 10;
                 debris.Oxygen = 10;
                 debris.Water = 10;
                 debris.Direction = random.NextDouble() * Math.PI * 2;
-                debris.ImageSource = sourceDirectory.GetSourceRectangle("smallAsteroid1_shaded");
+                debris.ImageSource = sourceDirectory.GetSourceRectangle("asteroid_medium1_shaded");
                 debris.Width = debris.ImageSource.Width;
                 debris.Height = debris.ImageSource.Height;
                 shardObjects.Add(debris);
@@ -203,6 +203,14 @@ namespace Shard
             evil.Width = evil.ImageSource.Width;
             evil.Height = evil.ImageSource.Height;
             shardObjects.Add(evil);
+
+            //Add a ShardGraphic
+            ShardGraphic sg = new ShardGraphic(-100, -100);
+            sg.Text = "Test";
+            sg.Font = debugFont;
+            sg.TextColor = Color.Red;
+            sg.Health = 1000;
+            //shardObjects.Add(sg);
 
             //player.ImageSource = new Rectangle(64, 32, 32, 32);
         }
@@ -497,6 +505,8 @@ namespace Shard
             for (int i = 0; i < shardObjects.Count; i++ )
             {
                 ShardObject so = shardObjects[i];
+                if (!so.HasListReference())
+                    so.GiveListReference(shardObjects);
                 potentialCollisions.Clear();
                 collisionQuadtree.Retrieve(potentialCollisions, so);
                 if (so is EnemyShip)
@@ -593,11 +603,25 @@ namespace Shard
             spriteBatch.Draw(background, background.Bounds, Color.White);
             spriteBatch.End();
 
-            //Draw all ShardObjects
-            spriteBatch.Begin(SpriteSortMode.FrontToBack, null, null, null, null, null, camera.GetViewMatrix());
-            foreach(ShardObject so in shardObjects)
+            //Draw all ShardObjects relative to camera (ShardGraphics not included)
+            spriteBatch.Begin(SpriteSortMode.BackToFront, null, null, null, null, null, camera.GetViewMatrix());
+            List<ShardGraphic> shardGraphics = new List<ShardGraphic>();
+            foreach (ShardObject so in shardObjects)
             {
-                so.Draw(spriteBatch, spritesheet);
+                if (!(so is ShardGraphic))
+                    so.Draw(spriteBatch, spritesheet);
+                else
+                    shardGraphics.Add((ShardGraphic)so);
+            }
+            //spriteBatch.End();
+
+            //Draw all ShardGraphics above all other shardObjects
+            //spriteBatch.Begin(SpriteSortMode.FrontToBack, null, null, null, null, null, camera.GetViewMatrix());
+            foreach (ShardGraphic sg in shardGraphics)
+            {
+                if (!sg.HasValidFont())
+                    sg.Font = debugFont;
+                sg.Draw(spriteBatch, spritesheet);
             }
             spriteBatch.End();
 
