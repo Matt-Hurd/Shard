@@ -253,13 +253,13 @@ namespace Shard
                         }
                     }
                 }
-                if (this is Debris)
-                {
-                    if ((this.GetBounds().Left <= 0) || (this.GetBounds().Right >= 800))
-                        this.HorizontalVelocity *= -1;
-                    if ((this.GetBounds().Top <= 0) || (this.GetBounds().Bottom >= 480))
-                        this.VerticalVelocity *= -1;
-                }
+                //if (this is Debris)
+                //{
+                //    if ((this.GetBounds().Left <= 0) || (this.GetBounds().Right >= 800))
+                //        this.HorizontalVelocity *= -1;
+                //    if ((this.GetBounds().Top <= 0) || (this.GetBounds().Bottom >= 480))
+                //        this.VerticalVelocity *= -1;
+                //}
             }
         }
 
