@@ -28,29 +28,25 @@ namespace Shard
             {
                 if (flag)
                 {
-                    //if (((this is Debris) && (so is Debris)) || (((this is Ship) && (so is Debris)) || ((this is Debris) && (so is Ship))))
-                    //{
-                        if ((this.GetBounds().Intersects(so.GetBounds())) && (!(this.Equals(so))))
+                    if ((this.GetBounds().Intersects(so.GetBounds())) && (!(this.Equals(so))))
+                    {
+                        float y2 = this.GetBounds().Center.Y - so.GetBounds().Center.Y;
+                        float x2 = this.GetBounds().Center.X - so.GetBounds().Center.X;
+                        double ang2 = Math.Atan2(y2, x2);
+                        so.HorizontalVelocity = -Math.Cos(ang2) / 2;// *player.Velocity;
+                        so.VerticalVelocity = -Math.Sin(ang2) / 2;// *player.Velocity;
+
+                        this.HorizontalVelocity = (Math.Cos(ang2)) / 2;
+                        this.VerticalVelocity = (Math.Sin(ang2)) / 2;
+
+                        if (!((so is Resource) || (so is Debris)))
                         {
-                            float y2 = this.GetBounds().Center.Y - so.GetBounds().Center.Y;
-                            float x2 = this.GetBounds().Center.X - so.GetBounds().Center.X;
-                            double ang2 = Math.Atan2(y2, x2);
-                            so.HorizontalVelocity = -Math.Cos(ang2) / 2;// *player.Velocity;
-                            so.VerticalVelocity = -Math.Sin(ang2) / 2;// *player.Velocity;
-
-                            this.HorizontalVelocity = (Math.Cos(ang2)) / 2;
-                            this.VerticalVelocity = (Math.Sin(ang2)) / 2;
-
-                            //if (((this is Ship) && (so is Debris)) || ((this is Debris) && (so is Ship)))
-                            if(!((so is Resource)||(so is Debris)))
-                            {
-                                so.Health -= Velocity;
-                                this.Health -= Velocity;
-                            }
-
-                            flag = false;
+                            so.Health -= Velocity;
+                            this.Health -= Velocity;
                         }
-                    //}
+
+                        flag = false;
+                    }
                 }
                 //if (this is Debris)
                 //{
