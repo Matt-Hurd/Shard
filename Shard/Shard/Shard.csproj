@@ -111,7 +111,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Camera.cs" />
-    <Compile Include="DatabaseConnection.cs" />
     <Compile Include="Debris.cs" />
     <Compile Include="EnemyShip.cs" />
     <Compile Include="EuclideanMath.cs" />
@@ -145,13 +144,11 @@
     <Compile Include="ShardObject.cs" />
     <Compile Include="Ship.cs" />
     <Compile Include="SoundPlayer.cs" />
+    <Compile Include="XMLDatabase.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Game.ico" />
     <Content Include="GameThumbnail.png" />
-    <Content Include="ShardDatabase.mdf">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ShardContent\ShardContent.contentproj">
@@ -188,7 +185,6 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <None Include="app.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
