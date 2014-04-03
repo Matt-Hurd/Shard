@@ -21,42 +21,36 @@ namespace Shard
         {
             Health = 1;
         }
-        public void checkCollision(List<ShardObject> x)
+
+        public override void Update(List<ShardObject> shardObjects, GameTime gameTime)
         {
-            bool flag = true;
-            foreach (ShardObject so in x)
-            {
-                if (flag)
-                {
-                    if ((this.GetBounds().Intersects(so.GetBounds())) && (!(this.Equals(so))))
-                    {
-                        float y2 = this.GetBounds().Center.Y - so.GetBounds().Center.Y;
-                        float x2 = this.GetBounds().Center.X - so.GetBounds().Center.X;
-                        double ang2 = Math.Atan2(y2, x2);
-                        so.HorizontalVelocity = -Math.Cos(ang2) / 2;// *player.Velocity;
-                        so.VerticalVelocity = -Math.Sin(ang2) / 2;// *player.Velocity;
-
-                        this.HorizontalVelocity = (Math.Cos(ang2)) / 2;
-                        this.VerticalVelocity = (Math.Sin(ang2)) / 2;
-
-                        if (!((so is Resource) || (so is Debris)))
-                        {
-                            so.Health -= Velocity;
-                            this.Health -= Velocity;
-                        }
-
-                        flag = false;
-                    }
-                }
-                //if (this is Debris)
-                //{
-                //    if ((this.GetBounds().Left <= 0) || (this.GetBounds().Right >= 800))
-                //        this.HorizontalVelocity *= -1;
-                //    if ((this.GetBounds().Top <= 0) || (this.GetBounds().Bottom >= 480))
-                //        this.VerticalVelocity *= -1;
-                //}
-            }
+            checkCollision(shardObjects);
+            base.Update(shardObjects, gameTime);
         }
 
+        public void checkCollision(List<ShardObject> x)
+        {
+            foreach (ShardObject so in x)
+            {
+                if ((this.GetBounds().Intersects(so.GetBounds())) && (!(this.Equals(so))) && so.Solid)
+                {
+                    float y2 = this.GetBounds().Center.Y - so.GetBounds().Center.Y;
+                    float x2 = this.GetBounds().Center.X - so.GetBounds().Center.X;
+                    double ang2 = Math.Atan2(y2, x2);
+                    so.HorizontalVelocity = -Math.Cos(ang2) / 2;// *player.Velocity;
+                    so.VerticalVelocity = -Math.Sin(ang2) / 2;// *player.Velocity;
+
+                    this.HorizontalVelocity = (Math.Cos(ang2)) / 2;
+                    this.VerticalVelocity = (Math.Sin(ang2)) / 2;
+
+                    if (!(so is Debris))
+                    {
+                        so.Health -= Velocity;
+                        this.Health -= Velocity;
+                    }
+
+                }
+            }
+        }
     }
 }

@@ -226,15 +226,25 @@ namespace Shard
          */
         public virtual void ApplyDamage(int damage)
         {
+            //Application of Damage
             Health -= damage;
-            ShardGraphic sg = new ShardGraphic((int)this.X, (int)this.Y);
+
+            CreateDamageGraphic(damage);
+        }
+
+        public virtual void CreateDamageGraphic(int damage)
+        {
+            ShardGraphic sg = new ShardGraphic((int)this.Center.X, (int)this.Center.Y);
             sg.Alignment = this.Alignment;
             sg.Text = "" + damage;
-            sg.Health = 3000;
+            sg.Health = 30;
             sg.TextColor = Color.Red;
             sg.Depth = 0;
+            sg.Direction = new Random().NextDouble() * Math.PI * 2;
+            sg.Velocity = .8;
+            sg.Solid = false;
             sg.SetValid(true);
-            if(HasListReference())
+            if (HasListReference())
                 shardObjectListReference.Add(sg);
         }
 

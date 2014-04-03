@@ -166,7 +166,7 @@ namespace Shard
                 case 0:
                     return 100;
                 case 1:
-                    return 20;
+                    return 00;
                 default:
                     return 0;
             }
@@ -179,7 +179,7 @@ namespace Shard
                 case 0:
                     return 100;
                 case 1:
-                    return 20;
+                    return 00;
                 default:
                     return 0;
             }

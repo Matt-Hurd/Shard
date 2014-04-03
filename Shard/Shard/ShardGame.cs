@@ -39,6 +39,7 @@ namespace Shard
         //Visual Graphics Options
         protected bool debugVisible;
         protected SpriteFont debugFont;
+        protected SpriteFont statusIndicatorFont;
 
         protected bool staticBackground;
 
@@ -155,7 +156,7 @@ namespace Shard
             // TODO: use this.Content to load your game content here
 
             debugFont = Content.Load<SpriteFont>("debugWindowFont");
-
+            statusIndicatorFont = Content.Load<SpriteFont>("statusIndicatorFont");
             
 
             //Spritesheet Loading
@@ -176,7 +177,7 @@ namespace Shard
             soundPlayer.LoadSounds();
 
             //Add a bunch of debris for testing purposes
-            int numDebris = 100;
+            int numDebris = 50;
             Random random = new Random();
             for (int i = 0; i < numDebris; i++)
             {
@@ -494,6 +495,7 @@ namespace Shard
 
             //Throw all ShardObjects into a Quadtree for collision optimization purposes
             collisionQuadtree.Clear();
+            collisionQuadtree.MaximumBounds = camera.Screen;
             foreach (ShardObject so in shardObjects)
             {
                 if(camera.ScreenContains(so.GetBounds()))
@@ -514,8 +516,6 @@ namespace Shard
                     ((EnemyShip)so).ProcessPlayer(player);
                     ((EnemyShip)so).Shoot(shardObjects, sourceDirectory);
                 }
-                if (so is Debris)
-                    ((Debris)so).checkCollision(potentialCollisions);
                 so.Update(potentialCollisions, gameTime);
             }
 
@@ -620,7 +620,7 @@ namespace Shard
             foreach (ShardGraphic sg in shardGraphics)
             {
                 if (!sg.HasValidFont())
-                    sg.Font = debugFont;
+                    sg.Font = statusIndicatorFont;
                 sg.Draw(spriteBatch, spritesheet);
             }
             spriteBatch.End();

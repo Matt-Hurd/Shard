@@ -40,6 +40,18 @@ namespace Shard
             nodes = new Quadtree[4];
         }
 
+        public Rectangle MaximumBounds
+        {
+            get
+            {
+                return bounds;
+            }
+            set
+            {
+                this.bounds = value;
+            }
+        }
+
         /*
          * Clears the quadtree
          */
