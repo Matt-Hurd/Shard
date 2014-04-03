@@ -14,11 +14,11 @@ namespace Shard
 {
     class Ship : ShardObject
     {
-        protected int speedLevel;
-        //int armorLevel;
-        protected int gunLevel;
-        protected int missileLevel;
-        //int laserLevel;
+        private  int speedLevel;
+        private int armorLevel;
+        private int gunLevel;
+        private int missileLevel;
+        private int laserLevel;
 
         protected int reloadTime;
         protected int rearmTime;
@@ -37,13 +37,15 @@ namespace Shard
             this.Water = 0;
             this.gunLevel = 0;
             this.missileLevel = 0;
+            this.laserLevel = 0;
+            this.armorLevel = 0;
             this.reloadTime = 0;
             this.rearmTime = 0;
         }
 
         #region Modifying and Returning Fields
 
-        public virtual int GunLevel
+        public int GunLevel
         {
             get
             {
@@ -54,11 +56,11 @@ namespace Shard
                 if (value > 0)
                     this.gunLevel = value;
                 else
-                    value = 0;
+                    gunLevel = 0;
             }
         }
 
-        public virtual int MissileLevel
+        public int MissileLevel
         {
             get
             {
@@ -69,11 +71,26 @@ namespace Shard
                 if (value > 0)
                     this.missileLevel = value;
                 else
-                    value = 0;
+                    missileLevel = 0;
             }
         }
 
-        public virtual int SpeedLevel
+        public int LaserLevel
+        {
+            get
+            {
+                return laserLevel;
+            }
+            set
+            {
+                if (value > 0)
+                    this.laserLevel = value;
+                else
+                    laserLevel = 0;
+            }
+        }
+
+        public int SpeedLevel
         {
             get
             {
@@ -84,7 +101,22 @@ namespace Shard
                 if (value > 0)
                     this.speedLevel = value;
                 else
-                    value = 0;
+                    speedLevel = 0;
+            }
+        }
+
+        public int ArmorLevel
+        {
+            get
+            {
+                return this.armorLevel;
+            }
+            set
+            {
+                if (value > 0)
+                    this.armorLevel = value;
+                else
+                    armorLevel = 0;
             }
         }
 
@@ -100,6 +132,7 @@ namespace Shard
 
         #region Shooting and Bullets
 
+        //Should be Overriden for ships with different scaling
         public virtual Projectile GetGunBullet(GameImageSourceDirectory sourceDirectory)
         {
             Projectile p = new Projectile((int)(this.ShipFront.X), (int)(this.ShipFront.Y));
@@ -130,6 +163,7 @@ namespace Shard
             return p;
         }
 
+        //Should be Overriden for ships with different scaling
         public virtual Missile GetMissile(GameImageSourceDirectory sourceDirectory)
         {
             Missile missile = new Missile((int)(this.ShipFront.X), (int)(this.ShipFront.Y));
@@ -159,6 +193,7 @@ namespace Shard
             return missile;
         }
 
+        //Should be Overriden for ships with different scaling
         public virtual int GetReloadTime()
         {
             switch (GunLevel)
@@ -166,12 +201,13 @@ namespace Shard
                 case 0:
                     return 100;
                 case 1:
-                    return 00;
+                    return 20;
                 default:
                     return 0;
             }
         }
 
+        //Should be Overriden for ships with different scaling
         public virtual int GetRearmTime()
         {
             switch (MissileLevel)
@@ -179,17 +215,10 @@ namespace Shard
                 case 0:
                     return 100;
                 case 1:
-                    return 00;
+                    return 30;
                 default:
                     return 0;
             }
-        }
-
-        protected virtual double SwayDirection(double direction, double maximumSway)
-        {
-            Random random = new Random();
-            double swayAmount = random.NextDouble() * maximumSway * 2;
-            return (direction - maximumSway) + swayAmount;
         }
 
         public virtual void Shoot(List<ShardObject> shardObjects, GameImageSourceDirectory sourceDirectory)
@@ -217,8 +246,19 @@ namespace Shard
             }
         }
 
+        //Changes the given direction +- maximumSway
+        protected virtual double SwayDirection(double direction, double maximumSway)
+        {
+            Random random = new Random();
+            double swayAmount = random.NextDouble() * maximumSway * 2;
+            return (direction - maximumSway) + swayAmount;
+        }
+
         #endregion
 
+        #region Statistics (Speed, Armor, and Health)
+
+        //Should be Overriden for ships with different scaling
         public virtual double GetMaxSpeed()
         {
             switch (SpeedLevel)
@@ -230,6 +270,8 @@ namespace Shard
                     return 3.0;
             }
         }
+
+        #endregion
 
         public override void Update(List<ShardObject> shardObjects, GameTime gameTime)
         {

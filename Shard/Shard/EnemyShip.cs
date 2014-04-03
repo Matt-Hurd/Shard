@@ -39,36 +39,54 @@ namespace Shard
             }
         }
 
-        public virtual Ship Player
+        public bool HasPlayerReference()
+        {
+            return playerReference != null;
+        }
+
+        public Ship GetPlayerReference()
+        {
+            return playerReference;
+        }
+
+        protected Ship Player
         {
             get
             {
-                return playerReference;
-            }
-            set
-            {
-                this.playerReference = value;
+                return GetPlayerReference();
             }
         }
 
-        public bool ProcessPlayer(Ship player)
+        public void SetPlayerReference(Ship player)
         {
-            Player = player;
-            if (EuclideanMath.DistanceBetween(playerReference.Center, this.Center) < ActivationRange) //Only acts against player if within range
+            this.playerReference = player;
+        }
+
+        public bool ProcessPlayer()
+        {
+            if (HasPlayerReference())
             {
-                return HandlePlayerInformation(playerReference);
+                if (EuclideanMath.DistanceBetween(playerReference.Center, this.Center) < ActivationRange) //Only acts against player if within range
+                {
+                    return HandlePlayerInformation();
+                }
             }
             return false;
         }
 
-        protected virtual bool HandlePlayerInformation(Ship player)
+        protected virtual bool HandlePlayerInformation()
         {
-            PointTowards(player.Center);
-            return true;
+            if (HasPlayerReference())
+            {
+                PointTowards(playerReference.Center);
+                return true;
+            }
+            return false;
         }
 
         public override void Update(List<ShardObject> shardObjects, GameTime gameTime)
         {
+            ProcessPlayer();
             base.Update(shardObjects, gameTime);
         }
     }

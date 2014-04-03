@@ -58,6 +58,7 @@
       <Name>statusIndicatorFont</Name>
       <Importer>FontDescriptionImporter</Importer>
       <Processor>FontDescriptionProcessor</Processor>
+      <SubType>Designer</SubType>
     </Compile>
     <None Include="Spritesheets\spritesheet_shard_i2.txt">
       <Name>spritesheet_shard_i2</Name>

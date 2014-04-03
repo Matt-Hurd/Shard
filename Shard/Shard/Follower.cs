@@ -55,9 +55,9 @@ namespace Shard
 
         #region Updating State
 
-        protected override bool HandlePlayerInformation(Ship player)
+        protected override bool HandlePlayerInformation()
         {
-            return base.HandlePlayerInformation(player);
+            return base.HandlePlayerInformation();
         }
 
         public override void Shoot(List<ShardObject> shardObjects, GameImageSourceDirectory sourceDirectory)

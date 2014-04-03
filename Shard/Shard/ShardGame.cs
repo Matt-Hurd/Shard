@@ -513,8 +513,10 @@ namespace Shard
                 collisionQuadtree.Retrieve(potentialCollisions, so);
                 if (so is EnemyShip)
                 {
-                    ((EnemyShip)so).ProcessPlayer(player);
-                    ((EnemyShip)so).Shoot(shardObjects, sourceDirectory);
+                    EnemyShip e = (EnemyShip)so;
+                    if (!e.HasPlayerReference())
+                        e.SetPlayerReference(player);
+                    e.Shoot(shardObjects, sourceDirectory);
                 }
                 so.Update(potentialCollisions, gameTime);
             }
@@ -547,6 +549,17 @@ namespace Shard
             previousMouse = currentMouse;
 
             base.Update(gameTime);
+        }
+
+        //Helper Methods
+        private bool EdgeDetect(KeyboardState current, Keys key)
+        {
+            return EdgeDetect(current, previousKeyboard, key);
+        }
+
+        private bool EdgeDetect(KeyboardState current, KeyboardState previous, Keys key)
+        {
+            return (current.IsKeyDown(key) && previous.IsKeyUp(key));
         }
 
         private void TraceScreenCoord(int x, int y, out float unitx, out float unity)
