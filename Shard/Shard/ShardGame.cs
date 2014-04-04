@@ -160,9 +160,9 @@ namespace Shard
             
 
             //Spritesheet Loading
-            spritesheet = Content.Load<Texture2D>("Spritesheets//spritesheet_shard_i2");
+            spritesheet = Content.Load<Texture2D>("Spritesheets//spritesheet_shard_i3");
             sourceDirectory = new GameImageSourceDirectory();
-            sourceDirectory.LoadSourcesFromFile(@"Content/Spritesheets//spritesheet_shard_i2.txt");
+            sourceDirectory.LoadSourcesFromFile(@"Content/Spritesheets//spritesheet_shard_i3.txt");
 
             //Background Loading
             background = Content.Load<Texture2D>("Backgrounds//seamlessNebulaBackground");
@@ -612,7 +612,7 @@ namespace Shard
             if(staticBackground)
                 spriteBatch.Begin();
             else
-                spriteBatch.Begin(SpriteSortMode.FrontToBack, null, null, null, null, null, camera.GetViewMatrix());
+                spriteBatch.Begin(SpriteSortMode.BackToFront, null, null, null, null, null, camera.GetViewMatrix());
             spriteBatch.Draw(background, background.Bounds, Color.White);
             spriteBatch.End();
 
@@ -645,8 +645,16 @@ namespace Shard
             spriteBatch.End();
 
             //Draw the Player
-            spriteBatch.Begin(SpriteSortMode.FrontToBack, null, null, null, null, null, camera.GetViewMatrix());
+            spriteBatch.Begin(SpriteSortMode.BackToFront, null, null, null, null, null, camera.GetViewMatrix());
             player.Draw(spriteBatch, spritesheet);
+            spriteBatch.End();
+
+            //Draw the Player Healthbar
+            spriteBatch.Begin(SpriteSortMode.BackToFront, null);
+            Rectangle healthBarSource = sourceDirectory.GetSourceRectangle("healthBarOutline");
+            Rectangle healthBarGradient = sourceDirectory.GetSourceRectangle("healthBarGradient");
+            //spriteBatch.Draw(spritesheet, new Rectangle(0, 0, healthBarSource.Width, healthBarSource.Height), healthBarSource, Color.White, 0f, Vector2.Zero, SpriteEffects.None, 0f);
+            spriteBatch.Draw(spritesheet, new Rectangle(0, 0, healthBarGradient.Width + 1000, healthBarGradient.Height +300), healthBarGradient, Color.White, 0f, Vector2.Zero, SpriteEffects.None, 1.0f);
             spriteBatch.End();
 
             base.Draw(gameTime);
