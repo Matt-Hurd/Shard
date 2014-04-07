@@ -12,18 +12,23 @@ namespace Shard
     {
         private XDocument doc;
         private string path;
-        public XMLDatabase(String path, String root = "objects")
+        public XMLDatabase(String path, String root = "objects", bool createNew = false)
         {
             this.path = path;
-            try
+
+            if (!createNew)
             {
-                doc = XDocument.Load(path);
+                try
+                {
+                    doc = XDocument.Load(path);
+                }
+                catch (XmlException exception)
+                {
+                    Console.WriteLine(exception.GetBaseException());
+                    doc = new XDocument(new XElement(root));
+                }
             }
-            catch (XmlException exception)
-            {
-                Console.WriteLine(exception.GetBaseException());
-                doc = new XDocument(new XElement(root));
-            }
+            else doc = new XDocument(new XElement(root));
         }
 
         //returns the document for reading
@@ -73,7 +78,7 @@ namespace Shard
 
         */
 
-        public void addNode(XElement newNode)
+        public void addNodeSequential(XElement newNode)
         {
             if (!doc.Root.HasElements)
             {
@@ -105,7 +110,21 @@ namespace Shard
                     count++;
                 }
             }
-            this.save();
+        }
+
+        public void addNode(XElement newNode)
+        {
+            if (!doc.Root.HasElements)
+            {
+                newNode.SetAttributeValue("id", 0);
+                doc.Root.Add(newNode);
+            }
+            else
+            {
+                newNode.SetAttributeValue("id", doc.Root.Elements().Count());
+                doc.Root.Add(newNode);
+
+            }
         }
 
         public void removeNode(int id)
@@ -119,7 +138,6 @@ namespace Shard
                     .Remove();
                 }
             }
-            this.save();
         }
 
     }

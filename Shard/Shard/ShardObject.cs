@@ -2,6 +2,7 @@
 using System.Data;
 using System.Collections.Generic;
 using System.Linq;
+using System.Xml.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Content;
@@ -347,6 +348,12 @@ namespace Shard
             }
 
             SetValid(false);
+        }
+
+        public virtual XElement toNode()
+        {
+            XElement node = new XElement("shardObject");
+            return node;
         }
     }
 }

@@ -2,6 +2,7 @@
 using System.Data;
 using System.Collections.Generic;
 using System.Linq;
+using System.Xml.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Content;
@@ -41,6 +42,25 @@ namespace Shard
             this.armorLevel = 0;
             this.reloadTime = 0;
             this.rearmTime = 0;
+        }
+        public Ship(XElement node)
+        {
+            X = Convert.ToDouble(node.Element("x").Value);
+            Y = Convert.ToDouble(node.Element("y").Value);
+            Velocity = Convert.ToDouble(node.Element("velocity").Value);
+            Direction = Convert.ToDouble(node.Element("direction").Value);
+            Health = Convert.ToDouble(node.Element("Health").Value);
+            RotationalVelocity = Convert.ToDouble(node.Element("RotationalVelocity").Value);
+            Energy = Convert.ToInt32(node.Element("Energy").Value);
+            Ore = Convert.ToInt32(node.Element("Ore").Value);
+            Oxygen = Convert.ToInt32(node.Element("Oxygen").Value);
+            Water = Convert.ToInt32(node.Element("Water").Value);
+            gunLevel = Convert.ToInt32(node.Element("gunLevel").Value);
+            missileLevel = Convert.ToInt32(node.Element("missileLevel").Value);
+            laserLevel = Convert.ToInt32(node.Element("laserLevel").Value);
+            armorLevel = Convert.ToInt32(node.Element("armorLevel").Value);
+            reloadTime = Convert.ToInt32(node.Element("reloadTime").Value);
+            rearmTime = Convert.ToInt32(node.Element("rearmTime").Value);
         }
 
         #region Modifying and Returning Fields
@@ -217,7 +237,7 @@ namespace Shard
                 if (bullet != null)
                 {
                     shardObjects.Add(bullet);
-                    reloadTime = this.GetReloadTime({100,20});
+                    reloadTime = this.GetReloadTime(new int[]{100,20});
                 }
             }
 
@@ -229,7 +249,7 @@ namespace Shard
                 {
                     missile.SelectTarget(shardObjects);
                     shardObjects.Add(missile);
-                    rearmTime = this.GetRearmTime({100,20});
+                    rearmTime = this.GetRearmTime(new int[]{100,20});
                 }
             }
         }
@@ -280,6 +300,32 @@ namespace Shard
                     }
                 }
             }
+        }
+
+
+        public override XElement toNode()
+        {
+            XElement node =
+                new XElement("ship",
+                    new XElement("x", this.X),
+                    new XElement("y", this.Y),
+                    new XElement("velocity", this.Velocity),
+                    new XElement("direction", this.Direction),
+                    new XElement("speedLevel", this.speedLevel),
+                    new XElement("armorLevel", this.armorLevel),
+                    new XElement("gunLevel", this.gunLevel),
+                    new XElement("missileLevel", this.missileLevel),
+                    new XElement("laserLevel", this.laserLevel),
+                    new XElement("Health", this.Health),
+                    new XElement("RotationalVelocity", this.RotationalVelocity),
+                    new XElement("Energy", this.Energy),
+                    new XElement("Ore", this.Ore),
+                    new XElement("Water", this.Water),
+                    new XElement("Oxygen", this.Oxygen),
+                    new XElement("reloadTime", this.reloadTime),
+                    new XElement("rearmTime", this.rearmTime)
+                    );
+            return node;
         }
     }
 }

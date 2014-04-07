@@ -39,7 +39,8 @@ namespace Shard
                     MessageBox.Show("Unable to Register.\nInvalid Password");
                 else if (username != null && password != null && username.Length > 0 && password.Length > 0 && !DatasetContains("username", username))
                 {
-                    database.addNode(loginToNode(username, password));
+                    database.addNodeSequential(loginToNode(username, password));
+                    database.save();
                 }
             }
             else

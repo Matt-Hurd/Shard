@@ -2,6 +2,7 @@ using System;
 using System.Data;
 using System.Collections.Generic;
 using System.Linq;
+using System.Xml.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Content;
@@ -53,16 +54,8 @@ namespace Shard
         protected int zoomIO;
         protected bool isZooming;
 
-        #region Database Fields
-        //DatabaseConnection objConnect;
-        //string conString;
-
-        //DataSet ds;
-        //DataRow dRow;
-
-        //int MaxRows;
-        //int inc = 0;
-        #endregion
+        //Database
+        private XMLDatabase database;
 
         public ShardGame()
         {
@@ -93,25 +86,8 @@ namespace Shard
             songy = Content.Load<Song>("Sounds/Musicmusic");
             MediaPlayer.Play(songy);
 
-            #region Database Connection
-
-            //try
-            //{
-            //    objConnect = new DatabaseConnection();
-            //    conString = Shard.Properties.Settings.Default.DatabaseConnectionString;
-            //    objConnect.Connection_string = conString;
-            //    objConnect.Sql = Shard.Properties.Settings.Default.SQL_LoginInformation;
-            //    ds = objConnect.GetConnection;
-            //    MaxRows = ds.Tables[0].Rows.Count;
-
-            //    //NavigateRecords();
-            //}
-            //catch (Exception err)
-            //{
-            //    Console.Out.Write(err.Message);
-            //}
-
-            #endregion
+            //Database
+            database = new XMLDatabase("objects.xml", "objects", true);
 
             //Default Options
             //Visual
@@ -467,6 +443,10 @@ namespace Shard
                 isZooming = true;
                 zoomIO = 0; //Sets I/O to zooming OUT;
             }
+            if ((currentKeyboard.IsKeyDown(Keys.LeftControl) || currentKeyboard.IsKeyDown(Keys.RightControl)) && EdgeDetect(currentKeyboard, Keys.S))
+            {
+                this.SaveGame();
+            }
 
             if (isZooming)
             {
@@ -549,6 +529,15 @@ namespace Shard
             previousMouse = currentMouse;
 
             base.Update(gameTime);
+        }
+
+        protected void SaveGame()
+        {
+            foreach (ShardObject so in shardObjects)
+            {
+                database.addNode(so.toNode());
+            }
+            database.save();
         }
 
         //Helper Methods
