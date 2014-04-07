@@ -60,9 +60,9 @@ namespace Shard
             return base.HandlePlayerInformation();
         }
 
-        public override void Shoot(List<ShardObject> shardObjects, GameImageSourceDirectory sourceDirectory)
+        public override void ShootAll(List<ShardObject> shardObjects, GameImageSourceDirectory sourceDirectory)
         {
-            base.Shoot(shardObjects, sourceDirectory);
+            base.ShootAll(shardObjects, sourceDirectory);
         }
 
         public override void Update(List<ShardObject> shardObjects, GameTime gameTime)

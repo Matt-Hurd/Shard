@@ -81,7 +81,7 @@ namespace Shard
         {
             if (targetReference != null)
             {
-                if (targetReference.IsValid())
+                if (targetReference.IsValid() && CurrentLife > 25)
                 {
                     PointTowards(targetReference.Center);
                     Velocity = travelSpeed;

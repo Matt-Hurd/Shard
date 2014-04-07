@@ -46,6 +46,7 @@ namespace Shard
 
         List<ShardObject> shardObjects; //Probably won't be able to use as a ShardObject List
         Ship player;
+        int maximumPlayerHealth;
 
         SoundPlayer soundPlayer;
 
@@ -147,7 +148,8 @@ namespace Shard
             player.ImageSource = sourceDirectory.GetSourceRectangle("playerShip1_colored");
             player.Width = player.ImageSource.Width;
             player.Height = player.ImageSource.Height;
-            player.Health = 10000;
+            player.Health = 100;
+            maximumPlayerHealth = (int)player.Health;
             shardObjects.Add(player);
 
             soundPlayer.LoadSounds();
@@ -394,6 +396,8 @@ namespace Shard
 
             #endregion
 
+            #region Player Shooting
+
             //Shooting
             if ((currentMouse.LeftButton.Equals(ButtonState.Pressed)))
             {
@@ -402,20 +406,25 @@ namespace Shard
                 float unity = 0;
                 TraceScreenCoord((int)currentMouse.X, (int)currentMouse.Y, out unitx, out unity);
                 player.Direction = (float)Math.Atan2(unity - (player.Y + player.Height / 2), unitx - (player.X + player.Width / 2));
-                player.Shoot(shardObjects, sourceDirectory);
+                player.ShootBullet(shardObjects, sourceDirectory);
                 player.Direction = temp;
-                //Projectile p = new Projectile((int)(player.ShipFront.X), (int)(player.ShipFront.Y));
-                //p.ImageSource = sourceDirectory.GetSourceRectangle("shipBullet");
-                //p.Width = p.ImageSource.Width;
-                //p.Height = p.ImageSource.Height;
-                //p.Direction = player.Direction;
-                //p.RotationalVelocity = player.RotationalVelocity;
-                //p.Velocity = 8;
-                //shardObjects.Add(p);
             }
 
+            if ((currentMouse.RightButton.Equals(ButtonState.Pressed)))
+            {
+                double temp = player.Direction;
+                float unitx = 0;
+                float unity = 0;
+                TraceScreenCoord((int)currentMouse.X, (int)currentMouse.Y, out unitx, out unity);
+                player.Direction = (float)Math.Atan2(unity - (player.Y + player.Height / 2), unitx - (player.X + player.Width / 2));
+                player.ShootMissile(shardObjects, sourceDirectory);
+                player.Direction = temp;
+            }
+
+            #endregion
+
             //Vacuum Button
-            if (currentKeyboard.IsKeyDown(Keys.V))
+            if (currentKeyboard.IsKeyDown(Keys.LeftShift))
             {
                 int vacuumWidth = (int)player.Width * 5;
                 int vacuumHeight = (int)player.Height * 5;
@@ -496,7 +505,7 @@ namespace Shard
                     EnemyShip e = (EnemyShip)so;
                     if (!e.HasPlayerReference())
                         e.SetPlayerReference(player);
-                    e.Shoot(shardObjects, sourceDirectory);
+                    e.ShootAll(shardObjects, sourceDirectory);
                 }
                 so.Update(potentialCollisions, gameTime);
             }
@@ -642,8 +651,8 @@ namespace Shard
             spriteBatch.Begin(SpriteSortMode.BackToFront, null);
             Rectangle healthBarSource = sourceDirectory.GetSourceRectangle("healthBarOutline");
             Rectangle healthBarGradient = sourceDirectory.GetSourceRectangle("healthBarGradient");
-            //spriteBatch.Draw(spritesheet, new Rectangle(0, 0, healthBarSource.Width, healthBarSource.Height), healthBarSource, Color.White, 0f, Vector2.Zero, SpriteEffects.None, 0f);
-            spriteBatch.Draw(spritesheet, new Rectangle(0, 0, healthBarGradient.Width + 1000, healthBarGradient.Height +300), healthBarGradient, Color.White, 0f, Vector2.Zero, SpriteEffects.None, 1.0f);
+            spriteBatch.Draw(spritesheet, new Rectangle(0, 0, healthBarSource.Width, healthBarSource.Height), healthBarSource, Color.White, 0f, Vector2.Zero, SpriteEffects.None, 0f);
+            spriteBatch.Draw(spritesheet, new Rectangle(4, 4, (int)(healthBarGradient.Width * (player.Health / (double)maximumPlayerHealth)), healthBarGradient.Height), healthBarGradient, Color.White, 0f, Vector2.Zero, SpriteEffects.None, 1.0f);
             spriteBatch.End();
 
             base.Draw(gameTime);
@@ -661,7 +670,7 @@ namespace Shard
                 //debugLines.Add("Rotational Velocity: " + player.RotationalVelocity);
                 debugLines.Add("ShardObject Size: " + shardObjects.Count);
 
-                Vector2 offset = new Vector2(4, 2);
+                Vector2 offset = new Vector2(4, 50);
                 foreach (string line in debugLines)
                 {
                     

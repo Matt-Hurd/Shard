@@ -42,6 +42,30 @@ namespace Shard
             }
         }
 
+        public int CurrentLife
+        {
+            get
+            {
+                return this.currentLifetime;
+            }
+            set
+            {
+                this.currentLifetime = value;
+            }
+        }
+
+        public int MaximumLifetime
+        {
+            get
+            {
+                return this.maxLifetime;
+            }
+            set
+            {
+                this.maxLifetime = value;
+            }
+        }
+
         /*
          * precondition: A ShardObject that collides with this projectile
          */
