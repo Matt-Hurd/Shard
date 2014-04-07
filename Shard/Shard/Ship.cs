@@ -15,7 +15,7 @@ namespace Shard
 {
     class Ship : ShardObject
     {
-        private  int speedLevel;
+        private int speedLevel;
         private int armorLevel;
         private int gunLevel;
         private int missileLevel;
@@ -178,8 +178,8 @@ namespace Shard
             }
             p.Width = p.ImageSource.Width;
             p.Height = p.ImageSource.Height;
-            p.X -= p.Width/2;
-            p.Y -= p.Height/2;
+            p.X -= p.Width / 2;
+            p.Y -= p.Height / 2;
             return p;
         }
 
@@ -190,7 +190,7 @@ namespace Shard
             missile.Alignment = this.Alignment;
             missile.Direction = this.Direction;
             missile.RotationalVelocity = 0;
-            switch(MissileLevel)
+            switch (MissileLevel)
             {
                 case 0:
                     return null;
