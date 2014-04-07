@@ -193,32 +193,20 @@ namespace Shard
             return missile;
         }
 
-        //Should be Overriden for ships with different scaling
-        public virtual int GetReloadTime()
+        //Input values should be changed for different scaling
+        public virtual int GetReloadTime(int[] values)
         {
-            switch (GunLevel)
-            {
-                case 0:
-                    return 100;
-                case 1:
-                    return 20;
-                default:
-                    return 0;
-            }
+            if (GunLevel > 0 && GunLevel < values.Length)
+                return values[GunLevel];
+            return 0;
         }
 
-        //Should be Overriden for ships with different scaling
-        public virtual int GetRearmTime()
+        //Input values should be changed for different scaling
+        public virtual int GetRearmTime(int[] values)
         {
-            switch (MissileLevel)
-            {
-                case 0:
-                    return 100;
-                case 1:
-                    return 30;
-                default:
-                    return 0;
-            }
+            if (MissileLevel > 0 && MissileLevel < values.Length)
+                return values[MissileLevel];
+            return 0;
         }
 
         public virtual void Shoot(List<ShardObject> shardObjects, GameImageSourceDirectory sourceDirectory)
@@ -229,7 +217,7 @@ namespace Shard
                 if (bullet != null)
                 {
                     shardObjects.Add(bullet);
-                    reloadTime = this.GetReloadTime();
+                    reloadTime = this.GetReloadTime({100,20});
                 }
             }
 
@@ -241,7 +229,7 @@ namespace Shard
                 {
                     missile.SelectTarget(shardObjects);
                     shardObjects.Add(missile);
-                    rearmTime = this.GetRearmTime();
+                    rearmTime = this.GetRearmTime({100,20});
                 }
             }
         }

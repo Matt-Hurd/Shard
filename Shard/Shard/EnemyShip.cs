@@ -78,7 +78,7 @@ namespace Shard
         {
             if (HasPlayerReference())
             {
-                PointTowards(playerReference.Center);
+                PointTowards(Player.Center);
                 return true;
             }
             return false;
