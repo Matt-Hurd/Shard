@@ -155,7 +155,7 @@ namespace Shard
             soundPlayer.LoadSounds();
 
             //Add a bunch of debris for testing purposes
-            int numDebris = 50;
+            int numDebris = 10;
             Random random = new Random();
             for (int i = 0; i < numDebris; i++)
             {
@@ -175,9 +175,10 @@ namespace Shard
             }
 
             //Add evil ships
-            EnemyShip evil = new Follower(500,500);
-            evil.GunLevel = 0;
-            evil.Health = 10;
+            EnemyShip evil = new Seeker(100,100);
+            evil.GunLevel = 1;
+            evil.SpeedLevel = 1;
+            evil.Health = 50;
             evil.ImageSource = sourceDirectory.GetSourceRectangle("pirateShip1_colored");
             evil.Width = evil.ImageSource.Width;
             evil.Height = evil.ImageSource.Height;

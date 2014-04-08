@@ -68,17 +68,21 @@ namespace Shard
         public override void Update(List<ShardObject> shardObjects, GameTime gameTime)
         {
             double maxVelocity = GetMaxSpeed();
-            double velocityIncrement = maxVelocity / 25.0;
-            if (EuclideanMath.DistanceBetween(Player.Center, this.Center) > followingDistance)
+            double velocityIncrement = maxVelocity / 12.0;
+
+            if (EuclideanMath.DistanceBetween(Player.Center, this.Center) > followingDistance + maxVelocity)
             {
                 HorizontalVelocity += Math.Cos(this.Direction) * velocityIncrement;
                 VerticalVelocity += Math.Sin(this.Direction) * velocityIncrement;
             }
-            else
+            else if (EuclideanMath.DistanceBetween(Player.Center, this.Center) < followingDistance - maxVelocity)
             {
+                //Velocity = 0;
                 HorizontalVelocity += Math.Cos(this.Direction + Math.PI) * velocityIncrement;
                 VerticalVelocity += Math.Sin(this.Direction + Math.PI) * velocityIncrement;
             }
+            else
+                Velocity = 0;
 
             if (Math.Abs(HorizontalVelocity) > maxVelocity)
             {

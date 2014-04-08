@@ -24,6 +24,21 @@ namespace Shard
             playerReference = null;
         }
 
+        #region Scaling Changes
+
+        protected override float GetBulletSway()
+        {
+            switch (GunLevel)
+            {
+                case  1:
+                    return 20.0f;
+                default:
+                    return 50.0f;
+            }
+        }
+
+        #endregion
+
         public virtual double ActivationRange
         {
             get

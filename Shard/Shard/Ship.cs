@@ -43,6 +43,7 @@ namespace Shard
             this.reloadTime = 0;
             this.rearmTime = 0;
         }
+
         public Ship(XElement node)
         {
             X = Convert.ToDouble(node.Element("x").Value);
@@ -155,41 +156,63 @@ namespace Shard
         #region Bullet Creation and Stat Determination
 
         //Should be Overriden for ships with different scaling
-        public virtual Projectile GetGunBullet(GameImageSourceDirectory sourceDirectory)
+        protected Projectile GetGunBullet(GameImageSourceDirectory sourceDirectory)
         {
-            Projectile p = new Projectile((int)(this.ShipFront.X), (int)(this.ShipFront.Y));
-            p.Alignment = this.Alignment;
-            p.Direction = this.Direction;
-            p.RotationalVelocity = this.RotationalVelocity;
-            p.ImageSource = sourceDirectory.GetSourceRectangle("shipBullet");
-            p.Direction = SwayDirection(p.Direction, MathHelper.ToRadians(GetBulletSway()));
-            //p.Velocity = GetBulletSpeed();
-            p.Damage = 1;
-            p.Width = p.ImageSource.Width;
-            p.Height = p.ImageSource.Height;
-            p.X -= p.Width / 2;
-            p.Y -= p.Height / 2;
-            return p;
+            if (GunLevel > 0)
+            {
+                Projectile p = new Projectile((int)(this.ShipFront.X), (int)(this.ShipFront.Y));
+                p.Alignment = this.Alignment;
+                p.Direction = this.Direction;
+                p.RotationalVelocity = this.RotationalVelocity;
+                p.ImageSource = GetBulletImageSource(sourceDirectory);
+                p.Direction = SwayDirection(p.Direction, MathHelper.ToRadians(GetBulletSway()));
+                p.Velocity = GetBulletSpeed();
+                p.Damage = GetBulletDamage();
+                p.Width = p.ImageSource.Width;
+                p.Height = p.ImageSource.Height;
+                p.X -= p.Width / 2;
+                p.Y -= p.Height / 2;
+                return p;
+            }
+            return null;
         }
 
-        //Input values should be changed for different scaling
-        public virtual int GetBulletDamage(int[] values)
+        //Source directory name should be changed for different images
+        protected virtual Rectangle GetBulletImageSource(GameImageSourceDirectory sourceDirectory)
         {
-            if (GunLevel > 0 && GunLevel < values.Length)
-                return values[GunLevel];
-            return 1;
+            switch (GunLevel)
+            {
+                default:
+                    return sourceDirectory.GetSourceRectangle("shipBullet");
+            }
         }
 
-        //Input values should be changed for different scaling
-        public virtual int GetBulletSpeed(int[] values)
+        //Switch values should be changed for different scaling
+        protected virtual int GetBulletDamage()
         {
-            if (GunLevel > 0 && GunLevel < values.Length)
-                return values[GunLevel];
-            return 1;
+            switch (GunLevel)
+            {
+                case 1:
+                    return 1;
+                default:
+                    return 1;
+            }
         }
 
-        //Input values should be changed for different scaling
-        public virtual float GetBulletSway()
+        //Switch values should be changed for different scaling
+        protected virtual int GetBulletSpeed()
+        {
+            switch (GunLevel)
+            {
+                case 1:
+                    return 8;
+                default:
+                    return 1;
+            }
+        }
+
+        //Switch values should be changed for different scaling
+        protected virtual float GetBulletSway()
         {
             switch (GunLevel)
             {
@@ -201,7 +224,7 @@ namespace Shard
         }
 
         //Switch values should be changed for different scaling
-        public virtual int GetReloadTime()
+        protected virtual int GetReloadTime()
         {
             switch (GunLevel)
             {
@@ -217,37 +240,41 @@ namespace Shard
         #region Missile Creation and Stat Determination
 
         //Should be Overriden for ships with different scaling
-        public virtual Missile GetMissile(GameImageSourceDirectory sourceDirectory)
+        public Missile GetMissile(GameImageSourceDirectory sourceDirectory)
         {
-            Missile missile = new Missile((int)(this.ShipFront.X), (int)(this.ShipFront.Y));
-            missile.Alignment = this.Alignment;
-            missile.Direction = this.Direction;
-            missile.RotationalVelocity = 0;
+            if (MissileLevel > 0)
+            {
+                Missile missile = new Missile((int)(this.ShipFront.X), (int)(this.ShipFront.Y));
+                missile.Alignment = this.Alignment;
+                missile.Direction = this.Direction;
+                missile.RotationalVelocity = 0;
+                missile.ImageSource = GetMissileImageSource(sourceDirectory);
+                missile.TravelSpeed = GetMissileTravelSpeed();
+                missile.Damage = GetMissileDamage();
+                
+                missile.Width = missile.ImageSource.Width;
+                missile.Height = missile.ImageSource.Height;
+                missile.X -= missile.Width / 2;
+                missile.Y -= missile.Height / 2;
+                return missile;
+            }
+            return null;
+        }
+
+        //Source directory name should be changed for different images
+        protected virtual Rectangle GetMissileImageSource(GameImageSourceDirectory sourceDirectory)
+        {
             switch (MissileLevel)
             {
-                case 0:
-                    return null;
                 case 1:
-                    missile.ImageSource = sourceDirectory.GetSourceRectangle("shipMissile");
-                    missile.TravelSpeed = 4.0;
-                    missile.Damage = 2;
-                    break;
+                    return sourceDirectory.GetSourceRectangle("shipMissile");;
                 default:
-                    missile.ImageSource = sourceDirectory.GetSourceRectangle("shipMissile");
-                    missile.TravelSpeed = 4.0;
-                    missile.Damage = 2;
-                    break;
-
+                    return sourceDirectory.GetSourceRectangle("shipMissile");;
             }
-            missile.Width = missile.ImageSource.Width;
-            missile.Height = missile.ImageSource.Height;
-            missile.X -= missile.Width / 2;
-            missile.Y -= missile.Height / 2;
-            return missile;
         }
 
         //Switch values should be changed for different scaling
-        public virtual int GetRearmTime()
+        protected virtual int GetRearmTime()
         {
             switch (MissileLevel)
             {
@@ -255,6 +282,30 @@ namespace Shard
                     return 40;
                 default:
                     return 100;
+            }
+        }
+
+        //Switch values should be changed for different scaling
+        protected virtual int GetMissileDamage()
+        {
+            switch (MissileLevel)
+            {
+                case 1:
+                    return 2;
+                default:
+                    return 1;
+            }
+        }
+
+        //Switch values should be changed for different scaling
+        protected virtual double GetMissileTravelSpeed()
+        {
+            switch (MissileLevel)
+            {
+                case 1:
+                    return 4.0;
+                default:
+                    return 1.0;
             }
         }
 
