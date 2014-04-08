@@ -178,7 +178,7 @@ namespace Shard
             EnemyShip evil = new Follower(500,500);
             evil.GunLevel = 0;
             evil.Health = 10;
-            evil.ImageSource = sourceDirectory.GetSourceRectangle("playerShip1_colored");
+            evil.ImageSource = sourceDirectory.GetSourceRectangle("pirateShip1_colored");
             evil.Width = evil.ImageSource.Width;
             evil.Height = evil.ImageSource.Height;
             shardObjects.Add(evil);
@@ -670,7 +670,7 @@ namespace Shard
                 //debugLines.Add("Rotational Velocity: " + player.RotationalVelocity);
                 debugLines.Add("ShardObject Size: " + shardObjects.Count);
 
-                Vector2 offset = new Vector2(4, 50);
+                Vector2 offset = new Vector2(4, 44);
                 foreach (string line in debugLines)
                 {
                     

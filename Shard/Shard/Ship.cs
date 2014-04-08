@@ -150,7 +150,9 @@ namespace Shard
 
         #endregion
 
-        #region Shooting and Bullets
+        #region Projectile Creation
+
+        #region Bullet Creation and Stat Determination
 
         //Should be Overriden for ships with different scaling
         public virtual Projectile GetGunBullet(GameImageSourceDirectory sourceDirectory)
@@ -159,29 +161,60 @@ namespace Shard
             p.Alignment = this.Alignment;
             p.Direction = this.Direction;
             p.RotationalVelocity = this.RotationalVelocity;
-            switch (GunLevel)
-            {
-                case 0:
-                    return null;
-                case 1:
-                    p.ImageSource = sourceDirectory.GetSourceRectangle("shipBullet");
-                    p.Direction = SwayDirection(p.Direction, MathHelper.ToRadians(2.0f));
-                    p.Velocity = 8;
-                    p.Damage = 1;
-                    break;
-                default:
-                    p.ImageSource = sourceDirectory.GetSourceRectangle("shipBullet");
-                    p.Direction = SwayDirection(p.Direction, MathHelper.ToRadians(2.0f));
-                    p.Velocity = 8;
-                    p.Damage = 1;
-                    break;
-            }
+            p.ImageSource = sourceDirectory.GetSourceRectangle("shipBullet");
+            p.Direction = SwayDirection(p.Direction, MathHelper.ToRadians(GetBulletSway()));
+            //p.Velocity = GetBulletSpeed();
+            p.Damage = 1;
             p.Width = p.ImageSource.Width;
             p.Height = p.ImageSource.Height;
             p.X -= p.Width / 2;
             p.Y -= p.Height / 2;
             return p;
         }
+
+        //Input values should be changed for different scaling
+        public virtual int GetBulletDamage(int[] values)
+        {
+            if (GunLevel > 0 && GunLevel < values.Length)
+                return values[GunLevel];
+            return 1;
+        }
+
+        //Input values should be changed for different scaling
+        public virtual int GetBulletSpeed(int[] values)
+        {
+            if (GunLevel > 0 && GunLevel < values.Length)
+                return values[GunLevel];
+            return 1;
+        }
+
+        //Input values should be changed for different scaling
+        public virtual float GetBulletSway()
+        {
+            switch (GunLevel)
+            {
+                case 1:
+                    return 5.0f;
+                default:
+                    return 10.0f;
+            }
+        }
+
+        //Switch values should be changed for different scaling
+        public virtual int GetReloadTime()
+        {
+            switch (GunLevel)
+            {
+                case 1:
+                    return 20;
+                default:
+                    return 100;
+            }
+        }
+
+        #endregion
+
+        #region Missile Creation and Stat Determination
 
         //Should be Overriden for ships with different scaling
         public virtual Missile GetMissile(GameImageSourceDirectory sourceDirectory)
@@ -213,23 +246,25 @@ namespace Shard
             return missile;
         }
 
-        //Input values should be changed for different scaling
-        public virtual int GetReloadTime(int[] values)
+        //Switch values should be changed for different scaling
+        public virtual int GetRearmTime()
         {
-            if (GunLevel > 0 && GunLevel < values.Length)
-                return values[GunLevel];
-            return 0;
+            switch (MissileLevel)
+            {
+                case 1:
+                    return 40;
+                default:
+                    return 100;
+            }
         }
 
-        //Input values should be changed for different scaling
-        public virtual int GetRearmTime(int[] values)
-        {
-            if (MissileLevel > 0 && MissileLevel < values.Length)
-                return values[MissileLevel];
-            return 0;
-        }
+        #endregion
 
-        public virtual void Shoot(List<ShardObject> shardObjects, GameImageSourceDirectory sourceDirectory)
+        #endregion
+
+        #region Shooting
+
+        public virtual void ShootAll(List<ShardObject> shardObjects, GameImageSourceDirectory sourceDirectory)
         {
             if (reloadTime <= 0)
             {
@@ -237,7 +272,7 @@ namespace Shard
                 if (bullet != null)
                 {
                     shardObjects.Add(bullet);
-                    reloadTime = this.GetReloadTime(new int[]{100,20});
+                    reloadTime = this.GetReloadTime();
                 }
             }
 
@@ -249,7 +284,37 @@ namespace Shard
                 {
                     missile.SelectTarget(shardObjects);
                     shardObjects.Add(missile);
-                    rearmTime = this.GetRearmTime(new int[]{100,20});
+                    rearmTime = this.GetRearmTime();
+                }
+            }
+        }
+
+        public virtual void ShootBullet(List<ShardObject> shardObjects, GameImageSourceDirectory sourceDirectory)
+        {
+            if (reloadTime <= 0)
+            {
+                Projectile bullet = GetGunBullet(sourceDirectory);
+                if (bullet != null)
+                {
+                    shardObjects.Add(bullet);
+                    reloadTime = this.GetReloadTime();
+                }
+            }
+        }
+
+        public virtual void ShootMissile(List<ShardObject> shardObjects, GameImageSourceDirectory sourceDirectory)
+        {
+            //Missiles
+            if (rearmTime <= 0)
+            {
+                Missile missile = GetMissile(sourceDirectory);
+                if (missile != null)
+                {
+                    missile.SelectTarget(shardObjects);
+                    missile.Direction = this.Direction;
+                    missile.Velocity = missile.TravelSpeed / 2;
+                    shardObjects.Add(missile);
+                    rearmTime = this.GetRearmTime();
                 }
             }
         }
@@ -264,7 +329,7 @@ namespace Shard
 
         #endregion
 
-        #region Statistics (Speed, Armor, and Health)
+        #region Statistics (Speed, Armor, and Health) - Can Be Overriden in Inheriting Classes
 
         //Should be Overriden for ships with different scaling
         public virtual double GetMaxSpeed()
