@@ -110,6 +110,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Bruiser.cs" />
     <Compile Include="Camera.cs" />
     <Compile Include="Debris.cs" />
     <Compile Include="EnemyShip.cs" />
@@ -145,6 +146,7 @@
     <Compile Include="ShardObject.cs" />
     <Compile Include="Ship.cs" />
     <Compile Include="SoundPlayer.cs" />
+    <Compile Include="Thug.cs" />
     <Compile Include="XMLDatabase.cs" />
   </ItemGroup>
   <ItemGroup>

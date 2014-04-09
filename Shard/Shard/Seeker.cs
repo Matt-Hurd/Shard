@@ -10,7 +10,13 @@ namespace Shard
      */
     class Seeker : Follower
     {
-        public Seeker(int xPosition, int yPosition) : base(xPosition, yPosition) { }
+        public Seeker(int xPosition, int yPosition) : base(xPosition, yPosition) 
+        {
+            GunLevel = 1;
+            MissileLevel = 0;
+            SpeedLevel = 1;
+            Health = 30;
+        }
 
         #region Scaling Changes
 
@@ -24,6 +30,8 @@ namespace Shard
                 case 3:
                 case 4:
                     return 2;
+                case 5:
+                    return 3;
                 default:
                     return 0;
                     
@@ -53,11 +61,11 @@ namespace Shard
             switch (SpeedLevel)
             {
                 case 1:
-                    return 5.0;
+                    return 2.5;
                 case 2:
-                    return 6.0;
+                    return 3.5;
                 case 3:
-                    return 7.0;
+                    return 4.5;
                 default:
                     return 1.0;
             }

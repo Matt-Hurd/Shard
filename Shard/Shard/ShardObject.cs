@@ -130,6 +130,8 @@ namespace Shard
             set
             {
                 sourceRectangle = value;
+                this.Width = this.ImageSource.Width;
+                this.Height = this.ImageSource.Height;
             }
         }
 

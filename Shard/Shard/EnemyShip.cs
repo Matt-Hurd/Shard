@@ -31,10 +31,32 @@ namespace Shard
             switch (GunLevel)
             {
                 case  1:
-                    return 20.0f;
+                    return 10.0f;
                 default:
-                    return 50.0f;
+                    return 20.0f;
             }
+        }
+
+        protected override int GetBulletSpeed()
+        {
+            switch (GunLevel)
+            {
+                case 1:
+                    return 6;
+                case 2:
+                    return 7;
+                case 3:
+                case 4:
+                case 5:
+                    return 8;
+                default:
+                    return 1;
+            }
+        }
+
+        public virtual void GetImageSource(GameImageSourceDirectory sourceDirectory)
+        {
+            this.ImageSource = sourceDirectory.GetSourceRectangle("pirateShip1_colored");
         }
 
         #endregion

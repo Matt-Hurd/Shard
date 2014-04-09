@@ -317,27 +317,8 @@ namespace Shard
 
         public virtual void ShootAll(List<ShardObject> shardObjects, GameImageSourceDirectory sourceDirectory)
         {
-            if (reloadTime <= 0)
-            {
-                Projectile bullet = GetGunBullet(sourceDirectory);
-                if (bullet != null)
-                {
-                    shardObjects.Add(bullet);
-                    reloadTime = this.GetReloadTime();
-                }
-            }
-
-            //Missiles
-            if (rearmTime <= 0)
-            {
-                Missile missile = GetMissile(sourceDirectory);
-                if (missile != null)
-                {
-                    missile.SelectTarget(shardObjects);
-                    shardObjects.Add(missile);
-                    rearmTime = this.GetRearmTime();
-                }
-            }
+            ShootBullet(shardObjects, sourceDirectory);
+            ShootMissile(shardObjects, sourceDirectory);
         }
 
         public virtual void ShootBullet(List<ShardObject> shardObjects, GameImageSourceDirectory sourceDirectory)

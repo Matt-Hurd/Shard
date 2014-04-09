@@ -146,9 +146,10 @@ namespace Shard
 
             //Player Creation
             player.ImageSource = sourceDirectory.GetSourceRectangle("playerShip1_colored");
+            player.Alignment = Alignment.GOOD;
             player.Width = player.ImageSource.Width;
             player.Height = player.ImageSource.Height;
-            player.Health = 100;
+            player.Health = 10000;
             maximumPlayerHealth = (int)player.Health;
             shardObjects.Add(player);
 
@@ -175,14 +176,12 @@ namespace Shard
             }
 
             //Add evil ships
-            EnemyShip evil = new Seeker(100,100);
-            evil.GunLevel = 1;
-            evil.SpeedLevel = 1;
-            evil.Health = 50;
-            evil.ImageSource = sourceDirectory.GetSourceRectangle("pirateShip1_colored");
-            evil.Width = evil.ImageSource.Width;
-            evil.Height = evil.ImageSource.Height;
-            shardObjects.Add(evil);
+            for (int i = 0; i < 3; i++)
+            {
+                EnemyShip evil = new Bruiser((int)(random.NextDouble() * 500), (int)(random.NextDouble() * 500));
+                evil.GetImageSource(sourceDirectory);
+                shardObjects.Add(evil);
+            }
 
             //Add a ShardGraphic
             ShardGraphic sg = new ShardGraphic(-100, -100);
