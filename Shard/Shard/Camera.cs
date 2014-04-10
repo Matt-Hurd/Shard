@@ -74,13 +74,13 @@ namespace Shard
 
         public void AddPosition(float X, float Y, float Z)
         {
-            position += new Vector3(X, Y, Z);
+            position += new Vector3(X, Y, 0);
             BuildViewMatrix();
         }
 
         public void SetPosition(float X, float Y, float Z)
         {
-            position = new Vector3(X + offset.X, Y + offset.X, Z);
+            position = new Vector3(X + offset.X, Y + offset.X, 0);
             BuildViewMatrix();
         }
 
@@ -178,8 +178,8 @@ namespace Shard
             Matrix tmp = Matrix.Identity;
 
             // Center camera about camera position
-            float uX = screenWidth / Zoom;
-            float uY = screenHeight / Zoom;
+            float uX = screenWidth / zoom;
+            float uY = screenHeight / zoom;
 
             tmp = Matrix.Multiply(Matrix.CreateScale(zoom), tmp);
 

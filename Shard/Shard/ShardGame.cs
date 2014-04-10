@@ -51,7 +51,7 @@ namespace Shard
         SoundPlayer soundPlayer;
 
         protected Camera camera;
-        protected float zoomZ; 
+        protected float zoomZ;
         protected int zoomIO;
         protected bool isZooming;
 
@@ -616,11 +616,17 @@ namespace Shard
 
             //Draw all ShardObjects relative to camera (ShardGraphics not included)
             spriteBatch.Begin(SpriteSortMode.BackToFront, null, null, null, null, null, camera.GetViewMatrix());
+            
             List<ShardGraphic> shardGraphics = new List<ShardGraphic>();
             foreach (ShardObject so in shardObjects)
             {
                 if (!(so is ShardGraphic))
+                {
+                    //This fixes zooming for some reason!
+                    so.Depth = 0;
+                    //^^
                     so.Draw(spriteBatch, spritesheet);
+                }
                 else
                     shardGraphics.Add((ShardGraphic)so);
             }
