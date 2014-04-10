@@ -15,6 +15,7 @@ namespace Shard
 {
     class Ship : ShardObject
     {
+        //Maximum for all levels, scaling wise, is five (potential to be changed later)
         private int speedLevel;
         private int armorLevel;
         private int gunLevel;
@@ -194,18 +195,34 @@ namespace Shard
             {
                 case 1:
                     return 1;
+                case 2:
+                    return 2;
+                case 3:
+                    return 4;
+                case 4:
+                    return 8;
+                case 5:
+                    return 12;
                 default:
                     return 1;
             }
         }
 
         //Switch values should be changed for different scaling
-        protected virtual int GetBulletSpeed()
+        protected virtual double GetBulletSpeed()
         {
             switch (GunLevel)
             {
                 case 1:
-                    return 8;
+                    return 7.0;
+                case 2:
+                    return 7.5;
+                case 3:
+                    return 8.0;
+                case 4:
+                    return 8.5;
+                case 5:
+                    return 9.0;
                 default:
                     return 1;
             }
@@ -217,7 +234,15 @@ namespace Shard
             switch (GunLevel)
             {
                 case 1:
-                    return 5.0f;
+                    return 7.5f;
+                case 2:
+                    return 6.0f;
+                case 3:
+                    return 4.5f;
+                case 4:
+                    return 3.0f;
+                case 5:
+                    return 1.5f;
                 default:
                     return 10.0f;
             }
@@ -230,6 +255,14 @@ namespace Shard
             {
                 case 1:
                     return 20;
+                case 2:
+                    return 17;
+                case 3:
+                    return 14;
+                case 4:
+                    return 10;
+                case 5:
+                    return 5;
                 default:
                     return 100;
             }
@@ -280,6 +313,14 @@ namespace Shard
             {
                 case 1:
                     return 40;
+                case 2:
+                    return 35;
+                case 3:
+                    return 30;
+                case 4:
+                    return 25;
+                case 5:
+                    return 20;
                 default:
                     return 100;
             }
@@ -292,6 +333,14 @@ namespace Shard
             {
                 case 1:
                     return 2;
+                case 2:
+                    return 5;
+                case 3:
+                    return 8;
+                case 4:
+                    return 12;
+                case 5:
+                    return 16;
                 default:
                     return 1;
             }
@@ -304,6 +353,14 @@ namespace Shard
             {
                 case 1:
                     return 4.0;
+                case 2:
+                    return 4.5;
+                case 3:
+                    return 5.0;
+                case 4:
+                    return 5.75;
+                case 5:
+                    return 7.0;
                 default:
                     return 1.0;
             }
@@ -371,6 +428,14 @@ namespace Shard
                 case 0:
                 case 1:
                     return 3.0;
+                case 2:
+                    return 3.5;
+                case 3:
+                    return 4.0;
+                case 4:
+                    return 4.5;
+                case 5:
+                    return 5.0;
                 default:
                     return 3.0;
             }

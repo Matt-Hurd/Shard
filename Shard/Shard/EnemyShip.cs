@@ -37,18 +37,18 @@ namespace Shard
             }
         }
 
-        protected override int GetBulletSpeed()
+        protected override double GetBulletSpeed()
         {
             switch (GunLevel)
             {
                 case 1:
-                    return 6;
+                    return 6.0;
                 case 2:
-                    return 7;
+                    return 7.0;
                 case 3:
                 case 4:
                 case 5:
-                    return 8;
+                    return 8.0;
                 default:
                     return 1;
             }
@@ -124,7 +124,34 @@ namespace Shard
         public override void Update(List<ShardObject> shardObjects, GameTime gameTime)
         {
             ProcessPlayer();
+            checkCollision(shardObjects);
             base.Update(shardObjects, gameTime);
+        }
+        public void checkCollision(List<ShardObject> x)
+        {
+            foreach (ShardObject so in x)
+            {
+                if (so.Solid && (this.GetBounds().Intersects(so.GetBounds())) && (!(this.Equals(so))))
+                {
+                    if (so.Alignment != this.Alignment || so is Ship)
+                    {
+                        float y2 = this.GetBounds().Center.Y - so.GetBounds().Center.Y;
+                        float x2 = this.GetBounds().Center.X - so.GetBounds().Center.X;
+                        double ang2 = Math.Atan2(y2, x2);
+                        so.HorizontalVelocity = -Math.Cos(ang2) / 2;// *player.Velocity;
+                        so.VerticalVelocity = -Math.Sin(ang2) / 2;// *player.Velocity;
+
+                        this.HorizontalVelocity = (Math.Cos(ang2)) / 2;
+                        this.VerticalVelocity = (Math.Sin(ang2)) / 2;
+
+                        if (!(so is Debris))
+                        {
+                            so.Health -= Velocity;
+                            this.Health -= Velocity;
+                        }
+                    }
+                }
+            }
         }
     }
 }

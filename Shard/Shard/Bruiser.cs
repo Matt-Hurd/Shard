@@ -6,7 +6,7 @@ using System.Text;
 namespace Shard
 {
     /*
-     *  A fast and agile EnemyShip with weak fire power, meant to fight in groups
+     *  A big and slow EnemyShip with big fire power, meant to alone
      */
     class Bruiser : Follower
     {

@@ -6,7 +6,7 @@ using System.Text;
 namespace Shard
 {
     /*
-     *  A fast and agile EnemyShip with weak fire power, meant to fight in groups
+     *  A medium speed EnemyShip with moderate fire power, meant to fight in groups (Thugs and Seekers)
      */
     class Thug : Follower
     {
