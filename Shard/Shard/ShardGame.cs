@@ -623,12 +623,15 @@ namespace Shard
                 if (!(so is ShardGraphic))
                 {
                     //This fixes zooming for some reason!
-                    so.Depth = 0;
+                    so.Depth = .1f;
                     //^^
                     so.Draw(spriteBatch, spritesheet);
                 }
                 else
+                {
+                    so.Depth = 0;
                     shardGraphics.Add((ShardGraphic)so);
+                }
             }
             //spriteBatch.End();
 
@@ -638,6 +641,7 @@ namespace Shard
             {
                 if (!sg.HasValidFont())
                     sg.Font = statusIndicatorFont;
+                sg.Depth = 0;
                 sg.Draw(spriteBatch, spritesheet);
             }
             spriteBatch.End();
@@ -650,7 +654,7 @@ namespace Shard
 
             //Draw the Player
             spriteBatch.Begin(SpriteSortMode.BackToFront, null, null, null, null, null, camera.GetViewMatrix());
-            player.Draw(spriteBatch, spritesheet);
+            //player.Draw(spriteBatch, spritesheet);
             spriteBatch.End();
 
             //Draw the Player Healthbar
