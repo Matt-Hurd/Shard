@@ -29,7 +29,7 @@ namespace Shard
         String username;
 
         Song songy;
-        
+
         KeyboardState previousKeyboard;
         MouseState previousMouse;
         GamePadState previousGamePad;
@@ -113,7 +113,7 @@ namespace Shard
             automaticDeceleration = true;
             mouseDirectionalControl = false;
 
-            
+
 
             shardObjects = new List<ShardObject>();
 
@@ -148,7 +148,7 @@ namespace Shard
 
             debugFont = Content.Load<SpriteFont>("debugWindowFont");
             statusIndicatorFont = Content.Load<SpriteFont>("statusIndicatorFont");
-            
+
 
             //Spritesheet Loading
             spritesheet = Content.Load<Texture2D>("Spritesheets//spritesheet_shard_i3");
@@ -160,61 +160,51 @@ namespace Shard
 
             if (database.isEmpty() || skipLoadingFromDatabase)
             {
-            //Player Creation
-            player.ImageSource = sourceDirectory.GetSourceRectangle("playerShip1_colored");
-            player.Alignment = Alignment.GOOD;
-            player.Width = player.ImageSource.Width;
-            player.Height = player.ImageSource.Height;
-            player.Health = 100;
-            player.GunLevel = 5;
-            player.MissileLevel = 5;
-            player.ArmorLevel = 5;
-            player.SpeedLevel = 5;
-            maximumPlayerHealth = (int)player.Health;
-            shardObjects.Add(player);
+                //Player Creation
+                player.ImageSource = sourceDirectory.GetSourceRectangle("playerShip1_colored");
+                player.Alignment = Alignment.GOOD;
+                player.Width = player.ImageSource.Width;
+                player.Height = player.ImageSource.Height;
+                player.Health = 100;
+                player.GunLevel = 5;
+                player.MissileLevel = 5;
+                player.ArmorLevel = 5;
+                player.SpeedLevel = 5;
+                maximumPlayerHealth = (int)player.Health;
+                shardObjects.Add(player);
 
-            soundPlayer.LoadSounds();
+                soundPlayer.LoadSounds();
 
-            //Add a bunch of debris for testing purposes
-            int numDebris = 10;
-            Random random = new Random();
-            for (int i = 0; i < numDebris; i++)
-            {
-                //Debris debris = new Debris(random.Next(-GraphicsDevice.Viewport.Width,GraphicsDevice.Viewport.Width), random.Next(-GraphicsDevice.Viewport.Height,GraphicsDevice.Viewport.Height));
-                Debris debris = new Debris(random.Next(GraphicsDevice.Viewport.Width), random.Next(GraphicsDevice.Viewport.Height));
-                debris.Alignment = Shard.Alignment.NEUTRAL;
-                debris.Health = 50;
-                debris.Energy = 10;
-                debris.Ore = 10;
-                debris.Oxygen = 10;
-                debris.Water = 10;
-                debris.Direction = random.NextDouble() * Math.PI * 2;
-                debris.ImageSource = sourceDirectory.GetSourceRectangle("asteroid_medium1_shaded");
-                debris.Width = debris.ImageSource.Width;
-                debris.Height = debris.ImageSource.Height;
-                shardObjects.Add(debris);
-            }
+                //Add a bunch of debris for testing purposes
+                int numDebris = 10;
+                Random random = new Random();
+                for (int i = 0; i < numDebris; i++)
+                {
+                    //Debris debris = new Debris(random.Next(-GraphicsDevice.Viewport.Width,GraphicsDevice.Viewport.Width), random.Next(-GraphicsDevice.Viewport.Height,GraphicsDevice.Viewport.Height));
+                    Debris debris = new Debris(random.Next(GraphicsDevice.Viewport.Width), random.Next(GraphicsDevice.Viewport.Height));
+                    debris.Alignment = Shard.Alignment.NEUTRAL;
+                    debris.Health = 50;
+                    debris.Energy = 10;
+                    debris.Ore = 10;
+                    debris.Oxygen = 10;
+                    debris.Water = 10;
+                    debris.Direction = random.NextDouble() * Math.PI * 2;
+                    debris.ImageSource = sourceDirectory.GetSourceRectangle("asteroid_medium1_shaded");
+                    debris.Width = debris.ImageSource.Width;
+                    debris.Height = debris.ImageSource.Height;
+                    shardObjects.Add(debris);
+                }
 
-            //Add evil ships
-            for (int i = 0; i < 3; i++)
-            {
-                EnemyShip evil = new Bruiser((int)(random.NextDouble() * 500), (int)(random.NextDouble() * 500));
-                evil.GunLevel = 5;
-                evil.MissileLevel = 5;
-                evil.ArmorLevel = 5;
-                evil.GetImageSource(sourceDirectory);
-                shardObjects.Add(evil);
-            }
-
-            //Add a ShardGraphic
-            ShardGraphic sg = new ShardGraphic(-100, -100);
-            sg.Text = "Test";
-            sg.Font = debugFont;
-            sg.TextColor = Color.Red;
-            sg.Health = 1000;
-            //shardObjects.Add(sg);
-
-            //player.ImageSource = new Rectangle(64, 32, 32, 32);
+                //Add evil ships
+                for (int i = 0; i < 3; i++)
+                {
+                    EnemyShip evil = new Bruiser((int)(random.NextDouble() * 500), (int)(random.NextDouble() * 500));
+                    evil.GunLevel = 5;
+                    evil.MissileLevel = 5;
+                    evil.ArmorLevel = 5;
+                    evil.GetImageSource(sourceDirectory);
+                    shardObjects.Add(evil);
+                }
             }
             else
             {
@@ -222,6 +212,63 @@ namespace Shard
             }
 
         }
+
+        #region Returning Important Fields
+
+        internal List<ShardObject> GetShardObjectList()
+        {
+            return this.shardObjects;
+        }
+
+        public bool Paused
+        {
+            get
+            {
+                return gamePaused;
+            }
+            set
+            {
+                gamePaused = value;
+            }
+        }
+
+        public bool AutomaticDeceleration
+        {
+            get
+            {
+                return automaticDeceleration;
+            }
+            set
+            {
+                this.automaticDeceleration = value;
+            }
+        }
+
+        public bool MouseDirectionalControl
+        {
+            get
+            {
+                return mouseDirectionalControl;
+            }
+            set
+            {
+                this.mouseDirectionalControl = value;
+            }
+        } 
+
+        public bool RealisticSpaceMovement
+        {
+            get
+            {
+                return realisticSpaceMovement;
+            }
+            set
+            {
+                this.realisticSpaceMovement = value;
+            }
+        }
+
+        #endregion
 
         /// <summary>
         /// UnloadContent will be called once per game and is the place to unload
@@ -580,7 +627,7 @@ namespace Shard
             }
 
             //Update Previous States
-            
+
             previousGamePad = currentGamePad;
             previousKeyboard = currentKeyboard;
             previousMouse = currentMouse;
@@ -666,7 +713,7 @@ namespace Shard
         {
             //Convert the pixel coordinate to units
             Matrix inv = Matrix.Invert(camera.GetViewMatrix());
-            Vector2 pixel = new Vector2(x,y);
+            Vector2 pixel = new Vector2(x, y);
             Vector2 unit = Vector2.Transform(pixel, inv);
             unitx = unit.X + 0.5f;
             unity = unit.Y + 0.5f;
@@ -674,7 +721,7 @@ namespace Shard
 
         protected Vector2 ScreenToWorld(Vector2 coordinate)
         {
-            Vector2 correctedCoords = new Vector2(0,0);
+            Vector2 correctedCoords = new Vector2(0, 0);
             return correctedCoords;
         }
 
@@ -709,7 +756,7 @@ namespace Shard
             // TODO: Add your drawing code here
 
             //Draw the Background
-            if(staticBackground)
+            if (staticBackground)
                 spriteBatch.Begin();
             else
                 spriteBatch.Begin(SpriteSortMode.BackToFront, null, null, null, null, null, camera.GetViewMatrix());
@@ -718,7 +765,7 @@ namespace Shard
 
             //Draw all ShardObjects relative to camera (ShardGraphics not included)
             spriteBatch.Begin(SpriteSortMode.BackToFront, null, null, null, null, null, camera.GetViewMatrix());
-            
+
             List<ShardGraphic> shardGraphics = new List<ShardGraphic>();
             foreach (ShardObject so in shardObjects)
             {
@@ -785,7 +832,7 @@ namespace Shard
                 Vector2 offset = new Vector2(4, 44);
                 foreach (string line in debugLines)
                 {
-                    
+
                     spriteBatch.DrawString(debugFont, line, offset, textColor);
                     offset.Y += debugFont.MeasureString(line).Y - 1;
                 }

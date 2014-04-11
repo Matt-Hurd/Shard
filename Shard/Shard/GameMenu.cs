@@ -21,17 +21,17 @@ namespace Shard
 
         //Underlying Menu Data Structures
         private List<Button> buttons;
+        private List<MenuImage> menuImages;
+        private GameImageSourceDirectory menuImageSourceDirectory;
 
         private ShardGame gameReference;
 
-        public GameMenu()
-        {
-            gameReference = null;
-        }
+        public GameMenu() : this(null) { }
 
         public GameMenu(ShardGame gameReference)
         {
             this.gameReference = gameReference;
+            this.buttons = new List<Button>();
         }
 
         #region Attribute Mutation and Value Retrieval
@@ -63,6 +63,21 @@ namespace Shard
             this.gameReference = gameReference;
         }
 
+        public void GiveSourceDirectory(GameImageSourceDirectory sourceDirectory)
+        {
+            this.menuImageSourceDirectory = sourceDirectory;
+        }
+
         #endregion
+
+        public void AddButton(Button button)
+        {
+            buttons.Add(button);
+        }
+
+        public void AddMenuImage(MenuImage menuImage)
+        {
+            menuImages.Add(menuImage);
+        }
     }
 }
