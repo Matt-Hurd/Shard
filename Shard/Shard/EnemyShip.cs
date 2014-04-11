@@ -144,11 +144,11 @@ namespace Shard
                         this.HorizontalVelocity = (Math.Cos(ang2)) / 2;
                         this.VerticalVelocity = (Math.Sin(ang2)) / 2;
 
-                        if (!(so is Debris))
-                        {
-                            so.Health -= Velocity;
-                            this.Health -= Velocity;
-                        }
+                        //if (!(so is Debris))
+                        //{
+                        //    so.Health -= Velocity;
+                        //    this.Health -= Velocity;
+                        //}
                     }
                 }
             }
