@@ -177,6 +177,8 @@ namespace Shard
 
         #endregion
 
+        #region Field Modification
+
         public virtual bool Solid
         {
             get
@@ -223,6 +225,7 @@ namespace Shard
             shardObjectListReference = list;
         }
 
+#endregion
 
         /*
          * Allows for any specifics in the handling of health changes, this should be called instead of changing Health (unless you want the Health to be exactly a desired value)
@@ -244,7 +247,7 @@ namespace Shard
             sg.TextColor = Color.Red;
             sg.Depth = 0;
             sg.Direction = new Random().NextDouble() * Math.PI * 2;
-            sg.Velocity = .8;
+            sg.Velocity = .6;
             sg.Solid = false;
             sg.SetValid(true);
             if (HasListReference())
@@ -308,7 +311,7 @@ namespace Shard
             {
                 Resource energy = new Resource((int)X + (int)(random.NextDouble() * Width), (int)Y + (int)(random.NextDouble() * Height), energyAmount, 0, 0, 0);
                 energy.Direction = random.NextDouble() * Math.PI * 2;
-                energy.Velocity = random.NextDouble() * .5;
+                energy.Velocity = random.NextDouble() * .3;
                 energy.ImageSource = sourceDirectory.GetSourceRectangle("icon_fuel");
                 energy.Width = energy.ImageSource.Width;
                 energy.Height = energy.ImageSource.Height;
@@ -319,7 +322,7 @@ namespace Shard
             {
                 Resource ore = new Resource((int)X + (int)(random.NextDouble() * Width), (int)Y + (int)(random.NextDouble() * Height), 0, oreAmount, 0, 0);
                 ore.Direction = random.NextDouble() * Math.PI * 2;
-                ore.Velocity = random.NextDouble() * .5;
+                ore.Velocity = random.NextDouble() * .3;
                 ore.ImageSource = sourceDirectory.GetSourceRectangle("icon_ore");
                 ore.Width = ore.ImageSource.Width;
                 ore.Height = ore.ImageSource.Height;
@@ -330,7 +333,7 @@ namespace Shard
             {
                 Resource oxygen = new Resource((int)X + (int)(random.NextDouble() * Width), (int)Y + (int)(random.NextDouble() * Height), 0, 0, oxygenAmount, 0);
                 oxygen.Direction = random.NextDouble() * Math.PI * 2;
-                oxygen.Velocity = random.NextDouble() * .5;
+                oxygen.Velocity = random.NextDouble() * .3;
                 oxygen.ImageSource = sourceDirectory.GetSourceRectangle("icon_oxygen");
                 oxygen.Width = oxygen.ImageSource.Width;
                 oxygen.Height = oxygen.ImageSource.Height;
@@ -341,7 +344,7 @@ namespace Shard
             {
                 Resource water = new Resource((int)X + (int)(random.NextDouble() * Width), (int)Y + (int)(random.NextDouble() * Height), 0, 0, 0, waterAmount);
                 water.Direction = random.NextDouble() * Math.PI * 2;
-                water.Velocity = random.NextDouble() * .5;
+                water.Velocity = random.NextDouble() * .3;
                 water.ImageSource = sourceDirectory.GetSourceRectangle("icon_water");
                 water.Width = water.ImageSource.Width;
                 water.Height = water.ImageSource.Height;

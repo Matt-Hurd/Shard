@@ -441,6 +441,38 @@ namespace Shard
             }
         }
 
+        public virtual int GetDamageReductionFromArmor()
+        {
+            switch (ArmorLevel)
+            {
+                case 0:
+                case 1:
+                    return 0;
+                case 2:
+                case 3:
+                    return 1;
+                case 4:
+                    return 2;
+                case 5:
+                    return 3;
+                default:
+                    return 0;
+            }
+        }
+
+        #endregion
+
+        #region Overriding Base Methods
+
+        public override void ApplyDamage(int damage)
+        {
+            int reducedDamage = damage - GetDamageReductionFromArmor();
+            if (reducedDamage <= 0)
+                base.ApplyDamage(0);
+            else
+                base.ApplyDamage(reducedDamage);
+        }
+
         #endregion
 
         public override void Update(List<ShardObject> shardObjects, GameTime gameTime)

@@ -149,7 +149,8 @@ namespace Shard
             player.Alignment = Alignment.GOOD;
             player.Width = player.ImageSource.Width;
             player.Height = player.ImageSource.Height;
-            player.Health = 10000;
+            player.Health = 100;
+            player.ArmorLevel = 5;
             maximumPlayerHealth = (int)player.Health;
             shardObjects.Add(player);
 
