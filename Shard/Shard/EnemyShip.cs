@@ -2,6 +2,7 @@
 using System.Data;
 using System.Collections.Generic;
 using System.Linq;
+using System.Xml.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Content;
@@ -17,9 +18,34 @@ namespace Shard
         private double activationRange;
         private Ship playerReference;
 
-        public EnemyShip(int xPosition, int yPosition) : base(xPosition, yPosition) 
+        public EnemyShip(int xPosition, int yPosition) : base(xPosition, yPosition, false) 
         {
             ActivationRange = 1000.0;
+            Alignment = Shard.Alignment.EVIL;
+            playerReference = null;
+        }
+
+        public EnemyShip(XElement node)
+            : base(0, 0, false)
+        {
+            X = Convert.ToDouble(node.Element("x").Value);
+            Y = Convert.ToDouble(node.Element("y").Value);
+            HorizontalVelocity = Convert.ToDouble(node.Element("horizontalVelocity").Value);
+            VerticalVelocity = Convert.ToDouble(node.Element("verticalVelocity").Value);
+            Direction = Convert.ToDouble(node.Element("direction").Value);
+            Health = Convert.ToDouble(node.Element("Health").Value);
+            RotationalVelocity = Convert.ToDouble(node.Element("RotationalVelocity").Value);
+            Energy = Convert.ToInt32(node.Element("Energy").Value);
+            Ore = Convert.ToInt32(node.Element("Ore").Value);
+            Oxygen = Convert.ToInt32(node.Element("Oxygen").Value);
+            Water = Convert.ToInt32(node.Element("Water").Value);
+            GunLevel = Convert.ToInt32(node.Element("gunLevel").Value);
+            MissileLevel = Convert.ToInt32(node.Element("missileLevel").Value);
+            LaserLevel = Convert.ToInt32(node.Element("laserLevel").Value);
+            ArmorLevel = Convert.ToInt32(node.Element("armorLevel").Value);
+            reloadTime = Convert.ToInt32(node.Element("reloadTime").Value);
+            rearmTime = Convert.ToInt32(node.Element("rearmTime").Value);
+            ActivationRange = Convert.ToDouble(node.Element("ActivationRange").Value);
             Alignment = Shard.Alignment.EVIL;
             playerReference = null;
         }
@@ -152,6 +178,32 @@ namespace Shard
                     }
                 }
             }
+        }
+        public override XElement toNode()
+        {
+            XElement node =
+                new XElement("enemyShip",
+                    new XElement("x", this.X),
+                    new XElement("y", this.Y),
+                    new XElement("horizontalVelocity", this.HorizontalVelocity),
+                    new XElement("verticalVelocity", this.VerticalVelocity),
+                    new XElement("direction", this.Direction),
+                    new XElement("speedLevel", SpeedLevel),
+                    new XElement("armorLevel", ArmorLevel),
+                    new XElement("gunLevel", GunLevel),
+                    new XElement("missileLevel", MissileLevel),
+                    new XElement("laserLevel", LaserLevel),
+                    new XElement("Health", this.Health),
+                    new XElement("RotationalVelocity", this.RotationalVelocity),
+                    new XElement("Energy", this.Energy),
+                    new XElement("Ore", this.Ore),
+                    new XElement("Water", this.Water),
+                    new XElement("Oxygen", this.Oxygen),
+                    new XElement("reloadTime", this.reloadTime),
+                    new XElement("rearmTime", this.rearmTime),
+                    new XElement("ActivationRange", ActivationRange)
+                    );
+            return node;
         }
     }
 }

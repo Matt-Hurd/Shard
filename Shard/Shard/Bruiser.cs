@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Xml.Linq;
 using System.Text;
 
 namespace Shard
@@ -19,9 +20,23 @@ namespace Shard
             Health = 100;
         }
 
+        public Bruiser(XElement node)
+            : base(node)
+        {
+        }
+
         public override void GetImageSource(GameImageSourceDirectory sourceDirectory)
         {
             this.ImageSource = sourceDirectory.GetSourceRectangle("pirateShip2_colored");
+        }
+
+        public override XElement toNode()
+        {
+            XElement parent = base.toNode();
+            var newXml = new XElement("bruiser",
+                             parent.Attributes(),
+                             parent.Elements());
+            return newXml;
         }
 
         #region Scaling Changes

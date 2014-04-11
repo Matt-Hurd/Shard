@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Xml.Linq;
 using System.Text;
 
 namespace Shard
@@ -16,6 +17,20 @@ namespace Shard
             MissileLevel = 1;
             SpeedLevel = 1;
             Health = 50;
+        }
+
+        public Thug(XElement node)
+            : base(node)
+        {
+        }
+
+        public override XElement toNode()
+        {
+            XElement parent = base.toNode();
+            var newXml = new XElement("thug",
+                             parent.Attributes(),
+                             parent.Elements());
+            return newXml;
         }
 
         #region Scaling Changes

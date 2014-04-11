@@ -31,9 +31,9 @@ namespace Shard
             {
                 string username = usernameTextBox.Text;
                 string password = passwordTextBox.Text;
-                if(username == null || username.Equals("") || username.Length <= 0)
+                if (username == null || username.Equals("") || username.Length <= 0)
                     MessageBox.Show("Unable to Register.\nInvalid Username");
-                else if(DatasetContains("username", username))
+                else if (DatasetContains("username", username))
                     MessageBox.Show("Unable to Register.\nUsername already in use");
                 else if (password == null || password.Equals("") || password.Length <= 0)
                     MessageBox.Show("Unable to Register.\nInvalid Password");
@@ -58,7 +58,7 @@ namespace Shard
             }
             return false;
         }
-        
+
         private bool ValidLogin(string username, string password)
         {
             foreach (XElement xe in database.getDocument().Root.Elements())
@@ -95,9 +95,9 @@ namespace Shard
 
         private void StartGame()
         {
-            ShardGame game = new ShardGame();
+            ShardGame game = new ShardGame(usernameTextBox.Text);
             game.Run();
         }
-       
+
     }
 }

@@ -12,23 +12,21 @@ namespace Shard
     {
         private XDocument doc;
         private string path;
+        private bool createNewOnSave;
         public XMLDatabase(String path, String root = "objects", bool createNew = false)
         {
             this.path = path;
 
-            if (!createNew)
+            try
             {
-                try
-                {
-                    doc = XDocument.Load(path);
-                }
-                catch (XmlException exception)
-                {
-                    Console.WriteLine(exception.GetBaseException());
-                    doc = new XDocument(new XElement(root));
-                }
+                doc = XDocument.Load(path);
             }
-            else doc = new XDocument(new XElement(root));
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.GetBaseException());
+                doc = new XDocument(new XElement(root));
+            }
+            createNewOnSave = createNew;
         }
 
         //returns the document for reading
@@ -140,5 +138,9 @@ namespace Shard
             }
         }
 
+        public void clear()
+        {
+            doc.Root.RemoveAll();
+        }
     }
 }

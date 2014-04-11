@@ -24,8 +24,9 @@ namespace Shard
 
         protected int reloadTime;
         protected int rearmTime;
+        private bool isPlayer;
 
-        public Ship(int xPosition, int yPosition)
+        public Ship(int xPosition, int yPosition, bool isPlayer)
         {
             this.X = xPosition;
             this.Y = yPosition;
@@ -43,13 +44,15 @@ namespace Shard
             this.armorLevel = 0;
             this.reloadTime = 0;
             this.rearmTime = 0;
+            this.isPlayer = isPlayer;
         }
 
         public Ship(XElement node)
         {
             X = Convert.ToDouble(node.Element("x").Value);
             Y = Convert.ToDouble(node.Element("y").Value);
-            Velocity = Convert.ToDouble(node.Element("velocity").Value);
+            HorizontalVelocity = Convert.ToDouble(node.Element("horizontalVelocity").Value);
+            VerticalVelocity = Convert.ToDouble(node.Element("verticalVelocity").Value);
             Direction = Convert.ToDouble(node.Element("direction").Value);
             Health = Convert.ToDouble(node.Element("Health").Value);
             RotationalVelocity = Convert.ToDouble(node.Element("RotationalVelocity").Value);
@@ -63,9 +66,19 @@ namespace Shard
             armorLevel = Convert.ToInt32(node.Element("armorLevel").Value);
             reloadTime = Convert.ToInt32(node.Element("reloadTime").Value);
             rearmTime = Convert.ToInt32(node.Element("rearmTime").Value);
+            isPlayer = Convert.ToBoolean(node.Element("isPlayer").Value);
         }
 
         #region Modifying and Returning Fields
+
+        public bool IsPlayer
+        {
+            get
+            {
+                return isPlayer;
+            }
+        }
+
 
         public int GunLevel
         {
@@ -503,7 +516,8 @@ namespace Shard
                 new XElement("ship",
                     new XElement("x", this.X),
                     new XElement("y", this.Y),
-                    new XElement("velocity", this.Velocity),
+                    new XElement("horizontalVelocity", this.HorizontalVelocity),
+                    new XElement("verticalVelocity", this.VerticalVelocity),
                     new XElement("direction", this.Direction),
                     new XElement("speedLevel", this.speedLevel),
                     new XElement("armorLevel", this.armorLevel),
@@ -517,7 +531,8 @@ namespace Shard
                     new XElement("Water", this.Water),
                     new XElement("Oxygen", this.Oxygen),
                     new XElement("reloadTime", this.reloadTime),
-                    new XElement("rearmTime", this.rearmTime)
+                    new XElement("rearmTime", this.rearmTime),
+                    new XElement("isPlayer", this.isPlayer)
                     );
             return node;
         }

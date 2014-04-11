@@ -27,10 +27,15 @@ namespace Shard
         {
             X = Convert.ToDouble(node.Element("x").Value);
             Y = Convert.ToDouble(node.Element("y").Value);
-            Velocity = Convert.ToDouble(node.Element("velocity").Value);
+            HorizontalVelocity = Convert.ToDouble(node.Element("horizontalVelocity").Value);
+            VerticalVelocity = Convert.ToDouble(node.Element("verticalVelocity").Value);
             Direction = Convert.ToDouble(node.Element("direction").Value);
             Health = Convert.ToDouble(node.Element("Health").Value);
             RotationalVelocity = Convert.ToDouble(node.Element("RotationalVelocity").Value);
+            Energy = Convert.ToInt32(node.Element("Energy").Value);
+            Ore = Convert.ToInt32(node.Element("Ore").Value);
+            Oxygen = Convert.ToInt32(node.Element("Oxygen").Value);
+            Water = Convert.ToInt32(node.Element("Water").Value);
         }
 
         public override void Update(List<ShardObject> shardObjects, GameTime gameTime)
@@ -70,10 +75,15 @@ namespace Shard
                 new XElement("debris",
                     new XElement("x", this.X),
                     new XElement("y", this.Y),
-                    new XElement("velocity", this.Velocity),
+                    new XElement("horizontalVelocity", this.HorizontalVelocity),
+                    new XElement("verticalVelocity", this.VerticalVelocity),
                     new XElement("direction", this.Direction),
                     new XElement("Health", this.Health),
-                    new XElement("RotationalVelocity", this.RotationalVelocity)
+                    new XElement("RotationalVelocity", this.RotationalVelocity),
+                    new XElement("Energy", this.Energy),
+                    new XElement("Ore", this.Ore),
+                    new XElement("Water", this.Water),
+                    new XElement("Oxygen", this.Oxygen)
                     );
             return node;
         }

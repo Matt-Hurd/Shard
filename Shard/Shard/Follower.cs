@@ -2,6 +2,7 @@
 using System.Data;
 using System.Collections.Generic;
 using System.Linq;
+using System.Xml.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Content;
@@ -23,6 +24,11 @@ namespace Shard
         public Follower(int xPosition, int yPosition) : base(xPosition, yPosition) 
         {
             followingDistance = 100.0;
+        }
+
+        public Follower(XElement node)
+            : base(node)
+        {
         }
 
         #region Mutating and Returning Fields

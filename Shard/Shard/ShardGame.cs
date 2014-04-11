@@ -18,11 +18,15 @@ namespace Shard
     /// </summary>
     public class ShardGame : Microsoft.Xna.Framework.Game
     {
+        //debug option
+        private bool skipLoadingFromDatabase = true;
+
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
         Texture2D spritesheet;
         Texture2D background;
         GameImageSourceDirectory sourceDirectory;
+        String username;
 
         Song songy;
         
@@ -62,7 +66,14 @@ namespace Shard
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
-            
+            username = "debugMode";
+        }
+
+        public ShardGame(String username)
+        {
+            graphics = new GraphicsDeviceManager(this);
+            Content.RootDirectory = "Content";
+            this.username = username;
         }
 
         /// <summary>
@@ -88,7 +99,8 @@ namespace Shard
             MediaPlayer.Play(songy);
 
             //Database
-            database = new XMLDatabase("objects.xml", "objects", true);
+            System.IO.Directory.CreateDirectory("SaveData");
+            database = new XMLDatabase("SaveData/" + username + ".xml", "objects", true);
 
             //Default Options
             //Visual
@@ -103,7 +115,7 @@ namespace Shard
 
             shardObjects = new List<ShardObject>();
 
-            player = new Ship(0, 0);
+            player = new Ship(0, 0, true);
             player.Alignment = Shard.Alignment.GOOD;
             player.GunLevel = 1;
             player.MissileLevel = 1;
@@ -144,6 +156,8 @@ namespace Shard
             //Background Loading
             background = Content.Load<Texture2D>("Backgrounds//seamlessNebulaBackground");
 
+            if (database.isEmpty() || skipLoadingFromDatabase)
+            {
             //Player Creation
             player.ImageSource = sourceDirectory.GetSourceRectangle("playerShip1_colored");
             player.Alignment = Alignment.GOOD;
@@ -193,6 +207,12 @@ namespace Shard
             //shardObjects.Add(sg);
 
             //player.ImageSource = new Rectangle(64, 32, 32, 32);
+            }
+            else
+            {
+                LoadGame(database);
+            }
+
         }
 
         /// <summary>
@@ -543,11 +563,65 @@ namespace Shard
 
         protected void SaveGame()
         {
+            database.clear();
             foreach (ShardObject so in shardObjects)
             {
                 database.addNode(so.toNode());
             }
             database.save();
+        }
+
+        protected void LoadGame(XMLDatabase db)
+        {
+            foreach (XElement xe in db.getDocument().Root.Elements())
+            {
+                switch (xe.Name.ToString())
+                {
+                    case "ship":
+                        Ship tempShip = new Ship(xe);
+                        shardObjects.Add(tempShip);
+                        if (tempShip.IsPlayer)
+                        {
+                            player = tempShip;
+                            player.ImageSource = sourceDirectory.GetSourceRectangle("playerShip1_colored");
+                            player.Width = player.ImageSource.Width;
+                            player.Height = player.ImageSource.Height;
+                            maximumPlayerHealth = (int)player.Health;
+                        }
+                        break;
+                    case "debris":
+                        Debris tempDebris = new Debris(xe);
+                        tempDebris.ImageSource = sourceDirectory.GetSourceRectangle("asteroid_medium1_shaded");
+                        tempDebris.Width = tempDebris.ImageSource.Width;
+                        tempDebris.Height = tempDebris.ImageSource.Height;
+                        tempDebris.Alignment = Shard.Alignment.NEUTRAL;
+                        shardObjects.Add(tempDebris);
+                        break;
+                    case "enemyShip":
+                        EnemyShip tempEnemy = new EnemyShip(xe);
+                        tempEnemy.ImageSource = sourceDirectory.GetSourceRectangle("pirateShip1_colored");
+                        tempEnemy.Width = tempEnemy.ImageSource.Width;
+                        tempEnemy.Height = tempEnemy.ImageSource.Height;
+                        shardObjects.Add(tempEnemy);
+                        break;
+                    case "bruiser":
+                        EnemyShip tempBruiser = new Bruiser(xe);
+                        tempBruiser.GetImageSource(sourceDirectory);
+                        tempBruiser.Width = tempBruiser.ImageSource.Width;
+                        tempBruiser.Height = tempBruiser.ImageSource.Height;
+                        shardObjects.Add(tempBruiser);
+                        break;
+                    case "thug":
+                        EnemyShip tempThug = new Thug(xe);
+                        tempThug.ImageSource = sourceDirectory.GetSourceRectangle("pirateShip1_colored");
+                        tempThug.Width = tempThug.ImageSource.Width;
+                        tempThug.Height = tempThug.ImageSource.Height;
+                        shardObjects.Add(tempThug);
+                        break;
+                    default:
+                        break;
+                }
+            }
         }
 
         //Helper Methods
