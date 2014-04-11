@@ -85,17 +85,17 @@ namespace Shard
         {
             if (ValidLogin(usernameTextBox.Text, passwordTextBox.Text))
             {
-                Thread gameThread = new Thread(StartGame);
-                gameThread.Start();
+                Thread gameThread = new Thread(new ParameterizedThreadStart(StartGame));
+                gameThread.Start(usernameTextBox.Text);
                 this.Close();
             }
             else
                 MessageBox.Show("Invalid Login Information");
         }
 
-        private void StartGame()
+        private void StartGame(object username)
         {
-            ShardGame game = new ShardGame(usernameTextBox.Text);
+            ShardGame game = new ShardGame((String)username);
             game.Run();
         }
 
