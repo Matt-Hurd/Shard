@@ -213,9 +213,9 @@ namespace Shard
                 case 3:
                     return 4;
                 case 4:
-                    return 8;
+                    return 6;
                 case 5:
-                    return 12;
+                    return 10;
                 default:
                     return 1;
             }
@@ -275,7 +275,7 @@ namespace Shard
                 case 4:
                     return 10;
                 case 5:
-                    return 5;
+                    return 6;
                 default:
                     return 100;
             }
@@ -351,9 +351,9 @@ namespace Shard
                 case 3:
                     return 8;
                 case 4:
-                    return 12;
+                    return 11;
                 case 5:
-                    return 16;
+                    return 14;
                 default:
                     return 1;
             }
@@ -462,12 +462,13 @@ namespace Shard
                 case 1:
                     return 0;
                 case 2:
-                case 3:
                     return 1;
-                case 4:
+                case 3:
                     return 2;
+                case 4:
+                    return 4;
                 case 5:
-                    return 3;
+                    return 5;
                 default:
                     return 0;
             }

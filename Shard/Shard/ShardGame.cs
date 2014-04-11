@@ -37,6 +37,7 @@ namespace Shard
         Quadtree collisionQuadtree;
 
         //Options
+        private bool gamePaused;
         private bool realisticSpaceMovement;
         private bool automaticDeceleration;
         private bool mouseDirectionalControl;
@@ -107,6 +108,7 @@ namespace Shard
             debugVisible = true;
             staticBackground = true;
             //In-Game
+            gamePaused = false;
             realisticSpaceMovement = false;
             automaticDeceleration = true;
             mouseDirectionalControl = false;
@@ -164,7 +166,10 @@ namespace Shard
             player.Width = player.ImageSource.Width;
             player.Height = player.ImageSource.Height;
             player.Health = 100;
+            player.GunLevel = 5;
+            player.MissileLevel = 5;
             player.ArmorLevel = 5;
+            player.SpeedLevel = 5;
             maximumPlayerHealth = (int)player.Health;
             shardObjects.Add(player);
 
@@ -194,6 +199,9 @@ namespace Shard
             for (int i = 0; i < 3; i++)
             {
                 EnemyShip evil = new Bruiser((int)(random.NextDouble() * 500), (int)(random.NextDouble() * 500));
+                evil.GunLevel = 5;
+                evil.MissileLevel = 5;
+                evil.ArmorLevel = 5;
                 evil.GetImageSource(sourceDirectory);
                 shardObjects.Add(evil);
             }
@@ -234,323 +242,342 @@ namespace Shard
             GamePadState currentGamePad = GamePad.GetState(PlayerIndex.One);
             KeyboardState currentKeyboard = Keyboard.GetState();
             MouseState currentMouse = Mouse.GetState();
+            bool pauseStateChanged = false;
 
             // Exit Game
             if (currentGamePad.Buttons.Back == ButtonState.Pressed || currentKeyboard.IsKeyDown(Keys.Escape))
                 this.Exit();
 
+            //Unpause Game
+            if (EdgeDetect(currentKeyboard, Keys.P) && gamePaused)
+            {
+                gamePaused = false;
+                pauseStateChanged = true;
+            }
+
             // TODO: Add your update logic here
 
-            #region Player Rotation
-
-            double maximumRotationalVelocity = Math.PI / 16.0;
-            double rotationalVelocityIncrement = .001;
-            double directionalChangeIncrement = .05;
-
-            if (!mouseDirectionalControl)
+            if (!gamePaused)
             {
-                if (realisticSpaceMovement)
+
+                #region Player Rotation
+
+                double maximumRotationalVelocity = Math.PI / 16.0;
+                double rotationalVelocityIncrement = player.GetMaxSpeed() / 3000.0;
+                double directionalChangeIncrement = .05;
+
+                if (!mouseDirectionalControl)
                 {
-                    if (currentKeyboard.IsKeyDown(Keys.Left) || currentKeyboard.IsKeyDown(Keys.A))
+                    if (realisticSpaceMovement)
                     {
-                        if (player.RotationalVelocity > -maximumRotationalVelocity)
-                            player.RotationalVelocity -= rotationalVelocityIncrement;
+                        if (currentKeyboard.IsKeyDown(Keys.Left) || currentKeyboard.IsKeyDown(Keys.A))
+                        {
+                            if (player.RotationalVelocity > -maximumRotationalVelocity)
+                                player.RotationalVelocity -= rotationalVelocityIncrement;
+                        }
+                        if (currentKeyboard.IsKeyDown(Keys.Right) || currentKeyboard.IsKeyDown(Keys.D))
+                        {
+                            if (player.RotationalVelocity < maximumRotationalVelocity)
+                                player.RotationalVelocity += rotationalVelocityIncrement;
+                        }
                     }
-                    if (currentKeyboard.IsKeyDown(Keys.Right) || currentKeyboard.IsKeyDown(Keys.D))
+                    else
                     {
-                        if (player.RotationalVelocity < maximumRotationalVelocity)
-                            player.RotationalVelocity += rotationalVelocityIncrement;
+                        if (currentKeyboard.IsKeyDown(Keys.Left) || currentKeyboard.IsKeyDown(Keys.A))
+                            player.Direction -= directionalChangeIncrement;
+                        if (currentKeyboard.IsKeyDown(Keys.Right) || currentKeyboard.IsKeyDown(Keys.D))
+                            player.Direction += directionalChangeIncrement;
+
+                        //player.Velocity = player.Velocity; //Looks weird, is necessary
                     }
                 }
                 else
                 {
-                    if (currentKeyboard.IsKeyDown(Keys.Left) || currentKeyboard.IsKeyDown(Keys.A))
-                        player.Direction -= directionalChangeIncrement;
-                    if (currentKeyboard.IsKeyDown(Keys.Right) || currentKeyboard.IsKeyDown(Keys.D))
-                        player.Direction += directionalChangeIncrement;
-
-                    //player.Velocity = player.Velocity; //Looks weird, is necessary
-                }
-            }
-            else
-            {
-                float unitx = 0;
-                float unity = 0;
-                TraceScreenCoord((int)currentMouse.X, (int)currentMouse.Y, out unitx, out unity);
-                player.Direction = (float)Math.Atan2(unity - (player.Y + player.Height / 2), unitx - (player.X + player.Width / 2));
-                //player.RotationalVelocity = 0;
-                //player.Direction = Math.Atan2(currentMouse.Y - player.Y, currentMouse.X - player.X);
-            }
-
-            #endregion
-
-            #region Player Movement and Deceleration Implementation
-
-            double maxVelocity = player.GetMaxSpeed();
-            double velocityIncrement = maxVelocity / 40.0;
-
-
-            //Changes must be made directly to horizontal/vertical velocity of ship to simulate movement within space
-            if (realisticSpaceMovement)
-            {
-                if (currentKeyboard.IsKeyDown(Keys.Up) || currentKeyboard.IsKeyDown(Keys.W))
-                {
-                    player.HorizontalVelocity += Math.Cos(player.Direction) * velocityIncrement;
-                    player.VerticalVelocity += Math.Sin(player.Direction) * velocityIncrement;
-                }
-                else if (currentKeyboard.IsKeyDown(Keys.Down) || currentKeyboard.IsKeyDown(Keys.S))
-                {
-                    player.HorizontalVelocity += Math.Cos(player.Direction + Math.PI) * velocityIncrement;
-                    player.VerticalVelocity += Math.Sin(player.Direction + Math.PI) * velocityIncrement;
-                }
-            }
-            else //Ship Movement without velocity/rotation preservation
-            {
-                if (currentKeyboard.IsKeyDown(Keys.Up) || currentKeyboard.IsKeyDown(Keys.W))
-                {
-                    player.HorizontalVelocity += Math.Cos(player.Direction) * velocityIncrement;
-                    player.VerticalVelocity += Math.Sin(player.Direction) * velocityIncrement;
-                }
-                else if (currentKeyboard.IsKeyDown(Keys.Down) || currentKeyboard.IsKeyDown(Keys.S)) // <-- Potentially Fixed Problems
-                {
-                    player.HorizontalVelocity -= Math.Cos(player.Direction) * velocityIncrement;
-                    player.VerticalVelocity -= Math.Sin(player.Direction) * velocityIncrement;
+                    float unitx = 0;
+                    float unity = 0;
+                    TraceScreenCoord((int)currentMouse.X, (int)currentMouse.Y, out unitx, out unity);
+                    player.Direction = (float)Math.Atan2(unity - (player.Y + player.Height / 2), unitx - (player.X + player.Width / 2));
+                    //player.RotationalVelocity = 0;
+                    //player.Direction = Math.Atan2(currentMouse.Y - player.Y, currentMouse.X - player.X);
                 }
 
-                //Strafing Movement, only works when Mouse Directional Control is enabled
-                if (mouseDirectionalControl)
-                {
-                    double directionOfStrafe = player.Direction;
-                    if ((currentKeyboard.IsKeyDown(Keys.Left) && !currentKeyboard.IsKeyDown(Keys.Right)) || (currentKeyboard.IsKeyDown(Keys.A) && !currentKeyboard.IsKeyDown(Keys.D)))
-                        directionOfStrafe = player.Direction - MathHelper.PiOver2;
-                    else if ((currentKeyboard.IsKeyDown(Keys.Right) && !currentKeyboard.IsKeyDown(Keys.Left)) || (currentKeyboard.IsKeyDown(Keys.D) && !currentKeyboard.IsKeyDown(Keys.A)))
-                        directionOfStrafe = player.Direction + MathHelper.PiOver2;
+                #endregion
 
-                    if (directionOfStrafe != player.Direction)
+                #region Player Movement and Deceleration Implementation
+
+                double maxVelocity = player.GetMaxSpeed();
+                double velocityIncrement = maxVelocity / 40.0;
+
+
+                //Changes must be made directly to horizontal/vertical velocity of ship to simulate movement within space
+                if (realisticSpaceMovement)
+                {
+                    if (currentKeyboard.IsKeyDown(Keys.Up) || currentKeyboard.IsKeyDown(Keys.W))
                     {
-                        player.HorizontalVelocity += Math.Cos(directionOfStrafe) * velocityIncrement;
-                        player.VerticalVelocity += Math.Sin(directionOfStrafe) * velocityIncrement;
+                        player.HorizontalVelocity += Math.Cos(player.Direction) * velocityIncrement;
+                        player.VerticalVelocity += Math.Sin(player.Direction) * velocityIncrement;
+                    }
+                    else if (currentKeyboard.IsKeyDown(Keys.Down) || currentKeyboard.IsKeyDown(Keys.S))
+                    {
+                        player.HorizontalVelocity += Math.Cos(player.Direction + Math.PI) * velocityIncrement;
+                        player.VerticalVelocity += Math.Sin(player.Direction + Math.PI) * velocityIncrement;
                     }
                 }
-            }
-
-            //Automatic Deceleration of Player Ship Movement and Rotation
-            if (automaticDeceleration)
-            {
-                //Player Rotation Deceleration
-                if (!currentKeyboard.IsKeyDown(Keys.Left) && !currentKeyboard.IsKeyDown(Keys.Right) && !currentKeyboard.IsKeyDown(Keys.W) && !currentKeyboard.IsKeyDown(Keys.S))
+                else //Ship Movement without velocity/rotation preservation
                 {
-                    if (Math.Abs(player.RotationalVelocity) < rotationalVelocityIncrement)
-                        player.RotationalVelocity = 0;
-                    else
+                    if (currentKeyboard.IsKeyDown(Keys.Up) || currentKeyboard.IsKeyDown(Keys.W))
                     {
-                        if (GetSign(player.RotationalVelocity) > 0)
-                            player.RotationalVelocity -= rotationalVelocityIncrement / 2;
-                        else if(GetSign(player.RotationalVelocity) < 0)
-                            player.RotationalVelocity += rotationalVelocityIncrement / 2;
+                        player.HorizontalVelocity += Math.Cos(player.Direction) * velocityIncrement;
+                        player.VerticalVelocity += Math.Sin(player.Direction) * velocityIncrement;
                     }
-                }
-
-                //Player Movement Deceleration
-                if (!currentKeyboard.IsKeyDown(Keys.Down) && !currentKeyboard.IsKeyDown(Keys.Up) && !currentKeyboard.IsKeyDown(Keys.W) && !currentKeyboard.IsKeyDown(Keys.S))
-                {
-                    if (player.Velocity < velocityIncrement)
-                        player.Velocity = 0;
-                    else
+                    else if (currentKeyboard.IsKeyDown(Keys.Down) || currentKeyboard.IsKeyDown(Keys.S)) // <-- Potentially Fixed Problems
                     {
-                        if (realisticSpaceMovement)
+                        player.HorizontalVelocity -= Math.Cos(player.Direction) * velocityIncrement;
+                        player.VerticalVelocity -= Math.Sin(player.Direction) * velocityIncrement;
+                    }
+
+                    //Strafing Movement, only works when Mouse Directional Control is enabled
+                    if (mouseDirectionalControl)
+                    {
+                        double directionOfStrafe = player.Direction;
+                        if ((currentKeyboard.IsKeyDown(Keys.Left) && !currentKeyboard.IsKeyDown(Keys.Right)) || (currentKeyboard.IsKeyDown(Keys.A) && !currentKeyboard.IsKeyDown(Keys.D)))
+                            directionOfStrafe = player.Direction - MathHelper.PiOver2;
+                        else if ((currentKeyboard.IsKeyDown(Keys.Right) && !currentKeyboard.IsKeyDown(Keys.Left)) || (currentKeyboard.IsKeyDown(Keys.D) && !currentKeyboard.IsKeyDown(Keys.A)))
+                            directionOfStrafe = player.Direction + MathHelper.PiOver2;
+
+                        if (directionOfStrafe != player.Direction)
                         {
-                            //double directionOfVelocity = Math.Atan2(player.VerticalVelocity, player.HorizontalVelocity);
-                            //player.HorizontalVelocity += Math.Cos(player.Direction) * velocityIncrement / 2.0;
-                            //player.VerticalVelocity += Math.Sin(player.Direction) * velocityIncrement / 2.0;
-
-                            //if (player.HorizontalVelocity > 0)
-                            //    player.HorizontalVelocity -= Math.Cos(player.Direction) * velocityIncrement / 2.0;
-                            //else if (player.HorizontalVelocity < 0)
-                            //    player.HorizontalVelocity += Math.Cos(player.Direction) * velocityIncrement / 2.0;
-
-                            //if (player.VerticalVelocity > 0)
-                            //    player.VerticalVelocity -= Math.Sin(player.Direction) * velocityIncrement / 2.0;
-                            //else if (player.VerticalVelocity < 0)
-                            //    player.VerticalVelocity += Math.Sin(player.Direction) * velocityIncrement / 2.0;
-
-                            if (player.HorizontalVelocity > 0)
-                                player.HorizontalVelocity -= velocityIncrement / 2.0;
-                            else if (player.HorizontalVelocity < 0)
-                                player.HorizontalVelocity += velocityIncrement / 2.0;
-
-                            if (player.VerticalVelocity > 0)
-                                player.VerticalVelocity -= velocityIncrement / 2.0;
-                            else if (player.VerticalVelocity < 0)
-                                player.VerticalVelocity += velocityIncrement / 2.0;
+                            player.HorizontalVelocity += Math.Cos(directionOfStrafe) * velocityIncrement;
+                            player.VerticalVelocity += Math.Sin(directionOfStrafe) * velocityIncrement;
                         }
+                    }
+                }
+
+                //Automatic Deceleration of Player Ship Movement and Rotation
+                if (automaticDeceleration)
+                {
+                    //Player Rotation Deceleration
+                    if (!currentKeyboard.IsKeyDown(Keys.Left) && !currentKeyboard.IsKeyDown(Keys.Right) && !currentKeyboard.IsKeyDown(Keys.W) && !currentKeyboard.IsKeyDown(Keys.S))
+                    {
+                        if (Math.Abs(player.RotationalVelocity) < rotationalVelocityIncrement)
+                            player.RotationalVelocity = 0;
                         else
                         {
-                            if (player.HorizontalVelocity > 0)
-                                player.HorizontalVelocity -= velocityIncrement / 2.0;
-                            else if (player.HorizontalVelocity < 0)
-                                player.HorizontalVelocity += velocityIncrement / 2.0;
+                            if (GetSign(player.RotationalVelocity) > 0)
+                                player.RotationalVelocity -= rotationalVelocityIncrement / 2;
+                            else if (GetSign(player.RotationalVelocity) < 0)
+                                player.RotationalVelocity += rotationalVelocityIncrement / 2;
+                        }
+                    }
 
-                            if (player.VerticalVelocity > 0)
-                                player.VerticalVelocity -= velocityIncrement / 2.0;
-                            else if (player.VerticalVelocity < 0)
-                                player.VerticalVelocity += velocityIncrement / 2.0;
-                            
-                            //if (player.Velocity >= velocityIncrement)
+                    //Player Movement Deceleration
+                    if (!currentKeyboard.IsKeyDown(Keys.Down) && !currentKeyboard.IsKeyDown(Keys.Up) && !currentKeyboard.IsKeyDown(Keys.W) && !currentKeyboard.IsKeyDown(Keys.S))
+                    {
+                        if (player.Velocity < velocityIncrement)
+                            player.Velocity = 0;
+                        else
+                        {
+                            double reductionFactor = 2.0;
+
+                            if (realisticSpaceMovement)
+                            {
+                                //double directionOfVelocity = Math.Atan2(player.VerticalVelocity, player.HorizontalVelocity);
+                                //player.HorizontalVelocity += Math.Cos(player.Direction) * velocityIncrement / 2.0;
+                                //player.VerticalVelocity += Math.Sin(player.Direction) * velocityIncrement / 2.0;
+
+                                //if (player.HorizontalVelocity > 0)
+                                //    player.HorizontalVelocity -= Math.Cos(player.Direction) * velocityIncrement / 2.0;
+                                //else if (player.HorizontalVelocity < 0)
+                                //    player.HorizontalVelocity += Math.Cos(player.Direction) * velocityIncrement / 2.0;
+
+                                //if (player.VerticalVelocity > 0)
+                                //    player.VerticalVelocity -= Math.Sin(player.Direction) * velocityIncrement / 2.0;
+                                //else if (player.VerticalVelocity < 0)
+                                //    player.VerticalVelocity += Math.Sin(player.Direction) * velocityIncrement / 2.0;
+
+                                if (player.HorizontalVelocity > 0)
+                                    player.HorizontalVelocity -= velocityIncrement / reductionFactor;
+                                else if (player.HorizontalVelocity < 0)
+                                    player.HorizontalVelocity += velocityIncrement / reductionFactor;
+
+                                if (player.VerticalVelocity > 0)
+                                    player.VerticalVelocity -= velocityIncrement / reductionFactor;
+                                else if (player.VerticalVelocity < 0)
+                                    player.VerticalVelocity += velocityIncrement / reductionFactor;
+                            }
+                            else
+                            {
+                                if (player.HorizontalVelocity > 0)
+                                    player.HorizontalVelocity -= velocityIncrement / reductionFactor;
+                                else if (player.HorizontalVelocity < 0)
+                                    player.HorizontalVelocity += velocityIncrement / reductionFactor;
+
+                                if (player.VerticalVelocity > 0)
+                                    player.VerticalVelocity -= velocityIncrement / reductionFactor;
+                                else if (player.VerticalVelocity < 0)
+                                    player.VerticalVelocity += velocityIncrement / reductionFactor;
+
+                                //if (player.Velocity >= velocityIncrement)
                                 //player.Velocity -= velocityIncrement / 2.0;
+                            }
                         }
                     }
                 }
-            }
 
-            //Maximum Velocity Control
+                //Maximum Velocity Control
 
-            if (Math.Abs(player.HorizontalVelocity) > maxVelocity)
-            {
-                player.HorizontalVelocity = maxVelocity * GetSign(player.HorizontalVelocity);
-            }
+                if (Math.Abs(player.HorizontalVelocity) > maxVelocity)
+                {
+                    player.HorizontalVelocity = maxVelocity * GetSign(player.HorizontalVelocity);
+                }
 
-            if (Math.Abs(player.VerticalVelocity) > maxVelocity)
-            {
-                player.VerticalVelocity = maxVelocity * GetSign(player.VerticalVelocity);
-            }
+                if (Math.Abs(player.VerticalVelocity) > maxVelocity)
+                {
+                    player.VerticalVelocity = maxVelocity * GetSign(player.VerticalVelocity);
+                }
 
-            #endregion
+                #endregion
 
-            #region Player Shooting
+                #region Player Shooting
 
-            //Shooting
-            if ((currentMouse.LeftButton.Equals(ButtonState.Pressed)))
-            {
-                double temp = player.Direction;
-                float unitx = 0;
-                float unity = 0;
-                TraceScreenCoord((int)currentMouse.X, (int)currentMouse.Y, out unitx, out unity);
-                player.Direction = (float)Math.Atan2(unity - (player.Y + player.Height / 2), unitx - (player.X + player.Width / 2));
-                player.ShootBullet(shardObjects, sourceDirectory);
-                player.Direction = temp;
-            }
+                //Shooting
+                if ((currentMouse.LeftButton.Equals(ButtonState.Pressed)))
+                {
+                    double temp = player.Direction;
+                    float unitx = 0;
+                    float unity = 0;
+                    TraceScreenCoord((int)currentMouse.X, (int)currentMouse.Y, out unitx, out unity);
+                    player.Direction = (float)Math.Atan2(unity - (player.Y + player.Height / 2), unitx - (player.X + player.Width / 2));
+                    player.ShootBullet(shardObjects, sourceDirectory);
+                    player.Direction = temp;
+                }
 
-            if ((currentMouse.RightButton.Equals(ButtonState.Pressed)))
-            {
-                double temp = player.Direction;
-                float unitx = 0;
-                float unity = 0;
-                TraceScreenCoord((int)currentMouse.X, (int)currentMouse.Y, out unitx, out unity);
-                player.Direction = (float)Math.Atan2(unity - (player.Y + player.Height / 2), unitx - (player.X + player.Width / 2));
-                player.ShootMissile(shardObjects, sourceDirectory);
-                player.Direction = temp;
-            }
+                if ((currentMouse.RightButton.Equals(ButtonState.Pressed)))
+                {
+                    double temp = player.Direction;
+                    float unitx = 0;
+                    float unity = 0;
+                    TraceScreenCoord((int)currentMouse.X, (int)currentMouse.Y, out unitx, out unity);
+                    player.Direction = (float)Math.Atan2(unity - (player.Y + player.Height / 2), unitx - (player.X + player.Width / 2));
+                    player.ShootMissile(shardObjects, sourceDirectory);
+                    player.Direction = temp;
+                }
 
-            #endregion
+                #endregion
 
-            //Vacuum Button
-            if (currentKeyboard.IsKeyDown(Keys.LeftShift))
-            {
-                int vacuumWidth = (int)player.Width * 5;
-                int vacuumHeight = (int)player.Height * 5;
-                Rectangle vacuumBounds = new Rectangle((int)player.Center.X - vacuumWidth / 2, (int)player.Center.Y - vacuumHeight / 2, vacuumWidth, vacuumHeight);
+                //Vacuum Button
+                if (currentKeyboard.IsKeyDown(Keys.LeftShift))
+                {
+                    int vacuumWidth = (int)player.Width * 5;
+                    int vacuumHeight = (int)player.Height * 5;
+                    Rectangle vacuumBounds = new Rectangle((int)player.Center.X - vacuumWidth / 2, (int)player.Center.Y - vacuumHeight / 2, vacuumWidth, vacuumHeight);
+                    foreach (ShardObject so in shardObjects)
+                    {
+                        if (so is Resource)
+                        {
+                            if (vacuumBounds.Intersects(so.GetBounds()))
+                            {
+                                so.PointTowards(player.Center);
+                                so.Velocity = 8;
+                            }
+                        }
+                    }
+                }
+
+                //Pause Button
+                if (EdgeDetect(currentKeyboard, Keys.P) && !gamePaused && !pauseStateChanged)
+                    gamePaused = true;
+
+                if (currentMouse.ScrollWheelValue > previousMouse.ScrollWheelValue) //Mousewheel UP
+                {
+                    isZooming = true;
+                    zoomIO = 1; //Sets I/O to zooming IN;
+                }
+                if (currentMouse.ScrollWheelValue < previousMouse.ScrollWheelValue) //Mousewheel DOWN
+                {
+                    isZooming = true;
+                    zoomIO = 0; //Sets I/O to zooming OUT;
+                }
+                if ((currentKeyboard.IsKeyDown(Keys.LeftControl) || currentKeyboard.IsKeyDown(Keys.RightControl)) && EdgeDetect(currentKeyboard, Keys.S))
+                {
+                    this.SaveGame();
+                }
+
+                if (isZooming)
+                {
+                    if (zoomIO == 1 && !(zoomZ >= 2))
+                    {
+                        zoomZ += .1f;
+                        camera.Zoom = zoomZ;
+                    }
+                    if (zoomIO == 0 && !(zoomZ <= 1))
+                    {
+                        zoomZ -= .1f;
+                        camera.Zoom = zoomZ;
+                    }
+                    if (zoomZ >= 2 && zoomIO == 1)
+                    {
+                        isZooming = false;
+                    }
+                    if (zoomZ <= 1 && zoomIO == 0)
+                    {
+                        isZooming = false;
+                    }
+                }
+
+
+                //player.Update(new List<GameObject>(), gameTime);
+
+                //Throw all ShardObjects into a Quadtree for collision optimization purposes
+                collisionQuadtree.Clear();
+                collisionQuadtree.MaximumBounds = camera.Screen;
                 foreach (ShardObject so in shardObjects)
                 {
-                    if (so is Resource)
+                    if (camera.ScreenContains(so.GetBounds()))
+                        collisionQuadtree.Insert(so);
+                }
+
+                //Update all ShardObjects using potentially colliding objects
+                List<ShardObject> potentialCollisions = new List<ShardObject>();
+                for (int i = 0; i < shardObjects.Count; i++)
+                {
+                    ShardObject so = shardObjects[i];
+                    if (!so.HasListReference())
+                        so.GiveListReference(shardObjects);
+                    potentialCollisions.Clear();
+                    collisionQuadtree.Retrieve(potentialCollisions, so);
+                    if (so is EnemyShip)
                     {
-                        if (vacuumBounds.Intersects(so.GetBounds()))
-                        {
-                            so.PointTowards(player.Center);
-                            so.Velocity = 4;
-                        }
+                        EnemyShip e = (EnemyShip)so;
+                        if (!e.HasPlayerReference())
+                            e.SetPlayerReference(player);
+                        e.ShootAll(shardObjects, sourceDirectory);
+                    }
+                    so.Update(potentialCollisions, gameTime);
+                }
+
+                //Remove ShardObjects declared invalid after the last update cycle
+                for (int i = 0; i < shardObjects.Count; i++)
+                {
+                    if (!shardObjects[i].IsValid())
+                    {
+                        shardObjects[i].Destroy(shardObjects, sourceDirectory);
+                        shardObjects.RemoveAt(i);
                     }
                 }
+
+                //    if (player.X > GraphicsDevice.Viewport.Width)
+                //        player.X = 0;
+                //if (player.X + player.Width < 0)
+                //    player.X = GraphicsDevice.Viewport.Width;
+                //if (player.Y > GraphicsDevice.Viewport.Height)
+                //    player.Y = 0;
+                //if (player.Y + player.Height < 0)
+                //    player.Y = GraphicsDevice.Viewport.Height;
+
+                camera.SetPosition((float)player.X, (float)player.Y, 0);
+
             }
-
-            if (currentMouse.ScrollWheelValue > previousMouse.ScrollWheelValue) //Mousewheel UP
-            {
-                isZooming = true;
-                zoomIO = 1; //Sets I/O to zooming IN;
-            }                     
-            if (currentMouse.ScrollWheelValue < previousMouse.ScrollWheelValue) //Mousewheel DOWN
-            {
-                isZooming = true;
-                zoomIO = 0; //Sets I/O to zooming OUT;
-            }
-            if ((currentKeyboard.IsKeyDown(Keys.LeftControl) || currentKeyboard.IsKeyDown(Keys.RightControl)) && EdgeDetect(currentKeyboard, Keys.S))
-            {
-                this.SaveGame();
-            }
-
-            if (isZooming)
-            {
-                if (zoomIO == 1 && !(zoomZ >= 2))
-                {
-                    zoomZ += .1f;
-                    camera.Zoom = zoomZ;
-                }
-                if (zoomIO == 0 && !(zoomZ <= 1))
-                {
-                    zoomZ -= .1f;
-                    camera.Zoom = zoomZ;
-                }
-                if (zoomZ >= 2 && zoomIO == 1)
-                {
-                    isZooming = false;
-                }
-                if (zoomZ <= 1 && zoomIO == 0)
-                {
-                    isZooming = false;
-                }
-            }
-
-
-            //player.Update(new List<GameObject>(), gameTime);
-
-            //Throw all ShardObjects into a Quadtree for collision optimization purposes
-            collisionQuadtree.Clear();
-            collisionQuadtree.MaximumBounds = camera.Screen;
-            foreach (ShardObject so in shardObjects)
-            {
-                if(camera.ScreenContains(so.GetBounds()))
-                    collisionQuadtree.Insert(so);
-            }
-
-            //Update all ShardObjects using potentially colliding objects
-            List<ShardObject> potentialCollisions = new List<ShardObject>();
-            for (int i = 0; i < shardObjects.Count; i++ )
-            {
-                ShardObject so = shardObjects[i];
-                if (!so.HasListReference())
-                    so.GiveListReference(shardObjects);
-                potentialCollisions.Clear();
-                collisionQuadtree.Retrieve(potentialCollisions, so);
-                if (so is EnemyShip)
-                {
-                    EnemyShip e = (EnemyShip)so;
-                    if (!e.HasPlayerReference())
-                        e.SetPlayerReference(player);
-                    e.ShootAll(shardObjects, sourceDirectory);
-                }
-                so.Update(potentialCollisions, gameTime);
-            }
-
-            //Remove ShardObjects declared invalid after the last update cycle
-            for (int i = 0; i < shardObjects.Count; i++)
-            {
-                if (!shardObjects[i].IsValid())
-                {
-                    shardObjects[i].Destroy(shardObjects, sourceDirectory);
-                    shardObjects.RemoveAt(i);
-                }
-            }
-
-            //    if (player.X > GraphicsDevice.Viewport.Width)
-            //        player.X = 0;
-            //if (player.X + player.Width < 0)
-            //    player.X = GraphicsDevice.Viewport.Width;
-            //if (player.Y > GraphicsDevice.Viewport.Height)
-            //    player.Y = 0;
-            //if (player.Y + player.Height < 0)
-            //    player.Y = GraphicsDevice.Viewport.Height;
-
-            camera.SetPosition((float)player.X, (float)player.Y, 0);
 
             //Update Previous States
             
