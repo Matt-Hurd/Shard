@@ -17,7 +17,7 @@ namespace Shard
     {
         //Menu Attributes
         private bool pausesGame;
-        private bool isVisible;
+        private bool isActive;
 
         //Underlying Menu Data Structures
         private List<Button> buttons;
@@ -32,6 +32,8 @@ namespace Shard
         {
             this.gameReference = gameReference;
             this.buttons = new List<Button>();
+            this.menuImages = new List<MenuImage>();
+            isActive = true;
         }
 
         #region Attribute Mutation and Value Retrieval
@@ -46,15 +48,15 @@ namespace Shard
             this.pausesGame = pausesGame;
         }
 
-        public bool Visible
+        public bool Active
         {
             get
             {
-                return isVisible;
+                return isActive;
             }
             set
             {
-                isVisible = value;
+                isActive = value;
             }
         }
 
@@ -78,6 +80,17 @@ namespace Shard
         public void AddMenuImage(MenuImage menuImage)
         {
             menuImages.Add(menuImage);
+        }
+
+        public virtual void Draw(SpriteBatch spriteBatch, Texture2D spritesheet)
+        {
+            if (isActive)
+            {
+                foreach (MenuImage menuImage in menuImages)
+                {
+                    menuImage.Draw(spriteBatch, spritesheet);
+                }
+            }
         }
     }
 }
