@@ -13,11 +13,13 @@ namespace Shard
 {
     public partial class LoginForm : Form
     {
+        private TitleScreen ts;
         private XMLDatabase database;
 
-        public LoginForm()
+        public LoginForm(TitleScreen ts)
         {
             InitializeComponent();
+            this.ts = ts;
         }
 
         private void LoginForm_Load(object sender, EventArgs e)
@@ -87,6 +89,7 @@ namespace Shard
             {
                 Thread gameThread = new Thread(new ParameterizedThreadStart(StartGame));
                 gameThread.Start(usernameTextBox.Text);
+                ts.Close();
                 this.Close();
             }
             else

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Media;
+using Microsoft.Xna.Framework.Content;
 
 namespace Shard
 {
@@ -27,13 +28,12 @@ namespace Shard
             return sounds[key];
         }
 
-        public void LoadSounds()
+        public void LoadSounds(ContentManager Content)
         {
-            //stuff will happen here eventually
-            //...
-            //...
-            //I promise
-        }
+            SoundEffect sfx;
+            sounds.Add("playerShoot", sfx = Content.Load<SoundEffect>("Sounds/playerShoot"));
+            sounds.Add("playerMissile", sfx = Content.Load<SoundEffect>("Sounds/playerMissile"));
 
+        }
     }
 }

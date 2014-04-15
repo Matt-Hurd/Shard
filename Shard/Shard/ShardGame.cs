@@ -198,7 +198,7 @@ namespace Shard
                 maximumPlayerHealth = (int)player.Health;
                 shardObjects.Add(player);
 
-                soundPlayer.LoadSounds();
+                soundPlayer.LoadSounds(Content);
 
                 //Add a bunch of debris for testing purposes
                 int numDebris = 10;
@@ -515,6 +515,7 @@ namespace Shard
                 //Shooting
                 if ((currentMouse.LeftButton.Equals(ButtonState.Pressed)))
                 {
+                    if (player.ReloadTime <= 0) soundPlayer.getSound("playerShoot").Play();
                     double temp = player.Direction;
                     float unitx = 0;
                     float unity = 0;
@@ -526,6 +527,7 @@ namespace Shard
 
                 if ((currentMouse.RightButton.Equals(ButtonState.Pressed)))
                 {
+                    if (player.RearmTime <= 0) soundPlayer.getSound("playerMissile").Play();
                     double temp = player.Direction;
                     float unitx = 0;
                     float unity = 0;

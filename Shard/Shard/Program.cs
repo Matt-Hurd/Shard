@@ -18,7 +18,7 @@ namespace Shard
 
             //Application.EnableVisualStyles();
             //Application.SetCompatibleTextRenderingDefault(false);
-            //Application.Run(new LoginForm());
+            //Application.Run(new TitleScreen());
         }
     }
 #endif

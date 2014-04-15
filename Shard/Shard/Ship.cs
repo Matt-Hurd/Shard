@@ -155,6 +155,23 @@ namespace Shard
             }
         }
 
+        public int ReloadTime
+        {
+            get
+            {
+                return reloadTime;
+            }
+        }
+
+        public int RearmTime
+        {
+            get
+            {
+                return rearmTime;
+            }
+        }
+                
+
         public Vector2 ShipFront
         {
             get
