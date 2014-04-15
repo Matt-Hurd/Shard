@@ -16,7 +16,9 @@ namespace Shard
     class Button
     {
         private ShardGame gameReference;
+        private GameMenu menuReference;
         private MenuImage image;
+        private Color drawColor;
 
         private Vector2 position;
 
@@ -27,16 +29,32 @@ namespace Shard
         public Button(ShardGame gameReference, MenuImage image)
         {
             this.gameReference = gameReference;
-            this.image = image;
             position = Vector2.Zero;
+            this.Image = image;
+            drawColor = Color.Red;
         }
 
         #region Fields
 
+        public void GiveMenuReference(GameMenu menu)
+        {
+            this.menuReference = menu;
+        }
+
+        public GameMenu MenuReference
+        {
+            get { return menuReference; }
+        }
+
+        public ShardGame GameReference
+        {
+            get { return gameReference; }
+        }
+
         public MenuImage Image
         {
             get { return this.image; }
-            set { this.image = value; }
+            set { this.image = value; this.X = value.X; this.Y = value.Y; }
         }
 
         public bool Visible
@@ -60,13 +78,13 @@ namespace Shard
         public double X
         {
             get { return position.X; }
-            set { position.X = (float)value; }
+            set { position.X = (float)value; image.X = (float)value; }
         }
 
         public double Y
         {
             get { return position.Y; }
-            set { position.Y = (float)value; }
+            set { position.Y = (float)value; image.Y = (float)value; }
         }
 
         public int Width
@@ -86,6 +104,40 @@ namespace Shard
 
         #endregion
 
+        public void HandleMouseState(MouseState previousMouse, MouseState currentMouse)
+        {
+            if (Bounds.Contains(currentMouse.X, currentMouse.Y))
+            {
+                if (currentMouse.LeftButton.Equals(ButtonState.Pressed))
+                    drawColor = new Color(240, 163, 163);
+                else
+                    drawColor = Color.WhiteSmoke;
+                if (ReleaseEdgeDetect(previousMouse, currentMouse))
+                    PreformMouseClickAction();
+            }
+            else
+                drawColor = Color.White;
+        }
+
+        public virtual void PreformMouseClickAction()
+        {
+            //Do Nothing
+            //gameReference.Paused = !gameReference.Paused;
+            //menuReference.Active = false;
+        }
+
+        private bool ReleaseEdgeDetect(MouseState previous, MouseState current)
+        {
+            return (current.LeftButton.Equals(ButtonState.Released) && previous.LeftButton.Equals(ButtonState.Pressed));
+        }
+
+        public virtual void Draw(SpriteBatch spriteBatch, Texture2D spritesheet)
+        {
+            if (Visible)
+            {
+                this.Image.Draw(spriteBatch, spritesheet, drawColor);
+            }
+        }
 
 
     }

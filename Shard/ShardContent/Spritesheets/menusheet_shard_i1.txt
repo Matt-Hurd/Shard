@@ -1,0 +1,3 @@
+grayMenuPanel = 0 0 256 256
+whiteMenuButton_blank = 256 64 64 32
+pirateShip2_colored = 256 0 64 64

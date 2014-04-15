@@ -74,12 +74,21 @@ namespace Shard
 
         public void AddButton(Button button)
         {
+            button.GiveMenuReference(this);
             buttons.Add(button);
         }
 
         public void AddMenuImage(MenuImage menuImage)
         {
             menuImages.Add(menuImage);
+        }
+
+        public void HandleMouseState(MouseState previousMouse, MouseState currentMouse)
+        {
+            foreach (Button button in buttons)
+            {
+                button.HandleMouseState(previousMouse, currentMouse);
+            }
         }
 
         public virtual void Draw(SpriteBatch spriteBatch, Texture2D spritesheet)
@@ -89,6 +98,10 @@ namespace Shard
                 foreach (MenuImage menuImage in menuImages)
                 {
                     menuImage.Draw(spriteBatch, spritesheet);
+                }
+                foreach (Button button in buttons)
+                {
+                    button.Draw(spriteBatch, spritesheet);
                 }
             }
         }

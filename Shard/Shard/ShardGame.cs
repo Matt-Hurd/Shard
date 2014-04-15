@@ -24,8 +24,10 @@ namespace Shard
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
         Texture2D spritesheet;
+        Texture2D menusheet;
         Texture2D background;
-        GameImageSourceDirectory sourceDirectory;
+        GameImageSourceDirectory gameSourceDirectory;
+        GameImageSourceDirectory menuSourceDirectory;
         String username;
 
         Song songy;
@@ -50,6 +52,7 @@ namespace Shard
         protected bool staticBackground;
 
         List<ShardObject> shardObjects; //Probably won't be able to use as a ShardObject List
+        List<GameMenu> shardMenus;
         Ship player;
         int maximumPlayerHealth;
 
@@ -116,6 +119,7 @@ namespace Shard
 
 
             shardObjects = new List<ShardObject>();
+            shardMenus = new List<GameMenu>();
 
             player = new Ship(0, 0, true);
             player.Alignment = Shard.Alignment.GOOD;
@@ -152,8 +156,23 @@ namespace Shard
 
             //Spritesheet Loading
             spritesheet = Content.Load<Texture2D>("Spritesheets//spritesheet_shard_i3");
-            sourceDirectory = new GameImageSourceDirectory();
-            sourceDirectory.LoadSourcesFromFile(@"Content/Spritesheets//spritesheet_shard_i3.txt");
+            gameSourceDirectory = new GameImageSourceDirectory();
+            gameSourceDirectory.LoadSourcesFromFile(@"Content/Spritesheets//spritesheet_shard_i3.txt");
+
+            menusheet = Content.Load<Texture2D>("Spritesheets//menusheet_shard_i1");
+            menuSourceDirectory = new GameImageSourceDirectory();
+            menuSourceDirectory.LoadSourcesFromFile(@"Content/Spritesheets//menusheet_shard_i1.txt");
+
+            //Menu Creation
+            GameMenu optionsMenu = new GameMenu(this);
+            Rectangle menuBackgroundSource = menuSourceDirectory.GetSourceRectangle("grayMenuPanel");
+            MenuImage menuBackground = new MenuImage(new Vector2(GraphicsDevice.Viewport.Width / 2 - menuBackgroundSource.Width / 2, GraphicsDevice.Viewport.Height / 2 - menuBackgroundSource.Height / 2), menuBackgroundSource, .8f);
+            optionsMenu.AddMenuImage(menuBackground);
+            MenuImage test = new MenuImage(new Vector2(200, 200), menuSourceDirectory.GetSourceRectangle("whiteMenuButton_blank"));
+            test.Depth = .9f;
+            Button b = new CloseButton(this, test);
+            optionsMenu.AddButton(b);
+            shardMenus.Add(optionsMenu);
 
             //Background Loading
             background = Content.Load<Texture2D>("Backgrounds//seamlessNebulaBackground");
@@ -161,7 +180,7 @@ namespace Shard
             if (database.isEmpty() || skipLoadingFromDatabase)
             {
                 //Player Creation
-                player.ImageSource = sourceDirectory.GetSourceRectangle("playerShip1_colored");
+                player.ImageSource = gameSourceDirectory.GetSourceRectangle("playerShip1_colored");
                 player.Alignment = Alignment.GOOD;
                 player.Width = player.ImageSource.Width;
                 player.Height = player.ImageSource.Height;
@@ -189,7 +208,7 @@ namespace Shard
                     debris.Oxygen = 10;
                     debris.Water = 10;
                     debris.Direction = random.NextDouble() * Math.PI * 2;
-                    debris.ImageSource = sourceDirectory.GetSourceRectangle("asteroid_medium1_shaded");
+                    debris.ImageSource = gameSourceDirectory.GetSourceRectangle("asteroid_medium1_shaded");
                     debris.Width = debris.ImageSource.Width;
                     debris.Height = debris.ImageSource.Height;
                     shardObjects.Add(debris);
@@ -202,7 +221,7 @@ namespace Shard
                     evil.GunLevel = 5;
                     evil.MissileLevel = 5;
                     evil.ArmorLevel = 5;
-                    evil.GetImageSource(sourceDirectory);
+                    evil.GetImageSource(gameSourceDirectory);
                     shardObjects.Add(evil);
                 }
             }
@@ -495,7 +514,7 @@ namespace Shard
                     float unity = 0;
                     TraceScreenCoord((int)currentMouse.X, (int)currentMouse.Y, out unitx, out unity);
                     player.Direction = (float)Math.Atan2(unity - (player.Y + player.Height / 2), unitx - (player.X + player.Width / 2));
-                    player.ShootBullet(shardObjects, sourceDirectory);
+                    player.ShootBullet(shardObjects, gameSourceDirectory);
                     player.Direction = temp;
                 }
 
@@ -506,7 +525,7 @@ namespace Shard
                     float unity = 0;
                     TraceScreenCoord((int)currentMouse.X, (int)currentMouse.Y, out unitx, out unity);
                     player.Direction = (float)Math.Atan2(unity - (player.Y + player.Height / 2), unitx - (player.X + player.Width / 2));
-                    player.ShootMissile(shardObjects, sourceDirectory);
+                    player.ShootMissile(shardObjects, gameSourceDirectory);
                     player.Direction = temp;
                 }
 
@@ -598,7 +617,7 @@ namespace Shard
                         EnemyShip e = (EnemyShip)so;
                         if (!e.HasPlayerReference())
                             e.SetPlayerReference(player);
-                        e.ShootAll(shardObjects, sourceDirectory);
+                        e.ShootAll(shardObjects, gameSourceDirectory);
                     }
                     so.Update(potentialCollisions, gameTime);
                 }
@@ -608,7 +627,7 @@ namespace Shard
                 {
                     if (!shardObjects[i].IsValid())
                     {
-                        shardObjects[i].Destroy(shardObjects, sourceDirectory);
+                        shardObjects[i].Destroy(shardObjects, gameSourceDirectory);
                         shardObjects.RemoveAt(i);
                     }
                 }
@@ -624,6 +643,12 @@ namespace Shard
 
                 camera.SetPosition((float)player.X, (float)player.Y, 0);
 
+            }
+
+            foreach(GameMenu menu in shardMenus)
+            {
+                if(menu.Active)
+                    menu.HandleMouseState(previousMouse, currentMouse);                
             }
 
             //Update Previous States
@@ -657,7 +682,7 @@ namespace Shard
                         if (tempShip.IsPlayer)
                         {
                             player = tempShip;
-                            player.ImageSource = sourceDirectory.GetSourceRectangle("playerShip1_colored");
+                            player.ImageSource = gameSourceDirectory.GetSourceRectangle("playerShip1_colored");
                             player.Width = player.ImageSource.Width;
                             player.Height = player.ImageSource.Height;
                             maximumPlayerHealth = (int)player.Health;
@@ -665,7 +690,7 @@ namespace Shard
                         break;
                     case "debris":
                         Debris tempDebris = new Debris(xe);
-                        tempDebris.ImageSource = sourceDirectory.GetSourceRectangle("asteroid_medium1_shaded");
+                        tempDebris.ImageSource = gameSourceDirectory.GetSourceRectangle("asteroid_medium1_shaded");
                         tempDebris.Width = tempDebris.ImageSource.Width;
                         tempDebris.Height = tempDebris.ImageSource.Height;
                         tempDebris.Alignment = Shard.Alignment.NEUTRAL;
@@ -673,21 +698,21 @@ namespace Shard
                         break;
                     case "enemyShip":
                         EnemyShip tempEnemy = new EnemyShip(xe);
-                        tempEnemy.ImageSource = sourceDirectory.GetSourceRectangle("pirateShip1_colored");
+                        tempEnemy.ImageSource = gameSourceDirectory.GetSourceRectangle("pirateShip1_colored");
                         tempEnemy.Width = tempEnemy.ImageSource.Width;
                         tempEnemy.Height = tempEnemy.ImageSource.Height;
                         shardObjects.Add(tempEnemy);
                         break;
                     case "bruiser":
                         EnemyShip tempBruiser = new Bruiser(xe);
-                        tempBruiser.GetImageSource(sourceDirectory);
+                        tempBruiser.GetImageSource(gameSourceDirectory);
                         tempBruiser.Width = tempBruiser.ImageSource.Width;
                         tempBruiser.Height = tempBruiser.ImageSource.Height;
                         shardObjects.Add(tempBruiser);
                         break;
                     case "thug":
                         EnemyShip tempThug = new Thug(xe);
-                        tempThug.ImageSource = sourceDirectory.GetSourceRectangle("pirateShip1_colored");
+                        tempThug.ImageSource = gameSourceDirectory.GetSourceRectangle("pirateShip1_colored");
                         tempThug.Width = tempThug.ImageSource.Width;
                         tempThug.Height = tempThug.ImageSource.Height;
                         shardObjects.Add(tempThug);
@@ -808,10 +833,18 @@ namespace Shard
 
             //Draw the Player Healthbar
             spriteBatch.Begin(SpriteSortMode.BackToFront, null);
-            Rectangle healthBarSource = sourceDirectory.GetSourceRectangle("healthBarOutline");
-            Rectangle healthBarGradient = sourceDirectory.GetSourceRectangle("healthBarGradient");
+            Rectangle healthBarSource = gameSourceDirectory.GetSourceRectangle("healthBarOutline");
+            Rectangle healthBarGradient = gameSourceDirectory.GetSourceRectangle("healthBarGradient");
             spriteBatch.Draw(spritesheet, new Rectangle(0, 0, healthBarSource.Width, healthBarSource.Height), healthBarSource, Color.White, 0f, Vector2.Zero, SpriteEffects.None, 0f);
             spriteBatch.Draw(spritesheet, new Rectangle(4, 4, (int)(healthBarGradient.Width * (player.Health / (double)maximumPlayerHealth)), healthBarGradient.Height), healthBarGradient, Color.White, 0f, Vector2.Zero, SpriteEffects.None, 1.0f);
+            spriteBatch.End();
+
+            //Draw any active menus
+            spriteBatch.Begin(SpriteSortMode.FrontToBack, null);
+            foreach (GameMenu menu in shardMenus)
+            {
+                menu.Draw(spriteBatch, menusheet);
+            }
             spriteBatch.End();
 
             base.Draw(gameTime);

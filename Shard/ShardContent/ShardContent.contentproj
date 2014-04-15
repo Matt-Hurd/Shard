@@ -49,21 +49,12 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Spritesheets\spritesheet_shard_i2.png">
-      <Name>spritesheet_shard_i2</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
     <Compile Include="statusIndicatorFont.spritefont">
       <Name>statusIndicatorFont</Name>
       <Importer>FontDescriptionImporter</Importer>
       <Processor>FontDescriptionProcessor</Processor>
       <SubType>Designer</SubType>
     </Compile>
-    <None Include="Spritesheets\spritesheet_shard_i2.txt">
-      <Name>spritesheet_shard_i2</Name>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Backgrounds\seamlessNebulaBackground.jpg">
@@ -91,18 +82,15 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="grayMenuPanel.png">
-      <Name>grayMenuPanel</Name>
+    <Compile Include="Spritesheets\menusheet_shard_i1.png">
+      <Name>menusheet_shard_i1</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="whiteMenuButton_blank.png">
-      <Name>whiteMenuButton_blank</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
+    <None Include="Spritesheets\menusheet_shard_i1.txt">
+      <Name>menusheet_shard_i1</Name>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\$(XnaFrameworkVersion)\Microsoft.Xna.GameStudio.ContentPipeline.targets" />
   <!--  To modify your build process, add your task inside one of the targets below and uncomment it. 

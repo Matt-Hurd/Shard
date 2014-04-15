@@ -22,12 +22,14 @@ namespace Shard
 
         public MenuImage() : this(Vector2.Zero, new Rectangle(0, 0, 1, 1)) { }
 
-        public MenuImage(Vector2 position, Rectangle sourceRectangle)
+        public MenuImage(Vector2 position, Rectangle sourceRectangle) : this(position, sourceRectangle, 0f) { }
+
+        public MenuImage(Vector2 position, Rectangle sourceRectangle, float depth)
         {
             this.position = position;
             this.sourceRectangle = sourceRectangle;
             isVisible = true;
-            imageDepth = 0;
+            imageDepth = depth;
         }
 
         #region Fields
@@ -101,7 +103,15 @@ namespace Shard
         {
             if (Visible)
             {
-                spriteBatch.Draw(spritesheet, Bounds, ImageSource, Color.White, 0f, Vector2.Zero, SpriteEffects.None, Depth);
+                this.Draw(spriteBatch, spritesheet, Color.White);
+            }
+        }
+
+        public virtual void Draw(SpriteBatch spriteBatch, Texture2D spritesheet, Color color)
+        {
+            if (Visible)
+            {
+                spriteBatch.Draw(spritesheet, Bounds, ImageSource, color, 0f, Vector2.Zero, SpriteEffects.None, Depth);
             }
         }
     }
