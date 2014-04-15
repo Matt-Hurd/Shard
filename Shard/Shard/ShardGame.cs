@@ -65,6 +65,9 @@ namespace Shard
 
         //Database
         private XMLDatabase database;
+        private float bgZoomZ;
+        protected Camera bgCam;
+        protected double bgHM, bgVM;
 
         public ShardGame()
         {
@@ -109,14 +112,12 @@ namespace Shard
             //Default Options
             //Visual
             debugVisible = true;
-            staticBackground = true;
+            staticBackground = false;
             //In-Game
             gamePaused = false;
             realisticSpaceMovement = false;
             automaticDeceleration = true;
             mouseDirectionalControl = false;
-
-
 
             shardObjects = new List<ShardObject>();
             shardMenus = new List<GameMenu>();
@@ -132,6 +133,11 @@ namespace Shard
             zoomZ = 1;
             zoomIO = 2;
             isZooming = false;
+
+            bgCam = new Camera(0,0);
+            bgZoomZ = 1.3f;
+            bgHM = 0;
+            bgVM = 0;
 
             collisionQuadtree = new Quadtree(0, new Rectangle(0, 0, (int)camera.ScreenWidth, (int)camera.ScreenHeight));
 
@@ -559,7 +565,7 @@ namespace Shard
                     isZooming = true;
                     zoomIO = 1; //Sets I/O to zooming IN;
                 }
-                if (currentMouse.ScrollWheelValue < previousMouse.ScrollWheelValue) //Mousewheel DOWN
+                if (currentMouse.ScrollWheelValue < previousMouse.ScrollWheelValue && !(currentKeyboard.IsKeyDown(Keys.W) || currentKeyboard.IsKeyDown(Keys.S))) //Mousewheel DOWN
                 {
                     isZooming = true;
                     zoomIO = 0; //Sets I/O to zooming OUT;
@@ -591,9 +597,44 @@ namespace Shard
                     }
                 }
 
+                //double bgVelocity = Math.Tan((player.HorizontalVelocity / player.VerticalVelocity));
+
+                if (currentKeyboard.IsKeyDown(Keys.W) || currentKeyboard.IsKeyDown(Keys.S))
+                {
+                    if (bgZoomZ > 1)
+                    {
+                        bgZoomZ -= .02f;
+                        bgCam.Zoom = bgZoomZ;
+                        zoomZ += .03f;
+                        camera.Zoom = zoomZ;
+                    }
+
+                    bgHM += player.HorizontalVelocity;
+                    bgVM += player.VerticalVelocity;
+
+                    if (bgHM > 50)
+                        bgHM = 50;
+                    if (bgHM < -50)
+                        bgHM = -50;
+                    if (bgVM > 50)
+                        bgVM = 50;
+                    if (bgVM < -50)
+                        bgVM = -50;
+
+                }
+                else
+                {
+                    if (bgZoomZ < 1.3)
+                    {
+                        bgZoomZ += .02f;
+                        bgCam.Zoom = bgZoomZ;
+                        zoomZ -= .03f;
+                        camera.Zoom = zoomZ;
+                    }
+                }
+
 
                 //player.Update(new List<GameObject>(), gameTime);
-
                 //Throw all ShardObjects into a Quadtree for collision optimization purposes
                 collisionQuadtree.Clear();
                 collisionQuadtree.MaximumBounds = camera.Screen;
@@ -784,8 +825,8 @@ namespace Shard
             if (staticBackground)
                 spriteBatch.Begin();
             else
-                spriteBatch.Begin(SpriteSortMode.BackToFront, null, null, null, null, null, camera.GetViewMatrix());
-            spriteBatch.Draw(background, background.Bounds, Color.White);
+                spriteBatch.Begin(SpriteSortMode.BackToFront, null, null, null, null, null, bgCam.GetViewMatrix());
+            spriteBatch.Draw(background, new Rectangle(-800 + (int)bgHM, -420 + (int)bgVM, background.Bounds.Width, background.Bounds.Height), Color.White);
             spriteBatch.End();
 
             //Draw all ShardObjects relative to camera (ShardGraphics not included)
