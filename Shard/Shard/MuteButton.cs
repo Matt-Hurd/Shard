@@ -13,15 +13,15 @@ using Microsoft.Xna.Framework.Media;
 
 namespace Shard
 {
-    class CloseButton : Button
+    class MuteButton : Button
     {
-        public CloseButton(ShardGame gameReference) : this(gameReference, null) { }
+        public MuteButton(ShardGame gameReference) : this(gameReference, null) { }
 
-        public CloseButton(ShardGame gameReference, MenuImage image) : base(gameReference, image) { }
-        
+        public MuteButton(ShardGame gameReference, MenuImage image) : base(gameReference, image) { }
+
         public override void PreformMouseClickAction()
         {
-            MenuReference.Active = false;
+            GameReference.Muted = !GameReference.Muted;
             //base.PreformMouseClickAction();
         }
     }

@@ -18,6 +18,7 @@ namespace Shard
         //Menu Attributes
         private bool pausesGame;
         private bool isActive;
+        private String name;
 
         //Underlying Menu Data Structures
         private List<Button> buttons;
@@ -31,6 +32,7 @@ namespace Shard
         public GameMenu(ShardGame gameReference)
         {
             this.gameReference = gameReference;
+            name = "Unknown";
             this.buttons = new List<Button>();
             this.menuImages = new List<MenuImage>();
             isActive = true;
@@ -48,6 +50,12 @@ namespace Shard
             this.pausesGame = pausesGame;
         }
 
+        public String Name
+        {
+            get { return name; }
+            set { name = value; }
+        }
+
         public bool Active
         {
             get
@@ -57,6 +65,8 @@ namespace Shard
             set
             {
                 isActive = value;
+                if (pausesGame)
+                    gameReference.Paused = isActive;
             }
         }
 

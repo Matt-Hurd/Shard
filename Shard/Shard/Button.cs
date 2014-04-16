@@ -111,7 +111,7 @@ namespace Shard
                 if (currentMouse.LeftButton.Equals(ButtonState.Pressed))
                     drawColor = new Color(240, 163, 163);
                 else
-                    drawColor = Color.WhiteSmoke;
+                    drawColor = Color.LightGray;
                 if (ReleaseEdgeDetect(previousMouse, currentMouse))
                     PreformMouseClickAction();
             }

@@ -13,15 +13,15 @@ using Microsoft.Xna.Framework.Media;
 
 namespace Shard
 {
-    class CloseButton : Button
+    class AutomaticDecelerationToggleButton : Button
     {
-        public CloseButton(ShardGame gameReference) : this(gameReference, null) { }
+        public AutomaticDecelerationToggleButton(ShardGame gameReference) : this(gameReference, null) { }
 
-        public CloseButton(ShardGame gameReference, MenuImage image) : base(gameReference, image) { }
-        
+        public AutomaticDecelerationToggleButton(ShardGame gameReference, MenuImage image) : base(gameReference, image) { }
+
         public override void PreformMouseClickAction()
         {
-            MenuReference.Active = false;
+            GameReference.AutomaticDeceleration = !GameReference.AutomaticDeceleration;
             //base.PreformMouseClickAction();
         }
     }

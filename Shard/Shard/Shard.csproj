@@ -110,6 +110,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AutomaticDecelerationToggleButton.cs" />
     <Compile Include="Bruiser.cs" />
     <Compile Include="Button.cs" />
     <Compile Include="Camera.cs" />
@@ -129,10 +130,12 @@
     </Compile>
     <Compile Include="MenuImage.cs" />
     <Compile Include="Missile.cs" />
+    <Compile Include="MuteButton.cs" />
     <Compile Include="Projectile.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Quadtree.cs" />
+    <Compile Include="RealisticSpaceMovementToggleButton.cs" />
     <Compile Include="Resource.cs" />
     <Compile Include="Resources.Designer.cs">
       <AutoGen>True</AutoGen>

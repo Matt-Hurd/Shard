@@ -40,6 +40,7 @@ namespace Shard
 
         //Options
         private bool gamePaused;
+        private bool gameMuted;
         private bool realisticSpaceMovement;
         private bool automaticDeceleration;
         private bool mouseDirectionalControl;
@@ -115,6 +116,7 @@ namespace Shard
             staticBackground = false;
             //In-Game
             gamePaused = false;
+            gameMuted = false;
             realisticSpaceMovement = false;
             automaticDeceleration = true;
             mouseDirectionalControl = false;
@@ -169,16 +171,38 @@ namespace Shard
             menuSourceDirectory = new GameImageSourceDirectory();
             menuSourceDirectory.LoadSourcesFromFile(@"Content/Spritesheets//menusheet_shard_i1.txt");
 
-            //Menu Creation
+            #region Menu Creation
+            
             GameMenu optionsMenu = new GameMenu(this);
+            optionsMenu.Name = "Options";
+            optionsMenu.SetGamePauseEffect(true);
             Rectangle menuBackgroundSource = menuSourceDirectory.GetSourceRectangle("grayMenuPanel");
             MenuImage menuBackground = new MenuImage(new Vector2(GraphicsDevice.Viewport.Width / 2 - menuBackgroundSource.Width / 2, GraphicsDevice.Viewport.Height / 2 - menuBackgroundSource.Height / 2), menuBackgroundSource, .8f);
             optionsMenu.AddMenuImage(menuBackground);
-            MenuImage test = new MenuImage(new Vector2(200, 200), menuSourceDirectory.GetSourceRectangle("whiteMenuButton_blank"));
-            test.Depth = .9f;
-            Button b = new CloseButton(this, test);
-            optionsMenu.AddButton(b);
+
+            MenuImage closeButtonImage = new MenuImage(new Vector2(200, 200), menuSourceDirectory.GetSourceRectangle("whiteMenuButton_blank"));
+            closeButtonImage.Depth = .5f;
+            Button close = new CloseButton(this, closeButtonImage);
+            optionsMenu.AddButton(close);
+
+            MenuImage muteButtonImage = new MenuImage(new Vector2(200, 240), menuSourceDirectory.GetSourceRectangle("whiteMenuButton_blank"));
+            muteButtonImage.Depth = .5f;
+            Button mute = new MuteButton(this, muteButtonImage);
+            optionsMenu.AddButton(mute);
+
+            MenuImage rsmButtonImage = new MenuImage(new Vector2(200, 280), menuSourceDirectory.GetSourceRectangle("whiteMenuButton_blank"));
+            rsmButtonImage.Depth = .5f;
+            Button rsm = new RealisticSpaceMovementToggleButton(this, rsmButtonImage);
+            optionsMenu.AddButton(rsm);
+
+            MenuImage adButtonImage = new MenuImage(new Vector2(200, 320), menuSourceDirectory.GetSourceRectangle("whiteMenuButton_blank"));
+            adButtonImage.Depth = .5f;
+            Button ad = new AutomaticDecelerationToggleButton(this, adButtonImage);
+            optionsMenu.AddButton(ad);
+
             shardMenus.Add(optionsMenu);
+
+            #endregion
 
             //Background Loading
             background = Content.Load<Texture2D>("Backgrounds//seamlessNebulaBackground");
@@ -245,6 +269,24 @@ namespace Shard
             return this.shardObjects;
         }
 
+        internal GameImageSourceDirectory GetGameSourceDirectory()
+        {
+            return this.gameSourceDirectory;
+        }
+
+        internal GameImageSourceDirectory GetMenuSourceDirectory()
+        {
+            return this.menuSourceDirectory;
+        }
+
+        internal Ship Player
+        {
+            get
+            {
+                return this.player;
+            }
+        }
+
         public bool Paused
         {
             get
@@ -254,6 +296,18 @@ namespace Shard
             set
             {
                 gamePaused = value;
+            }
+        }
+
+        public bool Muted
+        {
+            get
+            {
+                return gameMuted;
+            }
+            set
+            {
+                gameMuted = value;
             }
         }
 
@@ -325,6 +379,16 @@ namespace Shard
             {
                 gamePaused = false;
                 pauseStateChanged = true;
+            }
+
+            //Open Options Menu
+            if (EdgeDetect(currentKeyboard, Keys.O))
+            {
+                for (int i = 0; i < shardMenus.Count; i++)
+                {
+                    if (shardMenus[i].Name.Equals("Options"))
+                        shardMenus[i].Active = !shardMenus[i].Active;
+                }
             }
 
             // TODO: Add your update logic here
