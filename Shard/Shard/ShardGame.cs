@@ -256,6 +256,7 @@ namespace Shard
                     evil.GunLevel = 2;
                     evil.MissileLevel = 1;
                     evil.ArmorLevel = 1;
+                    evil.Velocity = 0;
                     evil.GetImageSource(gameSourceDirectory);
                     shardObjects.Add(evil);
                 }
@@ -713,6 +714,8 @@ namespace Shard
                 {
                     if (camera.ScreenContains(so.GetBounds()))
                         collisionQuadtree.Insert(so);
+                    //else if (so is EnemyShip)
+                        //so.Velocity = 0;
                 }
 
                 //Update all ShardObjects using potentially colliding objects

@@ -20,7 +20,7 @@ namespace Shard
 
         public EnemyShip(int xPosition, int yPosition) : base(xPosition, yPosition, false) 
         {
-            ActivationRange = 1000.0;
+            ActivationRange = 700.0;
             Alignment = Shard.Alignment.EVIL;
             playerReference = null;
         }
@@ -102,6 +102,19 @@ namespace Shard
             }
         }
 
+        public bool IsWithinActivationRange()
+        {
+            if (HasPlayerReference())
+            {
+                if (EuclideanMath.DistanceBetween(playerReference.Center, this.Center) < ActivationRange) //Only acts against player if within range
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+
         public bool HasPlayerReference()
         {
             return playerReference != null;
@@ -147,12 +160,23 @@ namespace Shard
             return false;
         }
 
+        public override void ShootAll(List<ShardObject> shardObjects, GameImageSourceDirectory sourceDirectory)
+        {
+            if (IsWithinActivationRange())
+            {
+                base.ShootAll(shardObjects, sourceDirectory);
+            }
+        }
+
         public override void Update(List<ShardObject> shardObjects, GameTime gameTime)
         {
             ProcessPlayer();
             checkCollision(shardObjects);
+            if (!IsWithinActivationRange())
+                Velocity = 0;
             base.Update(shardObjects, gameTime);
         }
+
         public void checkCollision(List<ShardObject> x)
         {
             foreach (ShardObject so in x)

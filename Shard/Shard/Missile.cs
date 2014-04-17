@@ -61,7 +61,7 @@ namespace Shard
                 if (shardObjects[i] is Ship && shardObjects[i].Alignment != this.Alignment)
                 {
                     double currentDistance = EuclideanMath.DistanceBetween(this.Center, shardObjects[i].Center);
-                    if (currentDistance < lowestDistance && currentDistance > 0)
+                    if (currentDistance < lowestDistance && currentDistance > 0 && currentDistance < 1200)
                     {
                         lowestDistance = currentDistance;
                         lowestIndex = i;
