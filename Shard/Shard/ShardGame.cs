@@ -73,6 +73,10 @@ namespace Shard
         protected Camera bgCam;
         protected double bgHM, bgVM;
 
+        protected Rectangle[] backgrounds;
+        protected Rectangle currentRect;
+        protected Rectangle centerRect;
+
         public ShardGame()
         {
             graphics = new GraphicsDeviceManager(this);
@@ -143,6 +147,8 @@ namespace Shard
             bgZoomZ = 1.3f;
             bgHM = 0;
             bgVM = 0;
+
+            
 
             collisionQuadtree = new Quadtree(0, new Rectangle(0, 0, (int)camera.ScreenWidth, (int)camera.ScreenHeight));
 
@@ -239,6 +245,25 @@ namespace Shard
 
             //Background Loading
             background = Content.Load<Texture2D>("Backgrounds//seamlessNebulaBackground");
+
+            backgrounds = new Rectangle[9];
+            backgrounds[4] = background.Bounds;
+            currentRect = background.Bounds;
+            centerRect = background.Bounds;
+            int cc = 0;
+            for (int i = 0; i < 3; i++)
+            {
+                for (int j = 0; j < 3; j++)
+                {
+                    if (!(i == 1 && j == 1))
+                    {
+                        backgrounds[cc] = new Rectangle(j * (background.Bounds.Width) - 800, i * (background.Bounds.Height) - 420, background.Bounds.Width, background.Bounds.Height);
+                        cc++;
+                    }
+                }
+            }
+
+            //Yay
 
             if (database.isEmpty() || skipLoadingFromDatabase)
             {
@@ -732,14 +757,14 @@ namespace Shard
                     bgHM += player.HorizontalVelocity;
                     bgVM += player.VerticalVelocity;
 
-                    if (bgHM > 50)
-                        bgHM = 50;
-                    if (bgHM < -50)
-                        bgHM = -50;
-                    if (bgVM > 50)
-                        bgVM = 50;
-                    if (bgVM < -50)
-                        bgVM = -50;
+                    //if (bgHM > 50)
+                    //    bgHM = 50;
+                    //if (bgHM < -50)
+                    //    bgHM = -50;
+                    //if (bgVM > 50)
+                    //    bgVM = 50;
+                    //if (bgVM < -50)
+                    //    bgVM = -50;
 
                 }
                 else
@@ -750,6 +775,30 @@ namespace Shard
                         bgCam.Zoom = bgZoomZ;
                         zoomZ -= .01f;
                         camera.Zoom = zoomZ;
+                    }
+                }
+
+                foreach (Rectangle r in backgrounds)
+                {
+                    if (r.Contains(player.GetBounds()))
+                        currentRect = r;
+                }
+
+                if (currentRect != centerRect)
+                {
+                    centerRect = currentRect;
+                    backgrounds[4] = currentRect;
+                    int cc = 0;
+                    for (int i = 0; i < 3; i++)
+                    {
+                        for (int j = 0; j < 3; j++)
+                        {
+                            if (!(i == 1 && j == 1))
+                            {
+                                backgrounds[cc] = new Rectangle(j * (background.Bounds.Width) + centerRect.X, i * (background.Bounds.Height) + centerRect.Y, background.Bounds.Width, background.Bounds.Height);
+                                cc++;
+                            }
+                        }
                     }
                 }
 
@@ -1022,7 +1071,8 @@ namespace Shard
                 spriteBatch.Begin();
             else
                 spriteBatch.Begin(SpriteSortMode.BackToFront, null, null, null, null, null, bgCam.GetViewMatrix());
-            spriteBatch.Draw(background, new Rectangle(-800 + (int)bgHM, -420 + (int)bgVM, background.Bounds.Width, background.Bounds.Height), Color.White);
+            foreach (Rectangle r in backgrounds)
+                spriteBatch.Draw(background, new Rectangle(r.X - (int)bgHM, r.Y - (int)bgVM, r.Width, r.Height), Color.White);
             spriteBatch.End();
 
             //Draw all ShardObjects relative to camera (ShardGraphics not included)
