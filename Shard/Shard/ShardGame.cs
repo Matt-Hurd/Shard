@@ -219,24 +219,24 @@ namespace Shard
                 player.Width = player.ImageSource.Width;
                 player.Height = player.ImageSource.Height;
                 player.Health = 100;
-                player.GunLevel = 2;
+                player.GunLevel = 3;
                 player.MissileLevel = 2;
                 player.ArmorLevel = 2;
-                player.SpeedLevel = 1;
+                player.SpeedLevel = 2;
                 maximumPlayerHealth = (int)player.Health;
                 shardObjects.Add(player);
 
                 soundPlayer.LoadSounds(Content);
 
                 //Add a bunch of debris for testing purposes
-                int numDebris = 100;
+                int numDebris = 25;
                 Random random = new Random();
                 for (int i = 0; i < numDebris; i++)
                 {
                     //Debris debris = new Debris(random.Next(-GraphicsDevice.Viewport.Width,GraphicsDevice.Viewport.Width), random.Next(-GraphicsDevice.Viewport.Height,GraphicsDevice.Viewport.Height));
                     Debris debris = new Debris(random.Next(GraphicsDevice.Viewport.Width), random.Next(GraphicsDevice.Viewport.Height));
                     debris.Alignment = Shard.Alignment.NEUTRAL;
-                    debris.Health = 1;
+                    debris.Health = 10;
                     debris.Energy = 10;
                     debris.Ore = 10;
                     debris.Oxygen = 10;
@@ -249,10 +249,10 @@ namespace Shard
                 }
 
                 //Add evil ships
-                int numEnemies = 1;
+                int numEnemies = 5;
                 for (int i = 0; i < numEnemies; i++)
                 {
-                    EnemyShip evil = new Thug((int)(random.NextDouble() * 500), (int)(random.NextDouble() * 500));
+                    EnemyShip evil = new Thug((int)(random.NextDouble() * 1000), (int)(random.NextDouble() * 1000));
                     evil.GunLevel = 2;
                     evil.MissileLevel = 1;
                     evil.ArmorLevel = 1;
