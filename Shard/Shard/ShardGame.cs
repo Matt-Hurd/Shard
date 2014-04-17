@@ -35,6 +35,8 @@ namespace Shard
         KeyboardState previousKeyboard;
         MouseState previousMouse;
         GamePadState previousGamePad;
+        Rectangle previousScreen;
+        Vector2 previousPosition;
 
         Quadtree collisionQuadtree;
 
@@ -63,6 +65,7 @@ namespace Shard
         protected float zoomZ;
         protected int zoomIO;
         protected bool isZooming;
+        int count;
 
         //Database
         private XMLDatabase database;
@@ -731,6 +734,47 @@ namespace Shard
                     so.Update(potentialCollisions, gameTime);
                 }
 
+                if (count > 20)
+                {
+                    if (camera.Screen != previousScreen)
+                    {
+                        Rectangle bounds = new Rectangle();
+                        //int x = camera.Screen.Right - previousScreen.Right;
+                        //int y = camera.Screen.Bottom - previousScreen.Bottom;
+                        int x = (int)(player.Position.X - previousPosition.X);
+                        int y = (int)(player.Position.Y - previousPosition.Y);
+                        if ((Math.Abs(x) > 50) || (Math.Abs(y) > 50))
+                        {
+                            if (GetSign(x) == -1)
+                                bounds = new Rectangle(camera.Screen.X - 70, camera.Screen.Y, Math.Abs(x), camera.Screen.Height);
+                            else
+                                bounds = new Rectangle(camera.Screen.Right, camera.Screen.Y, x, camera.Screen.Height);
+
+                            //Rectangle bounds=new Rectangle(
+                            //for (int i = 0; i < 1; i++)
+                            //{
+                            Random random = new Random();
+                            Debris debris = new Debris(random.Next(bounds.X, bounds.Right), random.Next(bounds.Y, bounds.Bottom));
+                            debris.Alignment = Shard.Alignment.NEUTRAL;
+                            debris.Health = 50;
+                            debris.Energy = 10;
+                            debris.Ore = 10;
+                            debris.Oxygen = 10;
+                            debris.Water = 10;
+                            debris.Direction = random.NextDouble() * Math.PI * 2;
+                            debris.ImageSource = gameSourceDirectory.GetSourceRectangle("asteroid_medium1_shaded");
+                            debris.Width = debris.ImageSource.Width;
+                            debris.Height = debris.ImageSource.Height;
+                            shardObjects.Add(debris);
+                            //}
+                        }
+                    }
+                    //count = 0;
+                }
+                //else
+                //    count++;
+
+
                 //Remove ShardObjects declared invalid after the last update cycle
                 for (int i = 0; i < shardObjects.Count; i++)
                 {
@@ -765,6 +809,14 @@ namespace Shard
             previousGamePad = currentGamePad;
             previousKeyboard = currentKeyboard;
             previousMouse = currentMouse;
+            if (count > 20)
+            {
+                previousScreen = camera.Screen;
+                previousPosition = player.Position;
+                count = 0;
+            }
+            else
+                count++;
 
             base.Update(gameTime);
         }
