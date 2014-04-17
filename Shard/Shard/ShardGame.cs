@@ -176,6 +176,7 @@ namespace Shard
             GameMenu optionsMenu = new GameMenu(this);
             optionsMenu.Name = "Options";
             optionsMenu.SetGamePauseEffect(true);
+            optionsMenu.Active = false;
             Rectangle menuBackgroundSource = menuSourceDirectory.GetSourceRectangle("grayMenuPanel");
             MenuImage menuBackground = new MenuImage(new Vector2(GraphicsDevice.Viewport.Width / 2 - menuBackgroundSource.Width / 2, GraphicsDevice.Viewport.Height / 2 - menuBackgroundSource.Height / 2), menuBackgroundSource, .8f);
             optionsMenu.AddMenuImage(menuBackground);
@@ -215,24 +216,24 @@ namespace Shard
                 player.Width = player.ImageSource.Width;
                 player.Height = player.ImageSource.Height;
                 player.Health = 100;
-                player.GunLevel = 5;
-                player.MissileLevel = 5;
-                player.ArmorLevel = 5;
-                player.SpeedLevel = 5;
+                player.GunLevel = 2;
+                player.MissileLevel = 2;
+                player.ArmorLevel = 2;
+                player.SpeedLevel = 1;
                 maximumPlayerHealth = (int)player.Health;
                 shardObjects.Add(player);
 
                 soundPlayer.LoadSounds(Content);
 
                 //Add a bunch of debris for testing purposes
-                int numDebris = 10;
+                int numDebris = 100;
                 Random random = new Random();
                 for (int i = 0; i < numDebris; i++)
                 {
                     //Debris debris = new Debris(random.Next(-GraphicsDevice.Viewport.Width,GraphicsDevice.Viewport.Width), random.Next(-GraphicsDevice.Viewport.Height,GraphicsDevice.Viewport.Height));
                     Debris debris = new Debris(random.Next(GraphicsDevice.Viewport.Width), random.Next(GraphicsDevice.Viewport.Height));
                     debris.Alignment = Shard.Alignment.NEUTRAL;
-                    debris.Health = 50;
+                    debris.Health = 1;
                     debris.Energy = 10;
                     debris.Ore = 10;
                     debris.Oxygen = 10;
@@ -245,12 +246,13 @@ namespace Shard
                 }
 
                 //Add evil ships
-                for (int i = 0; i < 3; i++)
+                int numEnemies = 1;
+                for (int i = 0; i < numEnemies; i++)
                 {
-                    EnemyShip evil = new Bruiser((int)(random.NextDouble() * 500), (int)(random.NextDouble() * 500));
-                    evil.GunLevel = 5;
-                    evil.MissileLevel = 5;
-                    evil.ArmorLevel = 5;
+                    EnemyShip evil = new Thug((int)(random.NextDouble() * 500), (int)(random.NextDouble() * 500));
+                    evil.GunLevel = 2;
+                    evil.MissileLevel = 1;
+                    evil.ArmorLevel = 1;
                     evil.GetImageSource(gameSourceDirectory);
                     shardObjects.Add(evil);
                 }
