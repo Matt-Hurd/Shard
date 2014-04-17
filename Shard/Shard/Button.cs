@@ -140,6 +140,8 @@ namespace Shard
         }
     }
 
+    #region Upgrade Menu Button Classes
+
     class RepairButton : Button
     {
         public RepairButton(ShardGame gameReference) : this(gameReference, null) { }
@@ -164,4 +166,29 @@ namespace Shard
             //base.PreformMouseClickAction();
         }
     }
+
+    class UpgradeGunButton : Button
+    {
+        public UpgradeGunButton(ShardGame gameReference) : this(gameReference, null) { }
+
+        public UpgradeGunButton(ShardGame gameReference, MenuImage image) : base(gameReference, image) { }
+
+        public override void PreformMouseClickAction()
+        {
+            Ship playah = GameReference.Player;
+            if (playah.GunLevel < 5)
+            {
+                int fuelCost = playah.GunLevel * 25;
+                int oreCost = playah.GunLevel * 35;
+                int oxygenCost = playah.GunLevel * 15;
+                int waterCost = 0;
+                if (playah.Energy >= fuelCost && playah.Ore > oreCost && playah.Oxygen > oxygenCost && playah.Water > waterCost)
+                {
+                    playah.GunLevel += 1;
+                }
+            }
+        }
+    }
+
+    #endregion
 }
