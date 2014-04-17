@@ -673,7 +673,7 @@ namespace Shard
                     {
                         bgZoomZ -= .02f;
                         bgCam.Zoom = bgZoomZ;
-                        zoomZ += .03f;
+                        zoomZ += .01f;
                         camera.Zoom = zoomZ;
                     }
 
@@ -696,7 +696,7 @@ namespace Shard
                     {
                         bgZoomZ += .02f;
                         bgCam.Zoom = bgZoomZ;
-                        zoomZ -= .03f;
+                        zoomZ -= .01f;
                         camera.Zoom = zoomZ;
                     }
                 }
