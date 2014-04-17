@@ -138,7 +138,30 @@ namespace Shard
                 this.Image.Draw(spriteBatch, spritesheet, drawColor);
             }
         }
+    }
 
+    class RepairButton : Button
+    {
+        public RepairButton(ShardGame gameReference) : this(gameReference, null) { }
 
+        public RepairButton(ShardGame gameReference, MenuImage image) : base(gameReference, image) { }
+
+        public override void PreformMouseClickAction()
+        {
+            Ship playah = GameReference.Player;
+            if(playah.Health >= 100 || !playah.IsValid())
+                return;
+            else if (playah.Health + playah.Ore >= 100)
+            {
+                playah.Ore -= (100 - (int)playah.Health);
+                playah.Health = 100;
+            }
+            else
+            {
+                playah.Health += playah.Ore;
+                playah.Ore = 0;
+            }
+            //base.PreformMouseClickAction();
+        }
     }
 }

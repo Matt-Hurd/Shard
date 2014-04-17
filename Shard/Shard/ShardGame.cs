@@ -175,7 +175,9 @@ namespace Shard
             menuSourceDirectory.LoadSourcesFromFile(@"Content/Spritesheets//menusheet_shard_i1.txt");
 
             #region Menu Creation
-            
+
+            #region Options Menu
+
             GameMenu optionsMenu = new GameMenu(this);
             optionsMenu.Name = "Options";
             optionsMenu.SetGamePauseEffect(true);
@@ -205,6 +207,22 @@ namespace Shard
             optionsMenu.AddButton(ad);
 
             shardMenus.Add(optionsMenu);
+
+            #endregion
+
+            GameMenu upgradeMenu = new GameMenu(this);
+            upgradeMenu.Name = "Upgrades";
+            upgradeMenu.SetGamePauseEffect(false);
+            upgradeMenu.Active = false;
+            upgradeMenu.AddMenuImage(menuBackground);
+
+            MenuImage repairButtonImage = new MenuImage(new Vector2(200, 200), menuSourceDirectory.GetSourceRectangle("whiteMenuButton_blank"));
+            repairButtonImage.Depth = .5f;
+            Button repair = new RepairButton(this, repairButtonImage);
+            upgradeMenu.AddButton(repair);
+
+            shardMenus.Add(upgradeMenu);
+
 
             #endregion
 
@@ -393,6 +411,16 @@ namespace Shard
                 for (int i = 0; i < shardMenus.Count; i++)
                 {
                     if (shardMenus[i].Name.Equals("Options"))
+                        shardMenus[i].Active = !shardMenus[i].Active;
+                }
+            }
+
+            //Open or Close Upgrades Menu
+            if (EdgeDetect(currentKeyboard, Keys.U))
+            {
+                for (int i = 0; i < shardMenus.Count; i++)
+                {
+                    if (shardMenus[i].Name.Equals("Upgrades"))
                         shardMenus[i].Active = !shardMenus[i].Active;
                 }
             }
