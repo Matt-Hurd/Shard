@@ -208,6 +208,17 @@ namespace Shard
 
             shardMenus.Add(optionsMenu);
 
+            GameMenu gameOverMenu = new GameMenu(this);
+            gameOverMenu.Name = "GameOver";
+            gameOverMenu.SetGamePauseEffect(true);
+            gameOverMenu.Active = false;
+            Rectangle gameOverMenuBackgroundSource = menuSourceDirectory.GetSourceRectangle("grayMenuPanel");
+            MenuImage gameOverMenuBackground = new MenuImage(new Vector2(GraphicsDevice.Viewport.Width / 2 - menuBackgroundSource.Width / 2, GraphicsDevice.Viewport.Height / 2 - menuBackgroundSource.Height / 2), gameOverMenuBackgroundSource, .8f);
+            gameOverMenu.AddMenuImage(gameOverMenuBackground);
+
+            shardMenus.Add(gameOverMenu);
+
+
             #endregion
 
             GameMenu upgradeMenu = new GameMenu(this);
@@ -393,6 +404,15 @@ namespace Shard
             KeyboardState currentKeyboard = Keyboard.GetState();
             MouseState currentMouse = Mouse.GetState();
             bool pauseStateChanged = false;
+
+            if (!player.IsValid())
+            {
+                for (int i = 0; i < shardMenus.Count; i++)
+                {
+                    if (shardMenus[i].Name.Equals("GameOver"))
+                        shardMenus[i].Active = true;
+                }
+            }
 
             // Exit Game
             if (currentGamePad.Buttons.Back == ButtonState.Pressed || currentKeyboard.IsKeyDown(Keys.Escape))
@@ -613,7 +633,7 @@ namespace Shard
                 //Shooting
                 if ((currentMouse.LeftButton.Equals(ButtonState.Pressed)))
                 {
-                    if (player.ReloadTime <= 0) soundPlayer.getSound("playerShoot").Play();
+                    if (player.ReloadTime <= 0 && player.IsValid()) soundPlayer.getSound("playerShoot").Play();
                     double temp = player.Direction;
                     float unitx = 0;
                     float unity = 0;
@@ -625,7 +645,7 @@ namespace Shard
 
                 if ((currentMouse.RightButton.Equals(ButtonState.Pressed)))
                 {
-                    if (player.RearmTime <= 0) soundPlayer.getSound("playerMissile").Play();
+                    if (player.RearmTime <= 0 && player.IsValid()) soundPlayer.getSound("playerMissile").Play();
                     double temp = player.Direction;
                     float unitx = 0;
                     float unity = 0;
