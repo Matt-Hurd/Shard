@@ -768,6 +768,31 @@ namespace Shard
                             shardObjects.Add(debris);
                             //}
                         }
+                        if ((Math.Abs(x) > 50) || (Math.Abs(y) > 50))
+                        {
+                            if (GetSign(y) == -1)
+                                bounds = new Rectangle(camera.Screen.X, camera.Screen.Y-70, camera.Screen.Width, Math.Abs(y));
+                            else
+                                bounds = new Rectangle(camera.Screen.X, camera.Screen.Bottom, camera.Screen.Width, y);
+
+                            //Rectangle bounds=new Rectangle(
+                            //for (int i = 0; i < 1; i++)
+                            //{
+                            Random random = new Random();
+                            Debris debris = new Debris(random.Next(bounds.X, bounds.Right), random.Next(bounds.Y, bounds.Bottom));
+                            debris.Alignment = Shard.Alignment.NEUTRAL;
+                            debris.Health = 50;
+                            debris.Energy = 10;
+                            debris.Ore = 10;
+                            debris.Oxygen = 10;
+                            debris.Water = 10;
+                            debris.Direction = random.NextDouble() * Math.PI * 2;
+                            debris.ImageSource = gameSourceDirectory.GetSourceRectangle("asteroid_medium1_shaded");
+                            debris.Width = debris.ImageSource.Width;
+                            debris.Height = debris.ImageSource.Height;
+                            shardObjects.Add(debris);
+                            //}
+                        }
                     }
                     //count = 0;
                 }
