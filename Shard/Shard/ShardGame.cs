@@ -243,7 +243,7 @@ namespace Shard
 
             #endregion
 
-            //Background Loading
+            //Background Loading, Woohoo Movement Works!
             background = Content.Load<Texture2D>("Backgrounds//seamlessNebulaBackground");
 
             backgrounds = new Rectangle[9];
