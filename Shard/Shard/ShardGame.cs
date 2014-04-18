@@ -788,18 +788,21 @@ namespace Shard
                 {
                     centerRect = currentRect;
                     backgrounds[4] = currentRect;
-                    int cc = 0;
-                    for (int i = 0; i < 3; i++)
-                    {
-                        for (int j = 0; j < 3; j++)
-                        {
-                            if (!(i == 1 && j == 1))
-                            {
-                                backgrounds[cc] = new Rectangle(j * (background.Bounds.Width) + centerRect.X, i * (background.Bounds.Height) + centerRect.Y, background.Bounds.Width, background.Bounds.Height);
-                                cc++;
-                            }
-                        }
-                    }
+                    //^ Sets center Rectangle to your player's current background Rectangle
+                    
+
+                    //(Couldn't do this *successfully* in a for-loop, so yay for manual assignments! :D)
+                    backgrounds[0] = new Rectangle( centerRect.X - currentRect.Width , centerRect.Y - currentRect.Height, background.Bounds.Width, background.Bounds.Height);
+                    backgrounds[1] = new Rectangle(centerRect.X , centerRect.Y - currentRect.Height, background.Bounds.Width, background.Bounds.Height);
+                    backgrounds[2] = new Rectangle(centerRect.X + currentRect.Width, centerRect.Y - currentRect.Height, background.Bounds.Width, background.Bounds.Height);
+
+                    backgrounds[3] = new Rectangle(centerRect.X - currentRect.Width, centerRect.Y, background.Bounds.Width, background.Bounds.Height);
+                    //backgrounds[4] = already set to currentRect
+                    backgrounds[5] = new Rectangle(centerRect.X + currentRect.Width, centerRect.Y, background.Bounds.Width, background.Bounds.Height);
+
+                    backgrounds[6] = new Rectangle(centerRect.X - currentRect.Width, centerRect.Y + currentRect.Height, background.Bounds.Width, background.Bounds.Height);
+                    backgrounds[7] = new Rectangle(centerRect.X, centerRect.Y + currentRect.Height, background.Bounds.Width, background.Bounds.Height);
+                    backgrounds[8] = new Rectangle(centerRect.X + currentRect.Width, centerRect.Y + currentRect.Height, background.Bounds.Width, background.Bounds.Height);
                 }
 
 
