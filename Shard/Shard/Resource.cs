@@ -43,6 +43,25 @@ namespace Shard
             Direction = temp;
         }
 
+        public override void Update(List<ShardObject> shardObjects, GameTime gameTime)
+        {
+            base.Update(shardObjects, gameTime);
+            foreach (ShardObject shardObject in shardObjects)
+            {
+                if (shardObject is Ship)
+                {
+                    if (shardObject.IsValid() && this.GetBounds().Intersects(shardObject.GetBounds()))
+                    {
+                        shardObject.Energy += this.Energy;
+                        shardObject.Ore += this.Ore;
+                        shardObject.Oxygen += this.Oxygen;
+                        shardObject.Water += this.Water;
+                        this.SetValid(false);
+                    }
+                }
+            }
+        }
+
         public override void Destroy(List<ShardObject> shardObjects, GameImageSourceDirectory sourceDirectory)
         {
             //base.Destroy(shardObjects, sourceDirectory); Don't do this!

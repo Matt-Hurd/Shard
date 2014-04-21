@@ -16,6 +16,7 @@ namespace Shard
     {
         private ShardObject targetReference;
         private double travelSpeed;
+        private double targetSelectDistance;
 
         public Missile(int xPosition, int yPosition)
             : base(xPosition, yPosition)
@@ -23,6 +24,7 @@ namespace Shard
             targetReference = null;
             travelSpeed = 1;
             Damage = 1;
+            targetSelectDistance = 800.0;
         }
 
         public virtual ShardObject Target
@@ -52,6 +54,18 @@ namespace Shard
             }
         }
 
+        public double TargetSelectionDistance
+        {
+            get
+            {
+                return targetSelectDistance;
+            }
+            set
+            {
+                targetSelectDistance = value;
+            }
+        }
+
         public virtual bool SelectTarget(List<ShardObject> shardObjects)
         {
             double lowestDistance = Int32.MaxValue;
@@ -61,7 +75,7 @@ namespace Shard
                 if (shardObjects[i] is Ship && shardObjects[i].Alignment != this.Alignment)
                 {
                     double currentDistance = EuclideanMath.DistanceBetween(this.Center, shardObjects[i].Center);
-                    if (currentDistance < lowestDistance && currentDistance > 0 && currentDistance < 1200)
+                    if (currentDistance < lowestDistance && currentDistance > 0 && currentDistance < TargetSelectionDistance)
                     {
                         lowestDistance = currentDistance;
                         lowestIndex = i;

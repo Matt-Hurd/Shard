@@ -96,7 +96,7 @@ namespace Shard
         {
             if(HasValidText() && HasValidFont())
             {
-                spriteBatch.DrawString(font, text, this.Position, textColor, 0f, new Vector2(0,0), new Vector2(1,1), SpriteEffects.None, 0);
+                spriteBatch.DrawString(font, text, this.Position, textColor, 0f, new Vector2(0,0), new Vector2(1,1), SpriteEffects.None, (float)Depth);
                 //spriteBatch.DrawString(font, text, this.Position, textColor, 0f, new Vector2(0,0), 1.0f, SpriteEffects.None, (float)Depth);
             }
             base.Draw(spriteBatch, spritesheet);

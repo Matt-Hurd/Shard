@@ -76,6 +76,11 @@
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
+    <Compile Include="menuFont.spritefont">
+      <Name>menuFont</Name>
+      <Importer>FontDescriptionImporter</Importer>
+      <Processor>FontDescriptionProcessor</Processor>
+    </Compile>
     <None Include="Spritesheets\spritesheet_shard_i3.txt">
       <Name>spritesheet_shard_i3</Name>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

@@ -23,6 +23,7 @@ namespace Shard
         //Underlying Menu Data Structures
         private List<Button> buttons;
         private List<MenuImage> menuImages;
+        private List<MenuText> menuTexts;
         private GameImageSourceDirectory menuImageSourceDirectory;
 
         private ShardGame gameReference;
@@ -35,10 +36,11 @@ namespace Shard
             name = "Unknown";
             this.buttons = new List<Button>();
             this.menuImages = new List<MenuImage>();
+            this.menuTexts = new List<MenuText>();
             isActive = true;
         }
 
-        #region Attribute Mutation and Value Retrieval
+        #region Fields
 
         public bool PausesGame()
         {
@@ -67,7 +69,27 @@ namespace Shard
                 isActive = value;
                 if (pausesGame)
                     gameReference.Paused = isActive;
+                if (isActive)
+                {
+                    foreach (Button button in buttons)
+                        button.UpdateMenu();
+                }
             }
+        }
+
+        public List<MenuImage> Images
+        {
+            get { return menuImages; }
+        }
+
+        public List<Button> Buttons
+        {
+            get { return buttons; }
+        }
+
+        public List<MenuText> Texts
+        {
+            get { return menuTexts; }
         }
 
         public void GiveGameReference(ShardGame gameReference)
@@ -93,6 +115,11 @@ namespace Shard
             menuImages.Add(menuImage);
         }
 
+        public void AddMenuText(MenuText menuText)
+        {
+            menuTexts.Add(menuText);
+        }
+
         public void HandleMouseState(MouseState previousMouse, MouseState currentMouse)
         {
             foreach (Button button in buttons)
@@ -112,6 +139,10 @@ namespace Shard
                 foreach (Button button in buttons)
                 {
                     button.Draw(spriteBatch, spritesheet);
+                }
+                foreach (MenuText text in menuTexts)
+                {
+                    text.Draw(spriteBatch, spritesheet);
                 }
             }
         }

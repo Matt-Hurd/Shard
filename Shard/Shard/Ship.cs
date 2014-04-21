@@ -511,20 +511,20 @@ namespace Shard
             base.Update(shardObjects, gameTime);
             reloadTime -= 1;
             rearmTime -= 1;
-            foreach (ShardObject shardObject in shardObjects)
-            {
-                if (shardObject is Resource)
-                {
-                    if (shardObject.IsValid() && this.GetBounds().Intersects(shardObject.GetBounds()))
-                    {
-                        this.Energy += shardObject.Energy;
-                        this.Ore += shardObject.Ore;
-                        this.Oxygen += shardObject.Oxygen;
-                        this.Water += shardObject.Water;
-                        shardObject.SetValid(false);
-                    }
-                }
-            }
+            //foreach (ShardObject shardObject in shardObjects)
+            //{
+            //    if (shardObject is Resource)
+            //    {
+            //        if (shardObject.IsValid() && this.GetBounds().Intersects(shardObject.GetBounds()))
+            //        {
+            //            this.Energy += shardObject.Energy;
+            //            this.Ore += shardObject.Ore;
+            //            this.Oxygen += shardObject.Oxygen;
+            //            this.Water += shardObject.Water;
+            //            shardObject.SetValid(false);
+            //        }
+            //    }
+            //}
         }
 
 

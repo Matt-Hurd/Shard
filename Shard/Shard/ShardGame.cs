@@ -51,6 +51,7 @@ namespace Shard
         protected bool debugVisible;
         protected SpriteFont debugFont;
         protected SpriteFont statusIndicatorFont;
+        protected SpriteFont menuFont;
 
         protected bool staticBackground;
 
@@ -143,12 +144,12 @@ namespace Shard
             zoomIO = 2;
             isZooming = false;
 
-            bgCam = new Camera(0,0);
+            bgCam = new Camera(0, 0);
             bgZoomZ = 1.3f;
             bgHM = 0;
             bgVM = 0;
 
-            
+
 
             collisionQuadtree = new Quadtree(0, new Rectangle(0, 0, (int)camera.ScreenWidth, (int)camera.ScreenHeight));
 
@@ -169,6 +170,7 @@ namespace Shard
 
             debugFont = Content.Load<SpriteFont>("debugWindowFont");
             statusIndicatorFont = Content.Load<SpriteFont>("statusIndicatorFont");
+            menuFont = Content.Load<SpriteFont>("menuFont");
 
 
             //Spritesheet Loading
@@ -182,63 +184,104 @@ namespace Shard
 
             #region Menu Creation
 
+            Rectangle menuBackgroundSource = menuSourceDirectory.GetSourceRectangle("grayMenuPanel");
+            MenuImage menuBackground = new MenuImage(new Vector2(GraphicsDevice.Viewport.Width / 2 - menuBackgroundSource.Width / 2, GraphicsDevice.Viewport.Height / 2 - menuBackgroundSource.Height / 2), menuBackgroundSource, .8f);
+            menuBackground.Depth = 0f;
+
             #region Options Menu
 
             GameMenu optionsMenu = new GameMenu(this);
             optionsMenu.Name = "Options";
             optionsMenu.SetGamePauseEffect(true);
             optionsMenu.Active = false;
-            Rectangle menuBackgroundSource = menuSourceDirectory.GetSourceRectangle("grayMenuPanel");
-            MenuImage menuBackground = new MenuImage(new Vector2(GraphicsDevice.Viewport.Width / 2 - menuBackgroundSource.Width / 2, GraphicsDevice.Viewport.Height / 2 - menuBackgroundSource.Height / 2), menuBackgroundSource, .8f);
             optionsMenu.AddMenuImage(menuBackground);
 
-            MenuImage closeButtonImage = new MenuImage(new Vector2(200, 200), menuSourceDirectory.GetSourceRectangle("whiteMenuButton_blank"));
-            closeButtonImage.Depth = .5f;
+            MenuImage closeButtonImage = new MenuImage(new Vector2(0, (int)menuBackground.Y), menuSourceDirectory.GetSourceRectangle("whiteMenuButton_blank"), .5f);
+            closeButtonImage.X = menuBackground.X + menuBackground.Width - closeButtonImage.Width;
             Button close = new CloseButton(this, closeButtonImage);
             optionsMenu.AddButton(close);
 
-            MenuImage muteButtonImage = new MenuImage(new Vector2(200, 240), menuSourceDirectory.GetSourceRectangle("whiteMenuButton_blank"));
-            muteButtonImage.Depth = .5f;
+            MenuImage muteButtonImage = new MenuImage(new Vector2((int)menuBackground.X + 16, (int)menuBackground.Y + 36), menuSourceDirectory.GetSourceRectangle("whiteMenuButton_blank"), .5f);
             Button mute = new MuteButton(this, muteButtonImage);
             optionsMenu.AddButton(mute);
+            MenuText muteText = new MenuText(new Vector2((int)muteButtonImage.X + muteButtonImage.Width + 12, (int)muteButtonImage.Y), "Mute: ", menuFont);
+            optionsMenu.AddMenuText(muteText);
 
-            MenuImage rsmButtonImage = new MenuImage(new Vector2(200, 280), menuSourceDirectory.GetSourceRectangle("whiteMenuButton_blank"));
-            rsmButtonImage.Depth = .5f;
+            MenuImage rsmButtonImage = new MenuImage(new Vector2((int)muteButtonImage.X, (int)muteButtonImage.Y + muteButtonImage.Height + 8), menuSourceDirectory.GetSourceRectangle("whiteMenuButton_blank"), .5f);
             Button rsm = new RealisticSpaceMovementToggleButton(this, rsmButtonImage);
             optionsMenu.AddButton(rsm);
+            MenuText rsmText = new MenuText(new Vector2((int)rsmButtonImage.X + rsmButtonImage.Width + 12, (int)rsmButtonImage.Y), "Realistic Movement: ", menuFont);
+            optionsMenu.AddMenuText(rsmText);
 
-            MenuImage adButtonImage = new MenuImage(new Vector2(200, 320), menuSourceDirectory.GetSourceRectangle("whiteMenuButton_blank"));
-            adButtonImage.Depth = .5f;
+            MenuImage adButtonImage = new MenuImage(new Vector2((int)rsmButtonImage.X, (int)rsmButtonImage.Y + rsmButtonImage.Height + 8), menuSourceDirectory.GetSourceRectangle("whiteMenuButton_blank"), .5f);
             Button ad = new AutomaticDecelerationToggleButton(this, adButtonImage);
             optionsMenu.AddButton(ad);
+            MenuText adText = new MenuText(new Vector2((int)adButtonImage.X + adButtonImage.Width + 12, (int)adButtonImage.Y), "Auto-Stop: " + "Off", menuFont);
+            optionsMenu.AddMenuText(adText);
 
             shardMenus.Add(optionsMenu);
+
+            #endregion
 
             GameMenu gameOverMenu = new GameMenu(this);
             gameOverMenu.Name = "GameOver";
             gameOverMenu.SetGamePauseEffect(true);
             gameOverMenu.Active = false;
-            Rectangle gameOverMenuBackgroundSource = menuSourceDirectory.GetSourceRectangle("grayMenuPanel");
-            MenuImage gameOverMenuBackground = new MenuImage(new Vector2(GraphicsDevice.Viewport.Width / 2 - menuBackgroundSource.Width / 2, GraphicsDevice.Viewport.Height / 2 - menuBackgroundSource.Height / 2), gameOverMenuBackgroundSource, .8f);
-            gameOverMenu.AddMenuImage(gameOverMenuBackground);
+            //Rectangle gameOverMenuBackgroundSource = menuSourceDirectory.GetSourceRectangle("grayMenuPanel");
+            //MenuImage gameOverMenuBackground = new MenuImage(new Vector2(GraphicsDevice.Viewport.Width / 2 - menuBackgroundSource.Width / 2, GraphicsDevice.Viewport.Height / 2 - menuBackgroundSource.Height / 2), gameOverMenuBackgroundSource, .8f);
+            gameOverMenu.AddMenuImage(menuBackground);
 
             shardMenus.Add(gameOverMenu);
 
-
-            #endregion
+            #region Upgrade Menu
 
             GameMenu upgradeMenu = new GameMenu(this);
             upgradeMenu.Name = "Upgrades";
-            upgradeMenu.SetGamePauseEffect(false);
+            upgradeMenu.SetGamePauseEffect(true);
             upgradeMenu.Active = false;
             upgradeMenu.AddMenuImage(menuBackground);
 
-            MenuImage repairButtonImage = new MenuImage(new Vector2(200, 200), menuSourceDirectory.GetSourceRectangle("whiteMenuButton_blank"));
+            Button closeUpgrade = new CloseButton(this, closeButtonImage);
+            upgradeMenu.AddButton(closeUpgrade);
+
+            MenuImage repairButtonImage = new MenuImage(new Vector2((int)menuBackground.X + 16, (int)menuBackground.Y + 36), menuSourceDirectory.GetSourceRectangle("whiteMenuButton_blank"));
             repairButtonImage.Depth = .5f;
             Button repair = new RepairButton(this, repairButtonImage);
             upgradeMenu.AddButton(repair);
+            MenuText repairText = new MenuText(new Vector2((int)repairButtonImage.X + repairButtonImage.Width + 12, (int)repairButtonImage.Y), "Repair Cost: " + "0" + " Ore", menuFont);
+            upgradeMenu.AddMenuText(repairText);
+
+            MenuImage upgradeGunButtonImage = new MenuImage(new Vector2((int)repairButtonImage.X, (int)repairButtonImage.Y + repairButtonImage.Height + 8), menuSourceDirectory.GetSourceRectangle("whiteMenuButton_blank"));
+            upgradeGunButtonImage.Depth = .5f;
+            Button upgradeGun = new UpgradeGunButton(this, upgradeGunButtonImage);
+            upgradeMenu.AddButton(upgradeGun);
+            MenuText gunText = new MenuText(new Vector2((int)upgradeGunButtonImage.X + upgradeGunButtonImage.Width + 12, (int)upgradeGunButtonImage.Y), "Gun Upgrade Cost:", menuFont);
+            upgradeMenu.AddMenuText(gunText);
+
+            MenuImage upgradeMissileButtonImage = new MenuImage(new Vector2((int)upgradeGunButtonImage.X, (int)upgradeGunButtonImage.Y + upgradeGunButtonImage.Height + 8), menuSourceDirectory.GetSourceRectangle("whiteMenuButton_blank"));
+            upgradeMissileButtonImage.Depth = .5f;
+            Button upgradeMissile = new UpgradeMissileButton(this, upgradeMissileButtonImage);
+            upgradeMenu.AddButton(upgradeMissile);
+            MenuText missileText = new MenuText(new Vector2((int)upgradeMissileButtonImage.X + upgradeMissileButtonImage.Width + 12, (int)upgradeMissileButtonImage.Y), "Missile Upgrade Cost:", menuFont);
+            upgradeMenu.AddMenuText(missileText);
+
+            MenuImage upgradeSpeedButtonImage = new MenuImage(new Vector2((int)upgradeMissileButtonImage.X, (int)upgradeMissileButtonImage.Y + upgradeMissileButtonImage.Height + 8), menuSourceDirectory.GetSourceRectangle("whiteMenuButton_blank"));
+            upgradeSpeedButtonImage.Depth = .5f;
+            Button upgradeSpeed = new UpgradeSpeedButton(this, upgradeSpeedButtonImage);
+            upgradeMenu.AddButton(upgradeSpeed);
+            MenuText speedText = new MenuText(new Vector2((int)upgradeSpeedButtonImage.X + upgradeSpeedButtonImage.Width + 12, (int)upgradeSpeedButtonImage.Y), "Speed Upgrade Cost:", menuFont);
+            upgradeMenu.AddMenuText(speedText);
+
+            MenuImage upgradeArmorButtonImage = new MenuImage(new Vector2((int)upgradeSpeedButtonImage.X, (int)upgradeSpeedButtonImage.Y + upgradeSpeedButtonImage.Height + 8), menuSourceDirectory.GetSourceRectangle("whiteMenuButton_blank"));
+            upgradeArmorButtonImage.Depth = .5f;
+            Button upgradeArmor = new UpgradeArmorButton(this, upgradeArmorButtonImage);
+            upgradeMenu.AddButton(upgradeArmor);
+            MenuText armorText = new MenuText(new Vector2((int)upgradeArmorButtonImage.X + upgradeArmorButtonImage.Width + 12, (int)upgradeArmorButtonImage.Y), "Armor Upgrade Cost:", menuFont);
+            upgradeMenu.AddMenuText(armorText);
 
             shardMenus.Add(upgradeMenu);
+
+            #endregion
 
 
             #endregion
@@ -273,10 +316,14 @@ namespace Shard
                 player.Width = player.ImageSource.Width;
                 player.Height = player.ImageSource.Height;
                 player.Health = 100;
-                player.GunLevel = 3;
-                player.MissileLevel = 2;
-                player.ArmorLevel = 2;
-                player.SpeedLevel = 2;
+                player.GunLevel = 1;
+                player.MissileLevel = 1;
+                player.ArmorLevel = 1;
+                player.SpeedLevel = 1;
+                player.Energy = 1000;
+                player.Ore = 1000;
+                player.Oxygen = 1000;
+                player.Water = 1000;
                 maximumPlayerHealth = (int)player.Health;
                 shardObjects.Add(player);
 
@@ -393,7 +440,7 @@ namespace Shard
             {
                 this.mouseDirectionalControl = value;
             }
-        } 
+        }
 
         public bool RealisticSpaceMovement
         {
@@ -440,8 +487,8 @@ namespace Shard
             }
 
             // Exit Game
-            if (currentGamePad.Buttons.Back == ButtonState.Pressed || currentKeyboard.IsKeyDown(Keys.Escape))
-                this.Exit();
+            //if (currentGamePad.Buttons.Back == ButtonState.Pressed || currentKeyboard.IsKeyDown(Keys.Escape))
+            //this.Exit();
 
             //Unpause Game
             if (EdgeDetect(currentKeyboard, Keys.P) && gamePaused)
@@ -453,21 +500,13 @@ namespace Shard
             //Open Options Menu
             if (EdgeDetect(currentKeyboard, Keys.O))
             {
-                for (int i = 0; i < shardMenus.Count; i++)
-                {
-                    if (shardMenus[i].Name.Equals("Options"))
-                        shardMenus[i].Active = !shardMenus[i].Active;
-                }
+                ToggleMenu("Options");
             }
 
             //Open or Close Upgrades Menu
             if (EdgeDetect(currentKeyboard, Keys.U))
             {
-                for (int i = 0; i < shardMenus.Count; i++)
-                {
-                    if (shardMenus[i].Name.Equals("Upgrades"))
-                        shardMenus[i].Active = !shardMenus[i].Active;
-                }
+                ToggleMenu("Upgrades");
             }
 
             // TODO: Add your update logic here
@@ -695,7 +734,8 @@ namespace Shard
                             if (vacuumBounds.Intersects(so.GetBounds()))
                             {
                                 so.PointTowards(player.Center);
-                                so.Velocity = 8;
+                                so.Velocity = player.GetMaxSpeed() * Math.Sqrt(2) + .25;
+                                //so.Velocity = player.Velocity + .25;
                             }
                         }
                     }
@@ -789,11 +829,11 @@ namespace Shard
                     centerRect = currentRect;
                     backgrounds[4] = currentRect;
                     //^ Sets center Rectangle to your player's current background Rectangle
-                    
+
 
                     //(Couldn't do this *successfully* in a for-loop, so yay for manual assignments! :D)
-                    backgrounds[0] = new Rectangle( centerRect.X - currentRect.Width , centerRect.Y - currentRect.Height, background.Bounds.Width, background.Bounds.Height);
-                    backgrounds[1] = new Rectangle(centerRect.X , centerRect.Y - currentRect.Height, background.Bounds.Width, background.Bounds.Height);
+                    backgrounds[0] = new Rectangle(centerRect.X - currentRect.Width, centerRect.Y - currentRect.Height, background.Bounds.Width, background.Bounds.Height);
+                    backgrounds[1] = new Rectangle(centerRect.X, centerRect.Y - currentRect.Height, background.Bounds.Width, background.Bounds.Height);
                     backgrounds[2] = new Rectangle(centerRect.X + currentRect.Width, centerRect.Y - currentRect.Height, background.Bounds.Width, background.Bounds.Height);
 
                     backgrounds[3] = new Rectangle(centerRect.X - currentRect.Width, centerRect.Y, background.Bounds.Width, background.Bounds.Height);
@@ -815,7 +855,7 @@ namespace Shard
                     if (camera.ScreenContains(so.GetBounds()))
                         collisionQuadtree.Insert(so);
                     //else if (so is EnemyShip)
-                        //so.Velocity = 0;
+                    //so.Velocity = 0;
                 }
 
                 //Update all ShardObjects using potentially colliding objects
@@ -874,7 +914,7 @@ namespace Shard
                         if ((Math.Abs(x) > 50) || (Math.Abs(y) > 50))
                         {
                             if (GetSign(y) == -1)
-                                bounds = new Rectangle(camera.Screen.X, camera.Screen.Y-70, camera.Screen.Width, Math.Abs(y));
+                                bounds = new Rectangle(camera.Screen.X, camera.Screen.Y - 70, camera.Screen.Width, Math.Abs(y));
                             else
                                 bounds = new Rectangle(camera.Screen.X, camera.Screen.Bottom, camera.Screen.Width, y);
 
@@ -926,10 +966,10 @@ namespace Shard
 
             }
 
-            foreach(GameMenu menu in shardMenus)
+            foreach (GameMenu menu in shardMenus)
             {
-                if(menu.Active)
-                    menu.HandleMouseState(previousMouse, currentMouse);                
+                if (menu.Active)
+                    menu.HandleMouseState(previousMouse, currentMouse);
             }
 
             //Update Previous States
@@ -1021,6 +1061,20 @@ namespace Shard
         private bool EdgeDetect(KeyboardState current, KeyboardState previous, Keys key)
         {
             return (current.IsKeyDown(key) && previous.IsKeyUp(key));
+        }
+
+        protected void ToggleMenu(string menuName)
+        {
+            GameMenu menuToToggle = null;
+            for (int i = 0; i < shardMenus.Count; i++)
+            {
+                if (shardMenus[i].Name.Equals(menuName))
+                    menuToToggle = shardMenus[i];
+                else
+                    shardMenus[i].Active = false; //Deactivates all other menus
+            }
+            if (menuToToggle != null)
+                menuToToggle.Active = !menuToToggle.Active;
         }
 
         private void TraceScreenCoord(int x, int y, out float unitx, out float unity)
@@ -1151,6 +1205,7 @@ namespace Shard
                 //debugLines.Add("xVelocity: " + player.HorizontalVelocity + "   yVelocity: " + player.VerticalVelocity);
                 //debugLines.Add("Rotational Velocity: " + player.RotationalVelocity);
                 debugLines.Add("ShardObject Size: " + shardObjects.Count);
+                debugLines.Add("G: " + player.GunLevel + " M: " + player.MissileLevel + " S: " + player.SpeedLevel + " A: " + player.ArmorLevel);
 
                 Vector2 offset = new Vector2(4, 44);
                 foreach (string line in debugLines)
