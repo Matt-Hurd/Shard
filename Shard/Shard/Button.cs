@@ -260,7 +260,7 @@ namespace Shard
         {
             MenuText menuText = GetMenuText("Repair Cost");
             if(menuText != null)
-                menuText.Text = "Repair Cost: " + (100 - GameReference.Player.Health) + " Ore";
+                menuText.Text = "Repair Cost: " + (100 - (int)GameReference.Player.Health) + " Ore";
         }
 
         public override void PreformMouseClickAction()

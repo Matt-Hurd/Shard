@@ -188,6 +188,26 @@ namespace Shard
             MenuImage menuBackground = new MenuImage(new Vector2(GraphicsDevice.Viewport.Width / 2 - menuBackgroundSource.Width / 2, GraphicsDevice.Viewport.Height / 2 - menuBackgroundSource.Height / 2), menuBackgroundSource, .8f);
             menuBackground.Depth = 0f;
 
+            #region Introduction Menu
+
+            GameMenu introMenu = new GameMenu(this);
+            introMenu.Name = "Intro";
+            introMenu.SetGamePauseEffect(true);
+            introMenu.Active = true;
+            introMenu.AddMenuImage(menuBackground);
+
+            MenuImage closeButtonImage3 = new MenuImage(new Vector2(0, (int)menuBackground.Y), menuSourceDirectory.GetSourceRectangle("whiteMenuButton_blank"), .5f);
+            closeButtonImage3.X = menuBackground.X + menuBackground.Width - closeButtonImage3.Width;
+            Button close3 = new CloseButton(this, closeButtonImage3);
+            introMenu.AddButton(close3);
+
+            MenuText introText = new MenuText(new Vector2((int)menuBackground.X + 12, (int)menuBackground.Y + 12), "You come to, the image of Earth's cataclysm", menuFont);
+            introMenu.AddMenuText(introText);
+
+            shardMenus.Add(introMenu);
+
+            #endregion
+
             #region Options Menu
 
             GameMenu optionsMenu = new GameMenu(this);
@@ -223,6 +243,8 @@ namespace Shard
 
             #endregion
 
+            #region Game Over Menu
+
             GameMenu gameOverMenu = new GameMenu(this);
             gameOverMenu.Name = "GameOver";
             gameOverMenu.SetGamePauseEffect(true);
@@ -232,6 +254,8 @@ namespace Shard
             gameOverMenu.AddMenuImage(menuBackground);
 
             shardMenus.Add(gameOverMenu);
+
+            #endregion
 
             #region Upgrade Menu
 
@@ -282,7 +306,6 @@ namespace Shard
             shardMenus.Add(upgradeMenu);
 
             #endregion
-
 
             #endregion
 
