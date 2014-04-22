@@ -814,41 +814,8 @@ namespace Shard
                     }
                 }
 
-                //double bgVelocity = Math.Tan((player.HorizontalVelocity / player.VerticalVelocity));
-
-                if (currentKeyboard.IsKeyDown(Keys.W) || currentKeyboard.IsKeyDown(Keys.S))
-                {
-                    if (bgZoomZ > 1)
-                    {
-                        bgZoomZ -= .02f;
-                        //bgCam.Zoom = bgZoomZ;
-                        zoomZ += .01f;
-                        //camera.Zoom = zoomZ;
-                    }
-
-                    bgHM += player.HorizontalVelocity;
-                    bgVM += player.VerticalVelocity;
-
-                    //if (bgHM > 50)
-                    //    bgHM = 50;
-                    //if (bgHM < -50)
-                    //    bgHM = -50;
-                    //if (bgVM > 50)
-                    //    bgVM = 50;
-                    //if (bgVM < -50)
-                    //    bgVM = -50;
-
-                }
-                else
-                {
-                    if (bgZoomZ < 1.3)
-                    {
-                        bgZoomZ += .02f;
-                        //bgCam.Zoom = bgZoomZ;
-                        zoomZ -= .01f;
-                        //camera.Zoom = zoomZ;
-                    }
-                }
+                bgHM += player.HorizontalVelocity;
+                bgVM += player.VerticalVelocity;
 
                 foreach (Rectangle r in backgrounds)
                 {
@@ -940,7 +907,7 @@ namespace Shard
                             debris.ImageSource = gameSourceDirectory.GetSourceRectangle("asteroid_medium1_shaded");
                             debris.Width = debris.ImageSource.Width;
                             debris.Height = debris.ImageSource.Height;
-                            shardObjects.Add(debris);
+                            //shardObjects.Add(debris);
                             //}
                         }
                         if ((Math.Abs(x) > 50) || (Math.Abs(y) > 50))
@@ -965,7 +932,7 @@ namespace Shard
                             debris.ImageSource = gameSourceDirectory.GetSourceRectangle("asteroid_medium1_shaded");
                             debris.Width = debris.ImageSource.Width;
                             debris.Height = debris.ImageSource.Height;
-                            shardObjects.Add(debris);
+                            //shardObjects.Add(debris);
                             //}
                         }
                     }
@@ -1238,6 +1205,8 @@ namespace Shard
                 //debugLines.Add("Rotational Velocity: " + player.RotationalVelocity);
                 debugLines.Add("ShardObject Size: " + shardObjects.Count);
                 debugLines.Add("G: " + player.GunLevel + " M: " + player.MissileLevel + " S: " + player.SpeedLevel + " A: " + player.ArmorLevel);
+                debugLines.Add("Center: " + centerRect.X + "," + centerRect.Y);
+                debugLines.Add("Current: " + currentRect.X + "," + currentRect.Y);
 
                 Vector2 offset = new Vector2(4, 44);
                 foreach (string line in debugLines)
