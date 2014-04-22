@@ -773,7 +773,7 @@ namespace Shard
                     isZooming = true;
                     zoomIO = 1; //Sets I/O to zooming IN;
                 }
-                if (currentMouse.ScrollWheelValue < previousMouse.ScrollWheelValue && !(currentKeyboard.IsKeyDown(Keys.W) || currentKeyboard.IsKeyDown(Keys.S))) //Mousewheel DOWN
+                if (currentMouse.ScrollWheelValue < previousMouse.ScrollWheelValue) //Mousewheel DOWN
                 {
                     isZooming = true;
                     zoomIO = 0; //Sets I/O to zooming OUT;
@@ -812,9 +812,9 @@ namespace Shard
                     if (bgZoomZ > 1)
                     {
                         bgZoomZ -= .02f;
-                        bgCam.Zoom = bgZoomZ;
+                        //bgCam.Zoom = bgZoomZ;
                         zoomZ += .01f;
-                        camera.Zoom = zoomZ;
+                        //camera.Zoom = zoomZ;
                     }
 
                     bgHM += player.HorizontalVelocity;
@@ -835,9 +835,9 @@ namespace Shard
                     if (bgZoomZ < 1.3)
                     {
                         bgZoomZ += .02f;
-                        bgCam.Zoom = bgZoomZ;
+                        //bgCam.Zoom = bgZoomZ;
                         zoomZ -= .01f;
-                        camera.Zoom = zoomZ;
+                        //camera.Zoom = zoomZ;
                     }
                 }
 
