@@ -500,6 +500,15 @@ namespace Shard
             MouseState currentMouse = Mouse.GetState();
             bool pauseStateChanged = false;
 
+            if (Muted)
+            {
+                MediaPlayer.IsMuted = true;
+            }
+            if (!Muted && MediaPlayer.IsMuted == true)
+            {
+                MediaPlayer.IsMuted = false;
+            }
+
             if (!player.IsValid())
             {
                 for (int i = 0; i < shardMenus.Count; i++)
@@ -720,7 +729,7 @@ namespace Shard
                 //Shooting
                 if ((currentMouse.LeftButton.Equals(ButtonState.Pressed)))
                 {
-                    if (player.ReloadTime <= 0 && player.IsValid()) soundPlayer.getSound("playerShoot").Play();
+                    if (player.ReloadTime <= 0 && player.IsValid() && !Muted) soundPlayer.getSound("playerShoot").Play();
                     double temp = player.Direction;
                     float unitx = 0;
                     float unity = 0;
@@ -732,7 +741,7 @@ namespace Shard
 
                 if ((currentMouse.RightButton.Equals(ButtonState.Pressed)))
                 {
-                    if (player.RearmTime <= 0 && player.IsValid()) soundPlayer.getSound("playerMissile").Play();
+                    if (player.RearmTime <= 0 && player.IsValid() && !Muted) soundPlayer.getSound("playerMissile").Play();
                     double temp = player.Direction;
                     float unitx = 0;
                     float unity = 0;
