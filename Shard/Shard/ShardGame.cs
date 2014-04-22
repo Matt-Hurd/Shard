@@ -29,6 +29,7 @@ namespace Shard
         GameImageSourceDirectory gameSourceDirectory;
         GameImageSourceDirectory menuSourceDirectory;
         String username;
+        public DateTime SaveTime;
 
         Song songy;
 
@@ -239,6 +240,12 @@ namespace Shard
             MenuText adText = new MenuText(new Vector2((int)adButtonImage.X + adButtonImage.Width + 12, (int)adButtonImage.Y), "Auto-Stop: " + "Off", menuFont);
             optionsMenu.AddMenuText(adText);
 
+            MenuImage saveButtonImage = new MenuImage(new Vector2((int)adButtonImage.X, (int)adButtonImage.Y + adButtonImage.Height + 64), menuSourceDirectory.GetSourceRectangle("whiteMenuButton_blank"), .5f);
+            Button save = new SaveButton(this, saveButtonImage);
+            optionsMenu.AddButton(save);
+            MenuText saveText = new MenuText(new Vector2((int)saveButtonImage.X + saveButtonImage.Width + 12, (int)saveButtonImage.Y), "Save: \nLast Save: " + SaveTime, menuFont);
+            optionsMenu.AddMenuText(saveText);
+
             shardMenus.Add(optionsMenu);
 
             #endregion
@@ -252,6 +259,12 @@ namespace Shard
             //Rectangle gameOverMenuBackgroundSource = menuSourceDirectory.GetSourceRectangle("grayMenuPanel");
             //MenuImage gameOverMenuBackground = new MenuImage(new Vector2(GraphicsDevice.Viewport.Width / 2 - menuBackgroundSource.Width / 2, GraphicsDevice.Viewport.Height / 2 - menuBackgroundSource.Height / 2), gameOverMenuBackgroundSource, .8f);
             gameOverMenu.AddMenuImage(menuBackground);
+
+            MenuImage restartButtonImage = new MenuImage(new Vector2((int)menuBackground.X + 16, (int)menuBackground.Y + 36), menuSourceDirectory.GetSourceRectangle("whiteMenuButton_blank"), .5f);
+            Button restart = new RestartButton(this, restartButtonImage);
+            gameOverMenu.AddButton(restart);
+            MenuText restartText = new MenuText(new Vector2((int)muteButtonImage.X + muteButtonImage.Width + 12, (int)muteButtonImage.Y), "Continue from last Save? ", menuFont);
+            gameOverMenu.AddMenuText(restartText);
 
             shardMenus.Add(gameOverMenu);
 
@@ -384,6 +397,7 @@ namespace Shard
                     evil.GetImageSource(gameSourceDirectory);
                     shardObjects.Add(evil);
                 }
+                SaveGame();
             }
             else
             {
@@ -787,10 +801,6 @@ namespace Shard
                     isZooming = true;
                     zoomIO = 0; //Sets I/O to zooming OUT;
                 }
-                if ((currentKeyboard.IsKeyDown(Keys.LeftControl) || currentKeyboard.IsKeyDown(Keys.RightControl)) && EdgeDetect(currentKeyboard, Keys.S))
-                {
-                    this.SaveGame();
-                }
 
                 if (isZooming)
                 {
@@ -988,8 +998,9 @@ namespace Shard
             base.Update(gameTime);
         }
 
-        protected void SaveGame()
+        public void SaveGame()
         {
+            SaveTime = DateTime.Now;
             database.clear();
             foreach (ShardObject so in shardObjects)
             {
@@ -998,8 +1009,14 @@ namespace Shard
             database.save();
         }
 
+        public void RestartGame()
+        {
+                LoadGame(database);
+        }
+
         protected void LoadGame(XMLDatabase db)
         {
+            shardObjects.Clear();
             foreach (XElement xe in db.getDocument().Root.Elements())
             {
                 switch (xe.Name.ToString())

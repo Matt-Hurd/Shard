@@ -222,6 +222,26 @@ namespace Shard
         }
     }
 
+    class SaveButton : Button
+    {
+        public SaveButton(ShardGame gameReference) : this(gameReference, null) { }
+
+        public SaveButton(ShardGame gameReference, MenuImage image) : base(gameReference, image) { }
+
+        public override void UpdateMenu()
+        {
+            MenuText menuText = GetMenuText("Save");
+            menuText.Text = "Save: \nLast Save:" + GameReference.SaveTime;
+        }
+
+        public override void PreformMouseClickAction()
+        {
+            GameReference.SaveGame();
+            UpdateMenu();
+            //base.PreformMouseClickAction();
+        }
+    }
+
     class RealisticSpaceMovementToggleButton : Button
     {
         public RealisticSpaceMovementToggleButton(ShardGame gameReference) : this(gameReference, null) { }
@@ -444,6 +464,23 @@ namespace Shard
                     UpdateMenu();
                 }
             }
+        }
+    }
+
+    #endregion
+
+    #region Game Over Menu Button Classes
+
+    class RestartButton : Button
+    {
+        public RestartButton(ShardGame gameReference) : this(gameReference, null) { }
+
+        public RestartButton(ShardGame gameReference, MenuImage image) : base(gameReference, image) { }
+
+        public override void PreformMouseClickAction()
+        {
+            GameReference.RestartGame();
+            MenuReference.Active = false;
         }
     }
 

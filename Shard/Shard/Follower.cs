@@ -29,6 +29,17 @@ namespace Shard
         public Follower(XElement node)
             : base(node)
         {
+            followingDistance = Convert.ToDouble(node.Element("followingDistance").Value);
+        }
+
+        public override XElement toNode()
+        {
+            XElement parent = base.toNode();
+            var newXml = new XElement("follower",
+                             parent.Attributes(),
+                             parent.Elements());
+            newXml.Add(new XElement("followingDistance", followingDistance));
+            return newXml;
         }
 
         #region Mutating and Returning Fields
