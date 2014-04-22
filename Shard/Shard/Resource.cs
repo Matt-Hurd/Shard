@@ -52,10 +52,30 @@ namespace Shard
                 {
                     if (shardObject.IsValid() && this.GetBounds().Intersects(shardObject.GetBounds()))
                     {
-                        shardObject.Energy += this.Energy;
-                        shardObject.Ore += this.Ore;
-                        shardObject.Oxygen += this.Oxygen;
-                        shardObject.Water += this.Water;
+                        if (this.Energy > 0)
+                        {
+                            shardObject.Energy += this.Energy;
+                            ShardGraphic temp = this.CreateDamageGraphic(this.Energy, Color.Plum);
+                            temp.Velocity = 0;
+                        }
+                        if (this.Ore > 0)
+                        {
+                            shardObject.Ore += this.Ore;
+                            ShardGraphic temp = this.CreateDamageGraphic(this.Ore, Color.Ivory);
+                            temp.Velocity = 0;
+                        }
+                        if (this.Oxygen > 0)
+                        {
+                            shardObject.Oxygen += this.Oxygen;
+                            ShardGraphic temp = this.CreateDamageGraphic(this.Oxygen, Color.LightGreen);
+                            temp.Velocity = 0;
+                        }
+                        if (this.Water > 0)
+                        {
+                            shardObject.Water += this.Water;
+                            ShardGraphic temp = this.CreateDamageGraphic(this.Water, Color.LightBlue);
+                            temp.Velocity = 0;
+                        }
                         this.SetValid(false);
                     }
                 }

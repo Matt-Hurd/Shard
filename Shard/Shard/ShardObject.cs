@@ -235,16 +235,16 @@ namespace Shard
             //Application of Damage
             Health -= damage;
 
-            CreateDamageGraphic(damage);
+            CreateDamageGraphic(damage, Color.Red);
         }
 
-        public virtual void CreateDamageGraphic(int damage)
+        public virtual ShardGraphic CreateDamageGraphic(int damage, Color color)
         {
             ShardGraphic sg = new ShardGraphic((int)this.Center.X, (int)this.Center.Y);
             sg.Alignment = this.Alignment;
             sg.Text = "" + damage;
             sg.Health = 30;
-            sg.TextColor = Color.Red;
+            sg.TextColor = color;
             sg.Depth = 0;
             sg.Direction = new Random().NextDouble() * Math.PI * 2;
             sg.Velocity = .6;
@@ -252,6 +252,7 @@ namespace Shard
             sg.SetValid(true);
             if (HasListReference())
                 shardObjectListReference.Add(sg);
+            return sg;
         }
 
         public override Rectangle GetBounds()

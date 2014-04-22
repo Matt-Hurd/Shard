@@ -202,7 +202,7 @@ namespace Shard
             Button close3 = new CloseButton(this, closeButtonImage3);
             introMenu.AddButton(close3);
 
-            MenuText introText = new MenuText(new Vector2((int)menuBackground.X + 12, (int)menuBackground.Y + 12), "You come to, the image of Earth's cataclysm", menuFont);
+            MenuText introText = new MenuText(new Vector2((int)menuBackground.X + 12, (int)menuBackground.Y + 12), "You wake up, the image of Earth's\ncataclysm still burning in your mind.\nAs you look out your starboard window\nyou see the shattered remains of your home\ndrift by. In the distance, you can see the\nblue shells of the vessels that appeared\nseconds before Earth's destruction began.\nThere is no doubt that these alien\nconstructions were the cause of Earth's\ndemise. In memory of your fallen people,\nyou swear vengeance on the mysterious\naggresors, you will let none leave alive.", menuFont);
             introMenu.AddMenuText(introText);
 
             shardMenus.Add(introMenu);
