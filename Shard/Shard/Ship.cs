@@ -228,11 +228,11 @@ namespace Shard
                 case 2:
                     return 2;
                 case 3:
-                    return 4;
+                    return 3;
                 case 4:
-                    return 6;
+                    return 5;
                 case 5:
-                    return 10;
+                    return 7;
                 default:
                     return 1;
             }
@@ -244,15 +244,15 @@ namespace Shard
             switch (GunLevel)
             {
                 case 1:
-                    return 7.0;
+                    return 6.0;
                 case 2:
-                    return 7.5;
+                    return 6.5;
                 case 3:
-                    return 8.0;
+                    return 7.0;
                 case 4:
-                    return 8.5;
+                    return 7.5;
                 case 5:
-                    return 9.0;
+                    return 8.0;
                 default:
                     return 1;
             }
@@ -290,9 +290,9 @@ namespace Shard
                 case 3:
                     return 14;
                 case 4:
-                    return 10;
+                    return 11;
                 case 5:
-                    return 6;
+                    return 8;
                 default:
                     return 100;
             }
@@ -364,15 +364,15 @@ namespace Shard
                 case 1:
                     return 2;
                 case 2:
-                    return 5;
+                    return 6;
                 case 3:
-                    return 8;
+                    return 10;
                 case 4:
-                    return 11;
-                case 5:
                     return 14;
+                case 5:
+                    return 18;
                 default:
-                    return 1;
+                    return 2;
             }
         }
 
@@ -382,17 +382,17 @@ namespace Shard
             switch (MissileLevel)
             {
                 case 1:
-                    return 4.0;
+                    return 3.0;
                 case 2:
-                    return 4.5;
+                    return 3.5;
                 case 3:
-                    return 5.0;
+                    return 4.0;
                 case 4:
-                    return 5.75;
+                    return 4.75;
                 case 5:
-                    return 7.0;
+                    return 5.5;
                 default:
-                    return 1.0;
+                    return 3.0;
             }
         }
 
@@ -457,17 +457,17 @@ namespace Shard
             {
                 case 0:
                 case 1:
-                    return 3.0;
+                    return 2.0;
                 case 2:
-                    return 3.5;
+                    return 2.5;
                 case 3:
-                    return 4.0;
-                case 4:
-                    return 4.5;
-                case 5:
-                    return 5.0;
-                default:
                     return 3.0;
+                case 4:
+                    return 3.5;
+                case 5:
+                    return 4.0;
+                default:
+                    return 2.0;
             }
         }
 

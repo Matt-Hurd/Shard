@@ -76,10 +76,14 @@ namespace Shard
             switch (SpeedLevel)
             {
                 case 1:
-                    return 2.5;
+                    return 2.0;
                 case 2:
-                    return 3.5;
+                    return 2.5;
                 case 3:
+                    return 3.15;
+                case 4:
+                    return 3.75;
+                case 5:
                     return 4.5;
                 default:
                     return 1.0;

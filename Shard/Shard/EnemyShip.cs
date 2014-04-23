@@ -68,13 +68,15 @@ namespace Shard
             switch (GunLevel)
             {
                 case 1:
-                    return 6.0;
+                    return 5.5;
                 case 2:
-                    return 7.0;
+                    return 6.0;
                 case 3:
+                    return 6.5;
                 case 4:
+                    return 7.0;
                 case 5:
-                    return 8.0;
+                    return 7.5;
                 default:
                     return 1;
             }

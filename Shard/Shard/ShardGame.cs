@@ -104,6 +104,8 @@ namespace Shard
             // TODO: Add your initialization logic here
             this.Window.Title = "Shard";
             this.IsMouseVisible = true;
+            graphics.PreferredBackBufferHeight = 720;
+            graphics.ApplyChanges();
 
             previousGamePad = GamePad.GetState(PlayerIndex.One);
             previousKeyboard = Keyboard.GetState();

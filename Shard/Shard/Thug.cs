@@ -97,15 +97,15 @@ namespace Shard
             switch (MissileLevel)
             {
                 case 1:
-                    return 3.5;
+                    return 3.0;
                 case 2:
-                    return 4.0;
+                    return 3.35;
                 case 3:
-                    return 4.5;
+                    return 3.75;
                 case 4:
-                    return 5.0;
+                    return 4.25;
                 case 5:
-                    return 6.0;
+                    return 4.75;
                 default:
                     return 1.0;
             }
@@ -142,6 +142,10 @@ namespace Shard
                     return 2.0;
                 case 3:
                     return 2.5;
+                case 4:
+                    return 3.0;
+                case 5:
+                    return 3.5;
                 default:
                     return 1.0;
             }

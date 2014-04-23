@@ -64,7 +64,7 @@ namespace Shard
             switch (SpeedLevel)
             {
                 default:
-                    return 0.75;
+                    return 1.0;
             }
         }
 
