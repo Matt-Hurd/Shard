@@ -91,6 +91,15 @@ namespace Shard
             return false;
         }
 
+        public override void Destroy(List<ShardObject> shardObjects, GameImageSourceDirectory sourceDirectory)
+        {
+            Animation me = new Animation(GetBounds().X, GetBounds().Y);
+            me.AnimationRot = this.Direction;
+            shardObjects.Add(me);
+            
+            base.Destroy(shardObjects, sourceDirectory);
+        }
+
         public override void Update(List<ShardObject> shardObjects, Microsoft.Xna.Framework.GameTime gameTime)
         {
             if (targetReference != null)

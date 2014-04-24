@@ -79,7 +79,11 @@ namespace Shard
         {
             base.Update(shardObjects, gameTime);
             if (currentLifetime >= maxLifetime)
+            {
                 SetValid(false);
+                
+                
+            }
 
             for (int i = 0; i < shardObjects.Count; i++ )
             {
