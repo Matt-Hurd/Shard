@@ -110,7 +110,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Animation.cs" />
     <Compile Include="Bruiser.cs" />
     <Compile Include="Button.cs" />
     <Compile Include="Camera.cs" />

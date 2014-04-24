@@ -25,7 +25,6 @@ namespace Shard
         SpriteBatch spriteBatch;
         Texture2D spritesheet;
         Texture2D menusheet;
-        Texture2D missilesheet;
         Texture2D background;
         GameImageSourceDirectory gameSourceDirectory;
         GameImageSourceDirectory menuSourceDirectory;
@@ -72,6 +71,7 @@ namespace Shard
 
         //Database
         private XMLDatabase database;
+        private float bgZoomZ;
         protected Camera bgCam;
         protected double bgHM, bgVM;
 
@@ -148,6 +148,7 @@ namespace Shard
             isZooming = false;
 
             bgCam = new Camera(0, 0);
+            bgZoomZ = 1.3f;
             bgHM = 0;
             bgVM = 0;
 
@@ -183,8 +184,6 @@ namespace Shard
             menusheet = Content.Load<Texture2D>("Spritesheets//menusheet_shard_i1");
             menuSourceDirectory = new GameImageSourceDirectory();
             menuSourceDirectory.LoadSourcesFromFile(@"Content/Spritesheets//menusheet_shard_i1.txt");
-
-            missilesheet = Content.Load<Texture2D>("Spritesheets//MissileExplodeSheet");
 
             #region Menu Creation
 
@@ -1162,10 +1161,7 @@ namespace Shard
                     //This fixes zooming for some reason!
                     so.Depth = .1f;
                     //^^
-                    if (so is Animation)
-                        so.Draw(spriteBatch, missilesheet);
-                    else
-                        so.Draw(spriteBatch, spritesheet);
+                    so.Draw(spriteBatch, spritesheet);
                 }
                 else
                 {

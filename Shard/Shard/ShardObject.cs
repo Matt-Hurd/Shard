@@ -215,11 +215,6 @@ namespace Shard
             }
         }
 
-        public List<ShardObject> ListReference
-        {
-            get { return shardObjectListReference; }
-        }
-
         public bool HasListReference()
         {
             return shardObjectListReference != null;
