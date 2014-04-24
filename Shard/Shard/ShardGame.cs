@@ -889,7 +889,7 @@ namespace Shard
                     so.Update(potentialCollisions, gameTime);
                 }
 
-                if (count > 20)
+                if (count > 25)
                 {
                     if (camera.Screen != previousScreen)
                     {
@@ -989,7 +989,7 @@ namespace Shard
             previousGamePad = currentGamePad;
             previousKeyboard = currentKeyboard;
             previousMouse = currentMouse;
-            if (count > 20)
+            if (count > 25)
             {
                 previousScreen = camera.Screen;
                 previousPosition = player.Position;
