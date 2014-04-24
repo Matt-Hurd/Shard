@@ -1,0 +1,5 @@
+emptyButton = 256 121 64 32
+emptyButtonLarge = 256 0 128 57
+grayMenuPanel = 0 0 256 256
+menuExitButton = 256 89 32 32
+whiteMenuButton_blank = 256 57 64 32

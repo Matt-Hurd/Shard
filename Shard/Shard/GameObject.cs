@@ -23,6 +23,7 @@ namespace Shard
         private double verticalVelocity;
         private double rotationalVelocity;
         private double health;
+        private double maxHealth;
 
         #region Mutating and Returning Fields
 
@@ -156,6 +157,18 @@ namespace Shard
             set
             {
                 health = value;
+            }
+        }
+
+        public double MaximumHealth
+        {
+            get
+            {
+                return maxHealth;
+            }
+            set
+            {
+                this.maxHealth = value;
             }
         }
 

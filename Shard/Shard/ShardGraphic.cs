@@ -99,7 +99,7 @@ namespace Shard
                 spriteBatch.DrawString(font, text, this.Position, textColor, 0f, new Vector2(0,0), new Vector2(1,1), SpriteEffects.None, (float)Depth);
                 //spriteBatch.DrawString(font, text, this.Position, textColor, 0f, new Vector2(0,0), 1.0f, SpriteEffects.None, (float)Depth);
             }
-            base.Draw(spriteBatch, spritesheet);
+            //base.Draw(spriteBatch, spritesheet);
         }
 
     }

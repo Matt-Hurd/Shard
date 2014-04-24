@@ -177,13 +177,13 @@ namespace Shard
 
 
             //Spritesheet Loading
-            spritesheet = Content.Load<Texture2D>("Spritesheets//spritesheet_shard_i3");
+            spritesheet = Content.Load<Texture2D>("Spritesheets//spritesheet_shard_final");
             gameSourceDirectory = new GameImageSourceDirectory();
-            gameSourceDirectory.LoadSourcesFromFile(@"Content/Spritesheets//spritesheet_shard_i3.txt");
+            gameSourceDirectory.LoadSourcesFromFile(@"Content/Spritesheets//spritesheet_shard_final.txt");
 
-            menusheet = Content.Load<Texture2D>("Spritesheets//menusheet_shard_i1");
+            menusheet = Content.Load<Texture2D>("Spritesheets//menusheet_shard_final");
             menuSourceDirectory = new GameImageSourceDirectory();
-            menuSourceDirectory.LoadSourcesFromFile(@"Content/Spritesheets//menusheet_shard_i1.txt");
+            menuSourceDirectory.LoadSourcesFromFile(@"Content/Spritesheets//menusheet_shard_final.txt");
 
             #region Menu Creation
 
@@ -199,7 +199,7 @@ namespace Shard
             introMenu.Active = true;
             introMenu.AddMenuImage(menuBackground);
 
-            MenuImage closeButtonImage3 = new MenuImage(new Vector2(0, (int)menuBackground.Y), menuSourceDirectory.GetSourceRectangle("whiteMenuButton_blank"), .5f);
+            MenuImage closeButtonImage3 = new MenuImage(new Vector2(0, (int)menuBackground.Y), menuSourceDirectory.GetSourceRectangle("menuExitButton"), .5f);
             closeButtonImage3.X = menuBackground.X + menuBackground.Width - closeButtonImage3.Width;
             Button close3 = new CloseButton(this, closeButtonImage3);
             introMenu.AddButton(close3);
@@ -219,30 +219,30 @@ namespace Shard
             optionsMenu.Active = false;
             optionsMenu.AddMenuImage(menuBackground);
 
-            MenuImage closeButtonImage = new MenuImage(new Vector2(0, (int)menuBackground.Y), menuSourceDirectory.GetSourceRectangle("whiteMenuButton_blank"), .5f);
+            MenuImage closeButtonImage = new MenuImage(new Vector2(0, (int)menuBackground.Y), menuSourceDirectory.GetSourceRectangle("menuExitButton"), .5f);
             closeButtonImage.X = menuBackground.X + menuBackground.Width - closeButtonImage.Width;
             Button close = new CloseButton(this, closeButtonImage);
             optionsMenu.AddButton(close);
 
-            MenuImage muteButtonImage = new MenuImage(new Vector2((int)menuBackground.X + 16, (int)menuBackground.Y + 36), menuSourceDirectory.GetSourceRectangle("whiteMenuButton_blank"), .5f);
+            MenuImage muteButtonImage = new MenuImage(new Vector2((int)menuBackground.X + 16, (int)menuBackground.Y + 36), menuSourceDirectory.GetSourceRectangle("emptyButton"), .5f);
             Button mute = new MuteButton(this, muteButtonImage);
             optionsMenu.AddButton(mute);
             MenuText muteText = new MenuText(new Vector2((int)muteButtonImage.X + muteButtonImage.Width + 12, (int)muteButtonImage.Y), "Mute: ", menuFont);
             optionsMenu.AddMenuText(muteText);
 
-            MenuImage rsmButtonImage = new MenuImage(new Vector2((int)muteButtonImage.X, (int)muteButtonImage.Y + muteButtonImage.Height + 8), menuSourceDirectory.GetSourceRectangle("whiteMenuButton_blank"), .5f);
+            MenuImage rsmButtonImage = new MenuImage(new Vector2((int)muteButtonImage.X, (int)muteButtonImage.Y + muteButtonImage.Height + 8), menuSourceDirectory.GetSourceRectangle("emptyButton"), .5f);
             Button rsm = new RealisticSpaceMovementToggleButton(this, rsmButtonImage);
             optionsMenu.AddButton(rsm);
             MenuText rsmText = new MenuText(new Vector2((int)rsmButtonImage.X + rsmButtonImage.Width + 12, (int)rsmButtonImage.Y), "Realistic Movement: ", menuFont);
             optionsMenu.AddMenuText(rsmText);
 
-            MenuImage adButtonImage = new MenuImage(new Vector2((int)rsmButtonImage.X, (int)rsmButtonImage.Y + rsmButtonImage.Height + 8), menuSourceDirectory.GetSourceRectangle("whiteMenuButton_blank"), .5f);
+            MenuImage adButtonImage = new MenuImage(new Vector2((int)rsmButtonImage.X, (int)rsmButtonImage.Y + rsmButtonImage.Height + 8), menuSourceDirectory.GetSourceRectangle("emptyButton"), .5f);
             Button ad = new AutomaticDecelerationToggleButton(this, adButtonImage);
             optionsMenu.AddButton(ad);
             MenuText adText = new MenuText(new Vector2((int)adButtonImage.X + adButtonImage.Width + 12, (int)adButtonImage.Y), "Auto-Stop: " + "Off", menuFont);
             optionsMenu.AddMenuText(adText);
 
-            MenuImage saveButtonImage = new MenuImage(new Vector2((int)adButtonImage.X, (int)adButtonImage.Y + adButtonImage.Height + 64), menuSourceDirectory.GetSourceRectangle("whiteMenuButton_blank"), .5f);
+            MenuImage saveButtonImage = new MenuImage(new Vector2((int)adButtonImage.X, (int)adButtonImage.Y + adButtonImage.Height + 64), menuSourceDirectory.GetSourceRectangle("emptyButton"), .5f);
             Button save = new SaveButton(this, saveButtonImage);
             optionsMenu.AddButton(save);
             MenuText saveText = new MenuText(new Vector2((int)saveButtonImage.X + saveButtonImage.Width + 12, (int)saveButtonImage.Y), "Save: \nLast Save: " + SaveTime, menuFont);
@@ -262,7 +262,7 @@ namespace Shard
             //MenuImage gameOverMenuBackground = new MenuImage(new Vector2(GraphicsDevice.Viewport.Width / 2 - menuBackgroundSource.Width / 2, GraphicsDevice.Viewport.Height / 2 - menuBackgroundSource.Height / 2), gameOverMenuBackgroundSource, .8f);
             gameOverMenu.AddMenuImage(menuBackground);
 
-            MenuImage restartButtonImage = new MenuImage(new Vector2((int)menuBackground.X + 16, (int)menuBackground.Y + 36), menuSourceDirectory.GetSourceRectangle("whiteMenuButton_blank"), .5f);
+            MenuImage restartButtonImage = new MenuImage(new Vector2((int)menuBackground.X + 16, (int)menuBackground.Y + 36), menuSourceDirectory.GetSourceRectangle("emptyButton"), .5f);
             Button restart = new RestartButton(this, restartButtonImage);
             gameOverMenu.AddButton(restart);
             MenuText restartText = new MenuText(new Vector2((int)muteButtonImage.X + muteButtonImage.Width + 12, (int)muteButtonImage.Y), "Continue from last Save? ", menuFont);
@@ -283,35 +283,35 @@ namespace Shard
             Button closeUpgrade = new CloseButton(this, closeButtonImage);
             upgradeMenu.AddButton(closeUpgrade);
 
-            MenuImage repairButtonImage = new MenuImage(new Vector2((int)menuBackground.X + 16, (int)menuBackground.Y + 36), menuSourceDirectory.GetSourceRectangle("whiteMenuButton_blank"));
+            MenuImage repairButtonImage = new MenuImage(new Vector2((int)menuBackground.X + 16, (int)menuBackground.Y + 36), menuSourceDirectory.GetSourceRectangle("emptyButton"));
             repairButtonImage.Depth = .5f;
             Button repair = new RepairButton(this, repairButtonImage);
             upgradeMenu.AddButton(repair);
             MenuText repairText = new MenuText(new Vector2((int)repairButtonImage.X + repairButtonImage.Width + 12, (int)repairButtonImage.Y), "Repair Cost: " + "0" + " Ore", menuFont);
             upgradeMenu.AddMenuText(repairText);
 
-            MenuImage upgradeGunButtonImage = new MenuImage(new Vector2((int)repairButtonImage.X, (int)repairButtonImage.Y + repairButtonImage.Height + 8), menuSourceDirectory.GetSourceRectangle("whiteMenuButton_blank"));
+            MenuImage upgradeGunButtonImage = new MenuImage(new Vector2((int)repairButtonImage.X, (int)repairButtonImage.Y + repairButtonImage.Height + 8), menuSourceDirectory.GetSourceRectangle("emptyButton"));
             upgradeGunButtonImage.Depth = .5f;
             Button upgradeGun = new UpgradeGunButton(this, upgradeGunButtonImage);
             upgradeMenu.AddButton(upgradeGun);
             MenuText gunText = new MenuText(new Vector2((int)upgradeGunButtonImage.X + upgradeGunButtonImage.Width + 12, (int)upgradeGunButtonImage.Y), "Gun Upgrade Cost:", menuFont);
             upgradeMenu.AddMenuText(gunText);
 
-            MenuImage upgradeMissileButtonImage = new MenuImage(new Vector2((int)upgradeGunButtonImage.X, (int)upgradeGunButtonImage.Y + upgradeGunButtonImage.Height + 8), menuSourceDirectory.GetSourceRectangle("whiteMenuButton_blank"));
+            MenuImage upgradeMissileButtonImage = new MenuImage(new Vector2((int)upgradeGunButtonImage.X, (int)upgradeGunButtonImage.Y + upgradeGunButtonImage.Height + 8), menuSourceDirectory.GetSourceRectangle("emptyButton"));
             upgradeMissileButtonImage.Depth = .5f;
             Button upgradeMissile = new UpgradeMissileButton(this, upgradeMissileButtonImage);
             upgradeMenu.AddButton(upgradeMissile);
             MenuText missileText = new MenuText(new Vector2((int)upgradeMissileButtonImage.X + upgradeMissileButtonImage.Width + 12, (int)upgradeMissileButtonImage.Y), "Missile Upgrade Cost:", menuFont);
             upgradeMenu.AddMenuText(missileText);
 
-            MenuImage upgradeSpeedButtonImage = new MenuImage(new Vector2((int)upgradeMissileButtonImage.X, (int)upgradeMissileButtonImage.Y + upgradeMissileButtonImage.Height + 8), menuSourceDirectory.GetSourceRectangle("whiteMenuButton_blank"));
+            MenuImage upgradeSpeedButtonImage = new MenuImage(new Vector2((int)upgradeMissileButtonImage.X, (int)upgradeMissileButtonImage.Y + upgradeMissileButtonImage.Height + 8), menuSourceDirectory.GetSourceRectangle("emptyButton"));
             upgradeSpeedButtonImage.Depth = .5f;
             Button upgradeSpeed = new UpgradeSpeedButton(this, upgradeSpeedButtonImage);
             upgradeMenu.AddButton(upgradeSpeed);
             MenuText speedText = new MenuText(new Vector2((int)upgradeSpeedButtonImage.X + upgradeSpeedButtonImage.Width + 12, (int)upgradeSpeedButtonImage.Y), "Speed Upgrade Cost:", menuFont);
             upgradeMenu.AddMenuText(speedText);
 
-            MenuImage upgradeArmorButtonImage = new MenuImage(new Vector2((int)upgradeSpeedButtonImage.X, (int)upgradeSpeedButtonImage.Y + upgradeSpeedButtonImage.Height + 8), menuSourceDirectory.GetSourceRectangle("whiteMenuButton_blank"));
+            MenuImage upgradeArmorButtonImage = new MenuImage(new Vector2((int)upgradeSpeedButtonImage.X, (int)upgradeSpeedButtonImage.Y + upgradeSpeedButtonImage.Height + 8), menuSourceDirectory.GetSourceRectangle("emptyButton"));
             upgradeArmorButtonImage.Depth = .5f;
             Button upgradeArmor = new UpgradeArmorButton(this, upgradeArmorButtonImage);
             upgradeMenu.AddButton(upgradeArmor);
@@ -391,7 +391,9 @@ namespace Shard
                 int numEnemies = 5;
                 for (int i = 0; i < numEnemies; i++)
                 {
-                    EnemyShip evil = new Thug((int)(random.NextDouble() * 1000), (int)(random.NextDouble() * 1000));
+                    EnemyShip evil = new Bruiser((int)(random.NextDouble() * 1000), (int)(random.NextDouble() * 1000));
+                    evil.MaximumHealth = 20;
+                    evil.Health = evil.MaximumHealth;
                     evil.GunLevel = 2;
                     evil.MissileLevel = 1;
                     evil.ArmorLevel = 1;
@@ -1161,6 +1163,8 @@ namespace Shard
                     //This fixes zooming for some reason!
                     so.Depth = .1f;
                     //^^
+                    if (so is EnemyShip)
+                        DrawHealthBar(spriteBatch, spritesheet, (Ship)so);
                     so.Draw(spriteBatch, spritesheet);
                 }
                 else
@@ -1196,9 +1200,9 @@ namespace Shard
             //Draw the Player Healthbar
             spriteBatch.Begin(SpriteSortMode.BackToFront, null);
             Rectangle healthBarSource = gameSourceDirectory.GetSourceRectangle("healthBarOutline");
-            Rectangle healthBarGradient = gameSourceDirectory.GetSourceRectangle("healthBarGradient");
+            Rectangle healthBarGradient = gameSourceDirectory.GetSourceRectangle("healthBar");
             spriteBatch.Draw(spritesheet, new Rectangle(0, 0, healthBarSource.Width, healthBarSource.Height), healthBarSource, Color.White, 0f, Vector2.Zero, SpriteEffects.None, 0f);
-            spriteBatch.Draw(spritesheet, new Rectangle(4, 4, (int)(healthBarGradient.Width * (player.Health / (double)maximumPlayerHealth)), healthBarGradient.Height), healthBarGradient, Color.White, 0f, Vector2.Zero, SpriteEffects.None, 1.0f);
+            spriteBatch.Draw(spritesheet, new Rectangle(4, 5, (int)(healthBarGradient.Width * (player.Health / (double)maximumPlayerHealth)), healthBarGradient.Height), healthBarGradient, Color.White, 0f, Vector2.Zero, SpriteEffects.None, 1.0f);
             spriteBatch.End();
 
             //Draw any active menus
@@ -1210,6 +1214,14 @@ namespace Shard
             spriteBatch.End();
 
             base.Draw(gameTime);
+        }
+
+        internal void DrawHealthBar(SpriteBatch spriteBatch, Texture2D spritesheet, Ship ship)
+        {
+            Rectangle healthBarSource = gameSourceDirectory.GetSourceRectangle("enemyHealthBarOutline");
+            Rectangle healthBarGradient = gameSourceDirectory.GetSourceRectangle("enemyHealthBar");
+            spriteBatch.Draw(spritesheet, new Rectangle((int)ship.Center.X - healthBarSource.Width / 2 + 1, (int)ship.Y - 10, healthBarSource.Width, healthBarSource.Height), healthBarSource, Color.White, 0f, Vector2.Zero, SpriteEffects.None, 1.0f);
+            spriteBatch.Draw(spritesheet, new Rectangle((int)ship.Center.X - healthBarSource.Width / 2 + 1, (int)ship.Y - 9, (int)(healthBarGradient.Width * (ship.Health / (double)ship.MaximumHealth)), healthBarGradient.Height), healthBarGradient, Color.White, 0f, Vector2.Zero, SpriteEffects.None, 0f);
         }
 
         //precondition: spriteBatch.Begin() has been called
@@ -1227,7 +1239,7 @@ namespace Shard
                 debugLines.Add("Center: " + centerRect.X + "," + centerRect.Y);
                 debugLines.Add("Current: " + currentRect.X + "," + currentRect.Y);
 
-                Vector2 offset = new Vector2(4, 44);
+                Vector2 offset = new Vector2(204, 4);
                 foreach (string line in debugLines)
                 {
 
