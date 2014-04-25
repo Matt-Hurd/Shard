@@ -48,7 +48,7 @@ namespace Shard
         {
             foreach (ShardObject so in x)
             {
-                if ((this.GetBounds().Intersects(so.GetBounds())) && (!(this.Equals(so))) && so.Solid)
+                if ((this.GetBounds().Intersects(so.GetBounds())) && (!(this.Equals(so))) && so.Solid && !(so is Projectile))
                 {
                     float y2 = this.GetBounds().Center.Y - so.GetBounds().Center.Y;
                     float x2 = this.GetBounds().Center.X - so.GetBounds().Center.X;

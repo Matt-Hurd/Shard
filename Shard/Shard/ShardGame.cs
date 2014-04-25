@@ -105,6 +105,7 @@ namespace Shard
             this.Window.Title = "Shard";
             this.IsMouseVisible = true;
             graphics.PreferredBackBufferHeight = 720;
+            graphics.PreferredBackBufferWidth = 720;
             graphics.ApplyChanges();
 
             previousGamePad = GamePad.GetState(PlayerIndex.One);
@@ -531,8 +532,8 @@ namespace Shard
             {
                 for (int i = 0; i < shardMenus.Count; i++)
                 {
-                    if (shardMenus[i].Name.Equals("GameOver"))
-                        shardMenus[i].Active = true;
+                    if (shardMenus[i].Name.Equals("GameOver") && !shardMenus[i].Active)
+                        ToggleMenu("GameOver");
                 }
             }
 
@@ -1015,7 +1016,7 @@ namespace Shard
 
         public void RestartGame()
         {
-                LoadGame(database);
+            LoadGame(database);
         }
 
         protected void LoadGame(XMLDatabase db)
