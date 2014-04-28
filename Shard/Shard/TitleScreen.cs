@@ -24,11 +24,13 @@ namespace Shard
             btn_help.FlatAppearance.BorderSize = 0;
             btn_options.FlatAppearance.BorderSize = 0;
             btn_start.FlatAppearance.BorderSize = 0;
+            btn_HelpBack.FlatAppearance.BorderSize = 0;
 
             btn_about.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
             btn_help.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
             btn_options.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
             btn_start.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
+            btn_HelpBack.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
         }
 
         private void button_MouseEnter(object sender, EventArgs e)
@@ -51,6 +53,31 @@ namespace Shard
             login.Close();
             login = new LoginForm(this);
             login.Show();
+        }
+
+        private void btn_about_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
+
+        private void btn_HelpBack_Click(object sender, EventArgs e)
+        {
+            HelpPanel.Visible = false;
+        }
+
+        private void btn_help_Click(object sender, EventArgs e)
+        {
+            HelpPanel.Visible = true;
+        }
+
+        private void btn_options_Click(object sender, EventArgs e)
+        {
+            OptionsPanel.Visible = true;
+        }
+
+        private void btn_OptionsBack_Click(object sender, EventArgs e)
+        {
+            OptionsPanel.Visible = false;
         }
     }
 }

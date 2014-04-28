@@ -162,6 +162,7 @@
   <ItemGroup>
     <Content Include="Game.ico" />
     <Content Include="GameThumbnail.png" />
+    <None Include="Resources\shard.png" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ShardContent\ShardContent.contentproj">
