@@ -922,7 +922,7 @@ namespace Shard
                             debris.ImageSource = gameSourceDirectory.GetSourceRectangle("asteroid_medium1_shaded");
                             debris.Width = debris.ImageSource.Width;
                             debris.Height = debris.ImageSource.Height;
-                            shardObjects.Add(debris);
+                            //shardObjects.Add(debris);
                             //}
                         }
                         if ((Math.Abs(x) > 50) || (Math.Abs(y) > 50))
@@ -947,7 +947,7 @@ namespace Shard
                             debris.ImageSource = gameSourceDirectory.GetSourceRectangle("asteroid_medium1_shaded");
                             debris.Width = debris.ImageSource.Width;
                             debris.Height = debris.ImageSource.Height;
-                            shardObjects.Add(debris);
+                            //shardObjects.Add(debris);
                             //}
                         }
                     }
