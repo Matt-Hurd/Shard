@@ -15,17 +15,17 @@ TCEA Rules Checklist:
 
 ✔ Relevant GUI
 
-✔ Title Screen
-  ✔ Begin Game
-  ✔ Instructions
-  ✖ Options
-  ✔ Quit Program
+✔ Title Screen  
+  ✔ Begin Game  
+  ✔ Instructions  
+  ✖ Options  
+  ✔ Quit Program  
   
-✔ Menu
-  ✔ Load Game
-  ✔ Save Game
-  ✖ Exit Game (I assume this means it'll open up the Title Screen)
-  ✔ Exit Application
+✔ Menu  
+  ✔ Load Game  
+  ✔ Save Game  
+  ✖ Exit Game (I assume this means it'll open up the Title Screen)  
+  ✔ Exit Application  
   
 ✔✖ Incoorporate Elements Meaningfully (I think we need a tad more emphasis)
 
@@ -39,10 +39,10 @@ NA Webcam
 
 ✔ Game Summary
 
-✔ Database
-  ✔ All game state and character data is saved
-  ✔ Login Support
-  ✔ Implemented
-  ✔ Local or Remote
+✔ Database  
+  ✔ All game state and character data is saved  
+  ✔ Login Support  
+  ✔ Implemented  
+  ✔ Local or Remote  
   
 ✔ Under 500MB
