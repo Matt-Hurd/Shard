@@ -48,22 +48,27 @@ namespace Shard
 
         protected override int GetBulletDamage()
         {
-            return 8;
+            return 7;
         }
 
         protected override int GetReloadTime()
         {
-            return 20;
+            return 40;
         }
 
         protected override int GetMissileDamage()
         {
-            return 12;
+            return 10;
+        }
+
+        protected override double GetBulletSpeed()
+        {
+            return 10.0;
         }
 
         protected override double GetMissileTravelSpeed()
         {
-            return 4.5;
+            return 5.6;
         }
 
         public override int GetDamageReductionFromArmor()
@@ -73,7 +78,7 @@ namespace Shard
 
         protected override int GetRearmTime()
         {
-            return 50;
+            return 70;
         }
 
         //Should be Overriden for ships with different scaling

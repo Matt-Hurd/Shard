@@ -422,7 +422,7 @@ namespace Shard
 
                 //Add boss for testing
                 BossShip boss = new BossShip(200, 200);
-                boss.MaximumHealth = 100;
+                boss.MaximumHealth = 1000;
                 boss.Health = boss.MaximumHealth;
                 boss.Velocity = 0;
                 boss.GetImageSource(gameSourceDirectory);
@@ -1129,6 +1129,13 @@ namespace Shard
                         tempBruiser.Width = tempBruiser.ImageSource.Width;
                         tempBruiser.Height = tempBruiser.ImageSource.Height;
                         shardObjects.Add(tempBruiser);
+                        break;
+                    case "bossship":
+                        EnemyShip tempBoss = new BossShip(xe);
+                        tempBoss.GetImageSource(gameSourceDirectory);
+                        tempBoss.Width = tempBoss.ImageSource.Width;
+                        tempBoss.Height = tempBoss.ImageSource.Height;
+                        shardObjects.Add(tempBoss);
                         break;
                     case "thug":
                         EnemyShip tempThug = new Thug(xe);
