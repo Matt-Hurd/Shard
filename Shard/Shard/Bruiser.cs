@@ -1,8 +1,15 @@
 ﻿using System;
+using System.Data;
 using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Linq;
-using System.Text;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
+using Microsoft.Xna.Framework.Content;
+using Microsoft.Xna.Framework.GamerServices;
+using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Media;
 
 namespace Shard
 {
@@ -17,6 +24,7 @@ namespace Shard
             GunLevel = 1;
             MissileLevel = 1;
             SpeedLevel = 1;
+            ArmorLevel = 1;
             Health = 100;
         }
 
@@ -81,7 +89,7 @@ namespace Shard
 
         protected override int GetMissileDamage()
         {
-            switch (GunLevel)
+            switch (MissileLevel)
             {
                 case 1:
                     return 3;
@@ -120,7 +128,7 @@ namespace Shard
 
         protected override int GetRearmTime()
         {
-            switch (GunLevel)
+            switch (MissileLevel)
             {
                 case 1:
                     return 100;

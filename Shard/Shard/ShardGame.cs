@@ -420,13 +420,21 @@ namespace Shard
 
                 soundPlayer.LoadSounds(Content);
 
+                //Add boss for testing
+                BossShip boss = new BossShip(200, 200);
+                boss.MaximumHealth = 100;
+                boss.Health = boss.MaximumHealth;
+                boss.Velocity = 0;
+                boss.GetImageSource(gameSourceDirectory);
+                shardObjects.Add(boss);
+
                 //Add a bunch of debris for testing purposes
-                int numDebris = 1000;
+                int numDebris = 0;
                 Random random = new Random();
                 for (int i = 0; i < numDebris; i++)
                 {
                     //Debris debris = new Debris(random.Next(-GraphicsDevice.Viewport.Width,GraphicsDevice.Viewport.Width), random.Next(-GraphicsDevice.Viewport.Height,GraphicsDevice.Viewport.Height));
-                    Debris debris = new Debris(random.Next(5000), random.Next(5000));
+                    Debris debris = new Debris(random.Next(GraphicsDevice.Viewport.Width), random.Next(GraphicsDevice.Viewport.Height));
                     debris.Alignment = Shard.Alignment.NEUTRAL;
                     debris.Health = 10;
                     debris.Energy = 10;
@@ -441,7 +449,7 @@ namespace Shard
                 }
 
                 //Add evil ships
-                int numEnemies = 5;
+                int numEnemies = 0;
                 for (int i = 0; i < numEnemies; i++)
                 {
                     EnemyShip evil = new Bruiser((int)(random.NextDouble() * 1000), (int)(random.NextDouble() * 1000));
