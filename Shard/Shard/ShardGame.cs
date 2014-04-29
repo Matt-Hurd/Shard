@@ -13,9 +13,6 @@ using Microsoft.Xna.Framework.Media;
 
 namespace Shard
 {
-    /// <summary>
-    /// This is the main type for your game
-    /// </summary>
     public class ShardGame : Microsoft.Xna.Framework.Game
     {
         //debug option
@@ -56,7 +53,7 @@ namespace Shard
 
         protected bool staticBackground;
 
-        List<ShardObject> shardObjects; //Probably won't be able to use as a ShardObject List
+        List<ShardObject> shardObjects;
         List<GameMenu> shardMenus;
         Ship player;
         int maximumPlayerHealth;
@@ -93,15 +90,8 @@ namespace Shard
             this.username = username;
         }
 
-        /// <summary>
-        /// Allows the game to perform any initialization it needs to before starting to run.
-        /// This is where it can query for any required services and load any non-graphic
-        /// related content.  Calling base.Initialize will enumerate through any components
-        /// and initialize them as well.
-        /// </summary>
         protected override void Initialize()
         {
-            // TODO: Add your initialization logic here
             this.Window.Title = "Shard";
             this.IsMouseVisible = true;
             graphics.PreferredBackBufferHeight = 720;
@@ -111,7 +101,6 @@ namespace Shard
             previousGamePad = GamePad.GetState(PlayerIndex.One);
             previousKeyboard = Keyboard.GetState();
             previousMouse = Mouse.GetState();
-
 
             soundPlayer = new SoundPlayer();
 
@@ -158,16 +147,9 @@ namespace Shard
             base.Initialize();
         }
 
-        /// <summary>
-        /// LoadContent will be called once per game and is the place to load
-        /// all of your content.
-        /// </summary>
         protected override void LoadContent()
         {
-            // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
-
-            // TODO: use this.Content to load your game content here
 
             debugFont = Content.Load<SpriteFont>("Fonts//debugWindowFont");
             statusIndicatorFont = Content.Load<SpriteFont>("Fonts//statusIndicatorFont");
@@ -284,8 +266,6 @@ namespace Shard
             gameOverMenu.Name = "GameOver";
             gameOverMenu.SetGamePauseEffect(true);
             gameOverMenu.Active = false;
-            //Rectangle gameOverMenuBackgroundSource = menuSourceDirectory.GetSourceRectangle("grayMenuPanel");
-            //MenuImage gameOverMenuBackground = new MenuImage(new Vector2(GraphicsDevice.Viewport.Width / 2 - menuBackgroundSource.Width / 2, GraphicsDevice.Viewport.Height / 2 - menuBackgroundSource.Height / 2), gameOverMenuBackgroundSource, .8f);
             gameOverMenu.AddMenuImage(menuBackground);
             headText = "Game Over";
             headerText = new MenuText(new Vector2((int)menuBackground.X + menuBackground.Width / 2 - menuFont.MeasureString(headText).X / 2, (int)menuBackground.Y + 12), headText, menuFont);
@@ -394,7 +374,7 @@ namespace Shard
 
             #endregion
 
-            //Background Loading, Woohoo Movement Works!
+            //Background Loading
             background = Content.Load<Texture2D>("Backgrounds//seamlessNebulaBackground");
 
             backgrounds = new Rectangle[9];
@@ -414,8 +394,6 @@ namespace Shard
                 }
             }
 
-            //Yay
-
             if (database.isEmpty() || skipLoadingFromDatabase)
             {
                 //Player Creation
@@ -432,7 +410,6 @@ namespace Shard
                 player.Ore = 1000;
                 player.Oxygen = 1000;
                 player.Water = 1000;
-                //maximumPlayerHealth = (int)player.Health;
                 player.MaximumHealth = player.Health;
                 shardObjects.Add(player);
 
@@ -576,20 +553,8 @@ namespace Shard
 
         #endregion
 
-        /// <summary>
-        /// UnloadContent will be called once per game and is the place to unload
-        /// all content.
-        /// </summary>
-        protected override void UnloadContent()
-        {
-            // TODO: Unload any non ContentManager content here
-        }
+        protected override void UnloadContent(){}
 
-        /// <summary>
-        /// Allows the game to run logic such as updating the world,
-        /// checking for collisions, gathering input, and playing audio.
-        /// </summary>
-        /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
             GamePadState currentGamePad = GamePad.GetState(PlayerIndex.One);
@@ -617,7 +582,7 @@ namespace Shard
 
             // Exit Game
             //if (currentGamePad.Buttons.Back == ButtonState.Pressed || currentKeyboard.IsKeyDown(Keys.Escape))
-            //this.Exit();
+                //this.Exit();
 
             //Unpause Game
             if (EdgeDetect(currentKeyboard, Keys.P) && gamePaused)
@@ -680,8 +645,6 @@ namespace Shard
                             player.Direction -= directionalChangeIncrement;
                         if (currentKeyboard.IsKeyDown(Keys.Right) || currentKeyboard.IsKeyDown(Keys.D))
                             player.Direction += directionalChangeIncrement;
-
-                        //player.Velocity = player.Velocity; //Looks weird, is necessary
                     }
                 }
                 else
@@ -690,8 +653,6 @@ namespace Shard
                     float unity = 0;
                     TraceScreenCoord((int)currentMouse.X, (int)currentMouse.Y, out unitx, out unity);
                     player.Direction = (float)Math.Atan2(unity - (player.Y + player.Height / 2), unitx - (player.X + player.Width / 2));
-                    //player.RotationalVelocity = 0;
-                    //player.Direction = Math.Atan2(currentMouse.Y - player.Y, currentMouse.X - player.X);
                 }
 
                 #endregion
@@ -874,7 +835,6 @@ namespace Shard
                             {
                                 so.PointTowards(player.Center);
                                 so.Velocity = player.GetMaxSpeed() * Math.Sqrt(2) + .25;
-                                //so.Velocity = player.Velocity + .25;
                             }
                         }
                     }
@@ -932,8 +892,6 @@ namespace Shard
                     backgrounds[4] = currentRect;
                     //^ Sets center Rectangle to your player's current background Rectangle
 
-
-                    //(Couldn't do this *successfully* in a for-loop, so yay for manual assignments! :D)
                     backgrounds[0] = new Rectangle(centerRect.X - currentRect.Width, centerRect.Y - currentRect.Height, background.Bounds.Width, background.Bounds.Height);
                     backgrounds[1] = new Rectangle(centerRect.X, centerRect.Y - currentRect.Height, background.Bounds.Width, background.Bounds.Height);
                     backgrounds[2] = new Rectangle(centerRect.X + currentRect.Width, centerRect.Y - currentRect.Height, background.Bounds.Width, background.Bounds.Height);
@@ -984,8 +942,6 @@ namespace Shard
                     if (camera.Screen != previousScreen)
                     {
                         Rectangle bounds = new Rectangle();
-                        //int x = camera.Screen.Right - previousScreen.Right;
-                        //int y = camera.Screen.Bottom - previousScreen.Bottom;
                         int x = (int)(player.Position.X - previousPosition.X);
                         int y = (int)(player.Position.Y - previousPosition.Y);
                         if ((Math.Abs(x) > 50) || (Math.Abs(y) > 50))
@@ -995,9 +951,6 @@ namespace Shard
                             else
                                 bounds = new Rectangle(camera.Screen.Right, camera.Screen.Y, x, camera.Screen.Height);
 
-                            //Rectangle bounds=new Rectangle(
-                            //for (int i = 0; i < 1; i++)
-                            //{
                             Random random = new Random();
                             Debris debris = new Debris(random.Next(bounds.X, bounds.Right), random.Next(bounds.Y, bounds.Bottom));
                             debris.Alignment = Shard.Alignment.NEUTRAL;
@@ -1010,8 +963,6 @@ namespace Shard
                             debris.ImageSource = gameSourceDirectory.GetSourceRectangle("asteroid_medium1_shaded");
                             debris.Width = debris.ImageSource.Width;
                             debris.Height = debris.ImageSource.Height;
-                            //shardObjects.Add(debris);
-                            //}
                         }
                         if ((Math.Abs(x) > 50) || (Math.Abs(y) > 50))
                         {
@@ -1020,9 +971,6 @@ namespace Shard
                             else
                                 bounds = new Rectangle(camera.Screen.X, camera.Screen.Bottom, camera.Screen.Width, y);
 
-                            //Rectangle bounds=new Rectangle(
-                            //for (int i = 0; i < 1; i++)
-                            //{
                             Random random = new Random();
                             Debris debris = new Debris(random.Next(bounds.X, bounds.Right), random.Next(bounds.Y, bounds.Bottom));
                             debris.Alignment = Shard.Alignment.NEUTRAL;
@@ -1035,14 +983,9 @@ namespace Shard
                             debris.ImageSource = gameSourceDirectory.GetSourceRectangle("asteroid_medium1_shaded");
                             debris.Width = debris.ImageSource.Width;
                             debris.Height = debris.ImageSource.Height;
-                            //shardObjects.Add(debris);
-                            //}
                         }
                     }
-                    //count = 0;
                 }
-                //else
-                //    count++;
 
 
                 //Remove ShardObjects declared invalid after the last update cycle
@@ -1054,15 +997,6 @@ namespace Shard
                         shardObjects.RemoveAt(i);
                     }
                 }
-
-                //    if (player.X > GraphicsDevice.Viewport.Width)
-                //        player.X = 0;
-                //if (player.X + player.Width < 0)
-                //    player.X = GraphicsDevice.Viewport.Width;
-                //if (player.Y > GraphicsDevice.Viewport.Height)
-                //    player.Y = 0;
-                //if (player.Y + player.Height < 0)
-                //    player.Y = GraphicsDevice.Viewport.Height;
 
                 camera.SetPosition((float)player.X, (float)player.Y, 0);
 
@@ -1229,15 +1163,9 @@ namespace Shard
 
         #endregion
 
-        /// <summary>
-        /// This is called when the game should draw itself.
-        /// </summary>
-        /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
-
-            // TODO: Add your drawing code here
 
             //Draw the Background
             if (staticBackground)
@@ -1258,7 +1186,6 @@ namespace Shard
                 {
                     //This fixes zooming for some reason!
                     so.Depth = .1f;
-                    //^^
                     if (so is EnemyShip)
                         DrawHealthBar(spriteBatch, spritesheet, (Ship)so);
                     so.Draw(spriteBatch, spritesheet);
@@ -1269,7 +1196,6 @@ namespace Shard
                     shardGraphics.Add((ShardGraphic)so);
                 }
             }
-            //spriteBatch.End();
 
             //Draw all ShardGraphics above all other shardObjects
             //spriteBatch.Begin(SpriteSortMode.FrontToBack, null, null, null, null, null, camera.GetViewMatrix());
@@ -1354,7 +1280,6 @@ namespace Shard
                 Vector2 offset = new Vector2(204, 4);
                 foreach (string line in debugLines)
                 {
-
                     spriteBatch.DrawString(debugFont, line, offset, textColor);
                     offset.Y += debugFont.MeasureString(line).Y - 1;
                 }
