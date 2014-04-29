@@ -221,23 +221,23 @@ namespace Shard
             Button close = new CloseButton(this, closeButtonImage);
             pauseMenu.AddButton(close);
 
-            MenuImage optionsButtonImage = new MenuImage(new Vector2((int)menuBackground.X + 16, (int)menuBackground.Y + 36), menuSourceDirectory.GetSourceRectangle("emptyButton"), .5f);
+            MenuText optionsText = new MenuText(new Vector2((int)menuBackground.X + 16, (int)menuBackground.Y + 36), "Options: ", menuFont);
+            pauseMenu.AddMenuText(optionsText);
+            MenuImage optionsButtonImage = new MenuImage(new Vector2((int)menuBackground.X + 80, (int)menuBackground.Y + 36), menuSourceDirectory.GetSourceRectangle("emptyButton"), .5f);
             Button options = new OptionsButton(this, optionsButtonImage);
             pauseMenu.AddButton(options);
-            MenuText optionsText = new MenuText(new Vector2((int)optionsButtonImage.X + optionsButtonImage.Width + 12, (int)optionsButtonImage.Y), "Options: ", menuFont);
-            pauseMenu.AddMenuText(optionsText);
 
-            MenuImage upgradesButtonImage = new MenuImage(new Vector2((int)optionsButtonImage.X, (int)optionsButtonImage.Y + optionsButtonImage.Height + 8), menuSourceDirectory.GetSourceRectangle("emptyButton"), .5f);
+            MenuText upgradesText = new MenuText(new Vector2((int)menuBackground.X + 16, (int)optionsButtonImage.Y + optionsButtonImage.Height + 8), "Upgrades: ", menuFont);
+            pauseMenu.AddMenuText(upgradesText);
+            MenuImage upgradesButtonImage = new MenuImage(new Vector2((int)optionsButtonImage.X, (int)upgradesText.Y), menuSourceDirectory.GetSourceRectangle("emptyButton"), .5f);
             Button upgrades = new UpgradesButton(this, upgradesButtonImage);
             pauseMenu.AddButton(upgrades);
-            MenuText upgradesText = new MenuText(new Vector2((int)upgradesButtonImage.X + upgradesButtonImage.Width + 12, (int)upgradesButtonImage.Y), "Upgrades: ", menuFont);
-            pauseMenu.AddMenuText(upgradesText);
 
-            MenuImage saveMenuButtonImage = new MenuImage(new Vector2((int)upgradesButtonImage.X, (int)upgradesButtonImage.Y + upgradesButtonImage.Height + 8), menuSourceDirectory.GetSourceRectangle("emptyButton"), .5f);
+            MenuText saveMenuText = new MenuText(new Vector2((int)menuBackground.X + 16, (int)upgradesButtonImage.Y + upgradesButtonImage.Height + 8), "Save/Load:", menuFont);
+            pauseMenu.AddMenuText(saveMenuText);
+            MenuImage saveMenuButtonImage = new MenuImage(new Vector2((int)optionsButtonImage.X, (int)upgradesButtonImage.Y + upgradesButtonImage.Height + 8), menuSourceDirectory.GetSourceRectangle("emptyButton"), .5f);
             Button saveMenuButton = new SaveMenuButton(this, saveMenuButtonImage);
             pauseMenu.AddButton(saveMenuButton);
-            MenuText saveMenuText = new MenuText(new Vector2((int)saveMenuButtonImage.X + saveMenuButtonImage.Width + 12, (int)saveMenuButtonImage.Y), "Save/Load:", menuFont);
-            pauseMenu.AddMenuText(saveMenuText);
 
             shardMenus.Add(pauseMenu);
 
@@ -369,6 +369,24 @@ namespace Shard
             saveMenu.AddButton(save);
             MenuText saveText = new MenuText(new Vector2((int)saveButtonImage.X + saveButtonImage.Width + 12, (int)saveButtonImage.Y), "Save: \nLast Save: " + SaveTime, menuFont);
             saveMenu.AddMenuText(saveText);
+
+            MenuImage loadButtonImage = new MenuImage(new Vector2((int)saveButtonImage.X, (int)saveButtonImage.Y + saveButtonImage.Height + 8), menuSourceDirectory.GetSourceRectangle("emptyButton"), .5f);
+            Button load = new LoadButton(this, loadButtonImage);
+            saveMenu.AddButton(load);
+            MenuText loadText = new MenuText(new Vector2((int)loadButtonImage.X + loadButtonImage.Width + 12, (int)loadButtonImage.Y), "Load: ", menuFont);
+            saveMenu.AddMenuText(loadText);
+
+            MenuImage quitGameButtonImage = new MenuImage(new Vector2((int)loadButtonImage.X, (int)loadButtonImage.Y + loadButtonImage.Height + 8), menuSourceDirectory.GetSourceRectangle("emptyButton"), .5f);
+            Button quitGame = new QuitGameButton(this, quitGameButtonImage);
+            saveMenu.AddButton(quitGame);
+            MenuText quitGameText = new MenuText(new Vector2((int)quitGameButtonImage.X + quitGameButtonImage.Width + 12, (int)quitGameButtonImage.Y), "Quit Game: ", menuFont);
+            saveMenu.AddMenuText(quitGameText);
+
+            MenuImage quitAppButtonImage = new MenuImage(new Vector2((int)quitGameButtonImage.X, (int)quitGameButtonImage.Y + quitGameButtonImage.Height + 8), menuSourceDirectory.GetSourceRectangle("emptyButton"), .5f);
+            Button quitApp = new QuitAppButton(this, quitAppButtonImage);
+            saveMenu.AddButton(quitApp);
+            MenuText quitAppText = new MenuText(new Vector2((int)quitAppButtonImage.X + quitAppButtonImage.Width + 12, (int)quitAppButtonImage.Y), "Quit Application: ", menuFont);
+            saveMenu.AddMenuText(quitAppText);
 
             shardMenus.Add(saveMenu);
 

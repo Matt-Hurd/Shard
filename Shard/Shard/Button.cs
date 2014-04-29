@@ -167,8 +167,7 @@ namespace Shard
 
         public override void PreformMouseClickAction()
         {
-            MenuReference.Active = false;
-            GameReference.ToggleMenu("Pause");
+            GameReference.ToggleMenu(MenuReference.Name);
         }
     }
 
@@ -264,27 +263,6 @@ namespace Shard
             //base.PreformMouseClickAction();
         }
     }
-
-    class SaveButton : Button
-    {
-        public SaveButton(ShardGame gameReference) : this(gameReference, null) { }
-
-        public SaveButton(ShardGame gameReference, MenuImage image) : base(gameReference, image) { }
-
-        public override void UpdateMenu()
-        {
-            MenuText menuText = GetMenuText("Save");
-            menuText.Text = "Save: \nLast Save:" + GameReference.SaveTime;
-        }
-
-        public override void PreformMouseClickAction()
-        {
-            GameReference.SaveGame();
-            UpdateMenu();
-            //base.PreformMouseClickAction();
-        }
-    }
-
     class RealisticSpaceMovementToggleButton : Button
     {
         public RealisticSpaceMovementToggleButton(ShardGame gameReference) : this(gameReference, null) { }
@@ -306,6 +284,67 @@ namespace Shard
             //Locate MenuText referencing information, change to appropriate value
             UpdateMenu();
             //base.PreformMouseClickAction();
+        }
+    }
+
+    #endregion
+
+    #region Save Menu Button Classes
+
+    class SaveButton : Button
+    {
+        public SaveButton(ShardGame gameReference) : this(gameReference, null) { }
+
+        public SaveButton(ShardGame gameReference, MenuImage image) : base(gameReference, image) { }
+
+        public override void UpdateMenu()
+        {
+            MenuText menuText = GetMenuText("Save");
+            menuText.Text = "Save: \nLast Save:" + GameReference.SaveTime;
+        }
+
+        public override void PreformMouseClickAction()
+        {
+            GameReference.SaveGame();
+            UpdateMenu();
+            //base.PreformMouseClickAction();
+        }
+    }
+
+    class LoadButton : Button
+    {
+        public LoadButton(ShardGame gameReference) : this(gameReference, null) { }
+
+        public LoadButton(ShardGame gameReference, MenuImage image) : base(gameReference, image) { }
+
+        public override void PreformMouseClickAction()
+        {
+            GameReference.RestartGame();
+            UpdateMenu();
+        }
+    }
+
+    class QuitGameButton : Button
+    {
+        public QuitGameButton(ShardGame gameReference) : this(gameReference, null) { }
+
+        public QuitGameButton(ShardGame gameReference, MenuImage image) : base(gameReference, image) { }
+
+        public override void PreformMouseClickAction()
+        {
+            GameReference.Exit();
+        }
+    }
+
+    class QuitAppButton : Button
+    {
+        public QuitAppButton(ShardGame gameReference) : this(gameReference, null) { }
+
+        public QuitAppButton(ShardGame gameReference, MenuImage image) : base(gameReference, image) { }
+
+        public override void PreformMouseClickAction()
+        {
+            TitleScreen Menu = new TitleScreen();
         }
     }
 
