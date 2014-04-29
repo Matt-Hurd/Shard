@@ -42,14 +42,14 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="debugWindowFont.spritefont">
+    <Compile Include="Fonts\debugWindowFont.spritefont">
       <Name>debugWindowFont</Name>
       <Importer>FontDescriptionImporter</Importer>
       <Processor>FontDescriptionProcessor</Processor>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="statusIndicatorFont.spritefont">
+    <Compile Include="Fonts\statusIndicatorFont.spritefont">
       <Name>statusIndicatorFont</Name>
       <Importer>FontDescriptionImporter</Importer>
       <Processor>FontDescriptionProcessor</Processor>
@@ -71,7 +71,7 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="menuFont.spritefont">
+    <Compile Include="Fonts\menuFont.spritefont">
       <Name>menuFont</Name>
       <Importer>FontDescriptionImporter</Importer>
       <Processor>FontDescriptionProcessor</Processor>

@@ -172,9 +172,9 @@ namespace Shard
 
             // TODO: use this.Content to load your game content here
 
-            debugFont = Content.Load<SpriteFont>("debugWindowFont");
-            statusIndicatorFont = Content.Load<SpriteFont>("statusIndicatorFont");
-            menuFont = Content.Load<SpriteFont>("menuFont");
+            debugFont = Content.Load<SpriteFont>("Fonts//debugWindowFont");
+            statusIndicatorFont = Content.Load<SpriteFont>("Fonts//statusIndicatorFont");
+            menuFont = Content.Load<SpriteFont>("Fonts//menuFont");
 
 
             //Spritesheet Loading
@@ -219,6 +219,9 @@ namespace Shard
             optionsMenu.SetGamePauseEffect(true);
             optionsMenu.Active = false;
             optionsMenu.AddMenuImage(menuBackground);
+            string headText = "Options";
+            MenuText headerText = new MenuText(new Vector2((int)menuBackground.X + menuBackground.Width / 2 - menuFont.MeasureString(headText).X / 2 + 1, (int)menuBackground.Y + 12), headText, menuFont);
+            optionsMenu.AddMenuText(headerText);
 
             MenuImage closeButtonImage = new MenuImage(new Vector2(0, (int)menuBackground.Y), menuSourceDirectory.GetSourceRectangle("menuExitButton"), .5f);
             closeButtonImage.X = menuBackground.X + menuBackground.Width - closeButtonImage.Width;
@@ -262,6 +265,9 @@ namespace Shard
             //Rectangle gameOverMenuBackgroundSource = menuSourceDirectory.GetSourceRectangle("grayMenuPanel");
             //MenuImage gameOverMenuBackground = new MenuImage(new Vector2(GraphicsDevice.Viewport.Width / 2 - menuBackgroundSource.Width / 2, GraphicsDevice.Viewport.Height / 2 - menuBackgroundSource.Height / 2), gameOverMenuBackgroundSource, .8f);
             gameOverMenu.AddMenuImage(menuBackground);
+            headText = "Game Over";
+            headerText = new MenuText(new Vector2((int)menuBackground.X + menuBackground.Width / 2 - menuFont.MeasureString(headText).X / 2, (int)menuBackground.Y + 12), headText, menuFont);
+            gameOverMenu.AddMenuText(headerText);
 
             MenuImage restartButtonImage = new MenuImage(new Vector2((int)menuBackground.X + 16, (int)menuBackground.Y + 36), menuSourceDirectory.GetSourceRectangle("emptyButton"), .5f);
             Button restart = new RestartButton(this, restartButtonImage);
@@ -280,6 +286,9 @@ namespace Shard
             upgradeMenu.SetGamePauseEffect(true);
             upgradeMenu.Active = false;
             upgradeMenu.AddMenuImage(menuBackground);
+            headText = "Upgrade";
+            headerText = new MenuText(new Vector2((int)menuBackground.X + menuBackground.Width / 2 - menuFont.MeasureString(headText).X / 2, (int)menuBackground.Y + 12), headText, menuFont);
+            upgradeMenu.AddMenuText(headerText);
 
             Button closeUpgrade = new CloseButton(this, closeButtonImage);
             upgradeMenu.AddButton(closeUpgrade);
@@ -369,12 +378,12 @@ namespace Shard
                 soundPlayer.LoadSounds(Content);
 
                 //Add a bunch of debris for testing purposes
-                int numDebris = 25;
+                int numDebris = 1000;
                 Random random = new Random();
                 for (int i = 0; i < numDebris; i++)
                 {
                     //Debris debris = new Debris(random.Next(-GraphicsDevice.Viewport.Width,GraphicsDevice.Viewport.Width), random.Next(-GraphicsDevice.Viewport.Height,GraphicsDevice.Viewport.Height));
-                    Debris debris = new Debris(random.Next(GraphicsDevice.Viewport.Width), random.Next(GraphicsDevice.Viewport.Height));
+                    Debris debris = new Debris(random.Next(5000), random.Next(5000));
                     debris.Alignment = Shard.Alignment.NEUTRAL;
                     debris.Health = 10;
                     debris.Energy = 10;
@@ -546,6 +555,12 @@ namespace Shard
             {
                 gamePaused = false;
                 pauseStateChanged = true;
+            }
+
+            //Toggle Debug Information
+            if (EdgeDetect(currentKeyboard, Keys.I))
+            {
+                debugVisible = !debugVisible;
             }
 
             //Open Options Menu
@@ -1204,6 +1219,22 @@ namespace Shard
             Rectangle healthBarGradient = gameSourceDirectory.GetSourceRectangle("healthBar");
             spriteBatch.Draw(spritesheet, new Rectangle(0, 0, healthBarSource.Width, healthBarSource.Height), healthBarSource, Color.White, 0f, Vector2.Zero, SpriteEffects.None, 0f);
             spriteBatch.Draw(spritesheet, new Rectangle(4, 5, (int)(healthBarGradient.Width * (player.Health / (double)maximumPlayerHealth)), healthBarGradient.Height), healthBarGradient, Color.White, 0f, Vector2.Zero, SpriteEffects.None, 1.0f);
+            spriteBatch.End();
+
+            //Draw Resource Display
+            spriteBatch.Begin(SpriteSortMode.BackToFront, null);
+            Vector2 offset = new Vector2(24, 75);
+            string fuelDisplay = "" + player.Energy;
+            spriteBatch.DrawString(debugFont, fuelDisplay, offset, Color.White);
+            offset.Y += debugFont.MeasureString(fuelDisplay).Y + 7;
+            string oreDisplay = "" + player.Ore;
+            spriteBatch.DrawString(debugFont, oreDisplay, offset, Color.White);
+            offset.Y += debugFont.MeasureString(oreDisplay).Y + 7;
+            string oxygenDisplay = "" + player.Oxygen;
+            spriteBatch.DrawString(debugFont, oxygenDisplay, offset, Color.White);
+            offset.Y += debugFont.MeasureString(oxygenDisplay).Y + 8;
+            string waterDisplay = "" + player.Water;
+            spriteBatch.DrawString(debugFont, waterDisplay, offset, Color.White);
             spriteBatch.End();
 
             //Draw any active menus

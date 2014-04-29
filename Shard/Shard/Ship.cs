@@ -459,13 +459,13 @@ namespace Shard
                 case 1:
                     return 2.0;
                 case 2:
-                    return 2.5;
+                    return 2.25;
                 case 3:
-                    return 3.0;
+                    return 2.6;
                 case 4:
-                    return 3.5;
+                    return 3.0;
                 case 5:
-                    return 4.0;
+                    return 3.5;
                 default:
                     return 2.0;
             }

@@ -84,7 +84,7 @@ namespace Shard
             for (int i = 0; i < shardObjects.Count; i++ )
             {
                 ShardObject shardObject = shardObjects[i];
-                if (!(shardObject is Projectile) && shardObject.Solid && shardObject.Alignment != this.Alignment)
+                if ((!(shardObject is Projectile) && shardObject.Solid && shardObject.Alignment != this.Alignment) || shardObject is Debris)
                 {
                     if (GetBounds().Intersects(shardObject.GetBounds()))
                     {

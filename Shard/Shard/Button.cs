@@ -135,7 +135,7 @@ namespace Shard
         {
             foreach (MenuText menuText in MenuReference.Texts)
             {
-                if (menuText.Text.Substring(0, menuText.Text.IndexOf(":")).Equals(initialWords))
+                if (menuText.Text.Contains(":") && menuText.Text.Substring(0, menuText.Text.IndexOf(":")).Equals(initialWords))
                 {
                     return menuText;
                 }
@@ -316,7 +316,7 @@ namespace Shard
             if (menuText != null)
             {
                 if (player.GunLevel < 5)
-                    menuText.Text = "Gun Upgrade Cost:\n" + player.GunLevel * 25 + " FL, " + player.GunLevel * 35 + " OR, " + player.GunLevel * 15 + " OX";
+                    menuText.Text = "Gun Upgrade Cost: " + (player.GunLevel + 1) + "\n" + player.GunLevel * 25 + " FL, " + player.GunLevel * 35 + " OR, " + player.GunLevel * 15 + " OX";
                 else
                     menuText.Text = "Gun Upgrade Cost:\n" + "MAXED!";
             }
@@ -357,7 +357,7 @@ namespace Shard
             if (menuText != null)
             {
                 if (player.MissileLevel < 5)
-                    menuText.Text = "Missile Upgrade Cost:\n" + player.MissileLevel * 30 + " FL, " + player.MissileLevel * 15 + " OR, " + player.MissileLevel * 15 + " WT";
+                    menuText.Text = "Missile Upgrade Cost: " + (player.MissileLevel + 1) + "\n" + player.MissileLevel * 30 + " FL, " + player.MissileLevel * 15 + " OR, " + player.MissileLevel * 15 + " WT";
                 else
                     menuText.Text = "Missile Upgrade Cost:\n" + "MAXED!";
             }
@@ -398,7 +398,7 @@ namespace Shard
             if (menuText != null)
             {
                 if (player.SpeedLevel < 5)
-                    menuText.Text = "Speed Upgrade Cost:\n" + player.SpeedLevel * 20 + " FL, " + player.SpeedLevel * 20 + " OX, " + player.SpeedLevel * 20 + " WT";
+                    menuText.Text = "Speed Upgrade Cost: " + (player.SpeedLevel + 1) + "\n" + player.SpeedLevel * 20 + " FL, " + player.SpeedLevel * 20 + " OX, " + player.SpeedLevel * 20 + " WT";
                 else
                     menuText.Text = "Speed Upgrade Cost:\n" + "MAXED!";
             }
@@ -439,7 +439,7 @@ namespace Shard
             if (menuText != null)
             {
                 if (player.ArmorLevel < 5)
-                    menuText.Text = "Armor Upgrade Cost:\n" + player.ArmorLevel * 15 + " OR, " + player.ArmorLevel * 20 + " OX, " + player.ArmorLevel * 25 + " WT";
+                    menuText.Text = "Armor Upgrade Cost: " + (player.ArmorLevel + 1) + "\n" + player.ArmorLevel * 15 + " OR, " + player.ArmorLevel * 20 + " OX, " + player.ArmorLevel * 25 + " WT";
                 else
                     menuText.Text = "Armor Upgrade Cost:\n" + "MAXED!";
             }
