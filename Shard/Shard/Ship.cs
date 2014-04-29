@@ -67,6 +67,7 @@ namespace Shard
             reloadTime = Convert.ToInt32(node.Element("reloadTime").Value);
             rearmTime = Convert.ToInt32(node.Element("rearmTime").Value);
             isPlayer = Convert.ToBoolean(node.Element("isPlayer").Value);
+            MaximumHealth = Convert.ToDouble(node.Element("maximumHealth").Value);
         }
 
         #region Modifying and Returning Fields
@@ -550,6 +551,7 @@ namespace Shard
                     new XElement("Oxygen", this.Oxygen),
                     new XElement("reloadTime", this.reloadTime),
                     new XElement("rearmTime", this.rearmTime),
+                    new XElement("maximumHealth", this.MaximumHealth),
                     new XElement("isPlayer", this.isPlayer)
                     );
             return node;

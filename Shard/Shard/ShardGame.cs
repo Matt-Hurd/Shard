@@ -153,10 +153,7 @@ namespace Shard
             bgHM = 0;
             bgVM = 0;
 
-
-
             collisionQuadtree = new Quadtree(0, new Rectangle(0, 0, (int)camera.ScreenWidth, (int)camera.ScreenHeight));
-
 
             base.Initialize();
         }
@@ -175,7 +172,6 @@ namespace Shard
             debugFont = Content.Load<SpriteFont>("Fonts//debugWindowFont");
             statusIndicatorFont = Content.Load<SpriteFont>("Fonts//statusIndicatorFont");
             menuFont = Content.Load<SpriteFont>("Fonts//menuFont");
-
 
             //Spritesheet Loading
             spritesheet = Content.Load<Texture2D>("Spritesheets//spritesheet_shard_final");
@@ -212,6 +208,41 @@ namespace Shard
 
             #endregion
 
+            #region Pause Menu
+
+            GameMenu pauseMenu = new GameMenu(this);
+            pauseMenu.Name = "Pause";
+            pauseMenu.SetGamePauseEffect(true);
+            pauseMenu.Active = false;
+            pauseMenu.AddMenuImage(menuBackground);
+
+            MenuImage closeButtonImage = new MenuImage(new Vector2(0, (int)menuBackground.Y), menuSourceDirectory.GetSourceRectangle("menuExitButton"), .5f);
+            closeButtonImage.X = menuBackground.X + menuBackground.Width - closeButtonImage.Width;
+            Button close = new CloseButton(this, closeButtonImage);
+            pauseMenu.AddButton(close);
+
+            MenuImage optionsButtonImage = new MenuImage(new Vector2((int)menuBackground.X + 16, (int)menuBackground.Y + 36), menuSourceDirectory.GetSourceRectangle("emptyButton"), .5f);
+            Button options = new OptionsButton(this, optionsButtonImage);
+            pauseMenu.AddButton(options);
+            MenuText optionsText = new MenuText(new Vector2((int)optionsButtonImage.X + optionsButtonImage.Width + 12, (int)optionsButtonImage.Y), "Options: ", menuFont);
+            pauseMenu.AddMenuText(optionsText);
+
+            MenuImage upgradesButtonImage = new MenuImage(new Vector2((int)optionsButtonImage.X, (int)optionsButtonImage.Y + optionsButtonImage.Height + 8), menuSourceDirectory.GetSourceRectangle("emptyButton"), .5f);
+            Button upgrades = new UpgradesButton(this, upgradesButtonImage);
+            pauseMenu.AddButton(upgrades);
+            MenuText upgradesText = new MenuText(new Vector2((int)upgradesButtonImage.X + upgradesButtonImage.Width + 12, (int)upgradesButtonImage.Y), "Upgrades: ", menuFont);
+            pauseMenu.AddMenuText(upgradesText);
+
+            MenuImage saveMenuButtonImage = new MenuImage(new Vector2((int)upgradesButtonImage.X, (int)upgradesButtonImage.Y + upgradesButtonImage.Height + 8), menuSourceDirectory.GetSourceRectangle("emptyButton"), .5f);
+            Button saveMenuButton = new SaveMenuButton(this, saveMenuButtonImage);
+            pauseMenu.AddButton(saveMenuButton);
+            MenuText saveMenuText = new MenuText(new Vector2((int)saveMenuButtonImage.X + saveMenuButtonImage.Width + 12, (int)saveMenuButtonImage.Y), "Save/Load:", menuFont);
+            pauseMenu.AddMenuText(saveMenuText);
+
+            shardMenus.Add(pauseMenu);
+
+            #endregion
+
             #region Options Menu
 
             GameMenu optionsMenu = new GameMenu(this);
@@ -223,9 +254,6 @@ namespace Shard
             MenuText headerText = new MenuText(new Vector2((int)menuBackground.X + menuBackground.Width / 2 - menuFont.MeasureString(headText).X / 2 + 1, (int)menuBackground.Y + 12), headText, menuFont);
             optionsMenu.AddMenuText(headerText);
 
-            MenuImage closeButtonImage = new MenuImage(new Vector2(0, (int)menuBackground.Y), menuSourceDirectory.GetSourceRectangle("menuExitButton"), .5f);
-            closeButtonImage.X = menuBackground.X + menuBackground.Width - closeButtonImage.Width;
-            Button close = new CloseButton(this, closeButtonImage);
             optionsMenu.AddButton(close);
 
             MenuImage muteButtonImage = new MenuImage(new Vector2((int)menuBackground.X + 16, (int)menuBackground.Y + 36), menuSourceDirectory.GetSourceRectangle("emptyButton"), .5f);
@@ -245,12 +273,6 @@ namespace Shard
             optionsMenu.AddButton(ad);
             MenuText adText = new MenuText(new Vector2((int)adButtonImage.X + adButtonImage.Width + 12, (int)adButtonImage.Y), "Auto-Stop: " + "Off", menuFont);
             optionsMenu.AddMenuText(adText);
-
-            MenuImage saveButtonImage = new MenuImage(new Vector2((int)adButtonImage.X, (int)adButtonImage.Y + adButtonImage.Height + 64), menuSourceDirectory.GetSourceRectangle("emptyButton"), .5f);
-            Button save = new SaveButton(this, saveButtonImage);
-            optionsMenu.AddButton(save);
-            MenuText saveText = new MenuText(new Vector2((int)saveButtonImage.X + saveButtonImage.Width + 12, (int)saveButtonImage.Y), "Save: \nLast Save: " + SaveTime, menuFont);
-            optionsMenu.AddMenuText(saveText);
 
             shardMenus.Add(optionsMenu);
 
@@ -332,6 +354,26 @@ namespace Shard
 
             #endregion
 
+            #region Save Menu
+
+            GameMenu saveMenu = new GameMenu(this);
+            saveMenu.Name = "Save";
+            saveMenu.SetGamePauseEffect(true);
+            saveMenu.Active = false;
+            saveMenu.AddMenuImage(menuBackground);
+
+            saveMenu.AddButton(close);
+
+            MenuImage saveButtonImage = new MenuImage(new Vector2((int)menuBackground.X + 16, (int)menuBackground.Y + 36), menuSourceDirectory.GetSourceRectangle("emptyButton"), .5f);
+            Button save = new SaveButton(this, saveButtonImage);
+            saveMenu.AddButton(save);
+            MenuText saveText = new MenuText(new Vector2((int)saveButtonImage.X + saveButtonImage.Width + 12, (int)saveButtonImage.Y), "Save: \nLast Save: " + SaveTime, menuFont);
+            saveMenu.AddMenuText(saveText);
+
+            shardMenus.Add(saveMenu);
+
+            #endregion
+
             #endregion
 
             //Background Loading, Woohoo Movement Works!
@@ -372,7 +414,8 @@ namespace Shard
                 player.Ore = 1000;
                 player.Oxygen = 1000;
                 player.Water = 1000;
-                maximumPlayerHealth = (int)player.Health;
+                //maximumPlayerHealth = (int)player.Health;
+                player.MaximumHealth = player.Health;
                 shardObjects.Add(player);
 
                 soundPlayer.LoadSounds(Content);
@@ -575,8 +618,12 @@ namespace Shard
                 ToggleMenu("Upgrades");
             }
 
-            // TODO: Add your update logic here
-
+            //Main Pause Menu
+            if (EdgeDetect(currentKeyboard, Keys.Escape))
+            {
+                ToggleMenu("Pause");
+            }
+            
             if (!gamePaused)
             {
 
@@ -1099,7 +1146,7 @@ namespace Shard
             return (current.IsKeyDown(key) && previous.IsKeyUp(key));
         }
 
-        protected void ToggleMenu(string menuName)
+        public void ToggleMenu(string menuName)
         {
             GameMenu menuToToggle = null;
             for (int i = 0; i < shardMenus.Count; i++)
@@ -1218,7 +1265,7 @@ namespace Shard
             Rectangle healthBarSource = gameSourceDirectory.GetSourceRectangle("healthBarOutline");
             Rectangle healthBarGradient = gameSourceDirectory.GetSourceRectangle("healthBar");
             spriteBatch.Draw(spritesheet, new Rectangle(0, 0, healthBarSource.Width, healthBarSource.Height), healthBarSource, Color.White, 0f, Vector2.Zero, SpriteEffects.None, 0f);
-            spriteBatch.Draw(spritesheet, new Rectangle(4, 5, (int)(healthBarGradient.Width * (player.Health / (double)maximumPlayerHealth)), healthBarGradient.Height), healthBarGradient, Color.White, 0f, Vector2.Zero, SpriteEffects.None, 1.0f);
+            spriteBatch.Draw(spritesheet, new Rectangle(4, 5, (int)(healthBarGradient.Width * (player.Health / (double)player.MaximumHealth)), healthBarGradient.Height), healthBarGradient, Color.White, 0f, Vector2.Zero, SpriteEffects.None, 1.0f);
             spriteBatch.End();
 
             //Draw Resource Display

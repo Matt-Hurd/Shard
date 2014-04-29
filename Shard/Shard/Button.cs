@@ -168,7 +168,50 @@ namespace Shard
         public override void PreformMouseClickAction()
         {
             MenuReference.Active = false;
-            //base.PreformMouseClickAction();
+            GameReference.ToggleMenu("Pause");
+        }
+    }
+
+    #endregion
+
+    #region Pause Menu Classes
+
+    class OptionsButton : Button
+    {
+        public OptionsButton(ShardGame gameReference) : this(gameReference, null) { }
+
+        public OptionsButton(ShardGame gameReference, MenuImage image) : base(gameReference, image) { }
+
+        public override void PreformMouseClickAction()
+        {
+            MenuReference.Active = false;
+            GameReference.ToggleMenu("Options");
+        }
+    }
+
+    class UpgradesButton : Button
+    {
+        public UpgradesButton(ShardGame gameReference) : this(gameReference, null) { }
+
+        public UpgradesButton(ShardGame gameReference, MenuImage image) : base(gameReference, image) { }
+
+        public override void PreformMouseClickAction()
+        {
+            MenuReference.Active = false;
+            GameReference.ToggleMenu("Upgrades");
+        }
+    }
+
+    class SaveMenuButton : Button
+    {
+        public SaveMenuButton(ShardGame gameReference) : this(gameReference, null) { }
+
+        public SaveMenuButton(ShardGame gameReference, MenuImage image) : base(gameReference, image) { }
+
+        public override void PreformMouseClickAction()
+        {
+            MenuReference.Active = false;
+            GameReference.ToggleMenu("Save");
         }
     }
 

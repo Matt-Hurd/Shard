@@ -36,6 +36,8 @@ namespace Shard
             Ore = Convert.ToInt32(node.Element("Ore").Value);
             Oxygen = Convert.ToInt32(node.Element("Oxygen").Value);
             Water = Convert.ToInt32(node.Element("Water").Value);
+            Alignment = Alignment.NEUTRAL;
+            MaximumHealth = Convert.ToDouble(node.Element("maximumHealth").Value);
         }
 
         public override void Update(List<ShardObject> shardObjects, GameTime gameTime)
@@ -83,6 +85,8 @@ namespace Shard
                     new XElement("Energy", this.Energy),
                     new XElement("Ore", this.Ore),
                     new XElement("Water", this.Water),
+                    new XElement("Alignment", this.Alignment),
+                    new XElement("maximumHealth", this.MaximumHealth),
                     new XElement("Oxygen", this.Oxygen)
                     );
             return node;
