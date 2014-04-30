@@ -34,10 +34,17 @@
             this.btn_options = new System.Windows.Forms.Button();
             this.btn_about = new System.Windows.Forms.Button();
             this.HelpPanel = new System.Windows.Forms.TableLayoutPanel();
-            this.lbl_HelpInfo = new System.Windows.Forms.Label();
             this.btn_HelpBack = new System.Windows.Forms.Button();
             this.OptionsPanel = new System.Windows.Forms.TableLayoutPanel();
             this.btn_OptionsBack = new System.Windows.Forms.Button();
+            this.label1 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
+            this.label3 = new System.Windows.Forms.Label();
+            this.label4 = new System.Windows.Forms.Label();
+            this.chk_Mute = new System.Windows.Forms.CheckBox();
+            this.chk_RSM = new System.Windows.Forms.CheckBox();
+            this.chk_decel = new System.Windows.Forms.CheckBox();
+            this.chk_Mouse = new System.Windows.Forms.CheckBox();
             this.MainPanel.SuspendLayout();
             this.HelpPanel.SuspendLayout();
             this.OptionsPanel.SuspendLayout();
@@ -143,14 +150,13 @@
             // HelpPanel
             // 
             this.HelpPanel.BackColor = System.Drawing.Color.Transparent;
-            this.HelpPanel.BackgroundImage = global::Shard.Resources.shard;
+            this.HelpPanel.BackgroundImage = global::Shard.Resources.InstructionsScreen;
             this.HelpPanel.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.HelpPanel.ColumnCount = 4;
             this.HelpPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 10F));
             this.HelpPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 40F));
             this.HelpPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 40F));
             this.HelpPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 10F));
-            this.HelpPanel.Controls.Add(this.lbl_HelpInfo, 1, 0);
             this.HelpPanel.Controls.Add(this.btn_HelpBack, 2, 2);
             this.HelpPanel.ForeColor = System.Drawing.SystemColors.ButtonFace;
             this.HelpPanel.Location = new System.Drawing.Point(-1, -2);
@@ -164,25 +170,12 @@
             this.HelpPanel.TabIndex = 1;
             this.HelpPanel.Visible = false;
             // 
-            // lbl_HelpInfo
-            // 
-            this.lbl_HelpInfo.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.lbl_HelpInfo.AutoSize = true;
-            this.HelpPanel.SetColumnSpan(this.lbl_HelpInfo, 2);
-            this.lbl_HelpInfo.Location = new System.Drawing.Point(186, 163);
-            this.lbl_HelpInfo.Name = "lbl_HelpInfo";
-            this.lbl_HelpInfo.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.HelpPanel.SetRowSpan(this.lbl_HelpInfo, 2);
-            this.lbl_HelpInfo.Size = new System.Drawing.Size(591, 13);
-            this.lbl_HelpInfo.TabIndex = 0;
-            this.lbl_HelpInfo.Text = "Assuming we actually get here, words will eventually be here about the game that " +
-                "should provide some benefit for the player.";
-            // 
             // btn_HelpBack
             // 
             this.btn_HelpBack.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.btn_HelpBack.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btn_HelpBack.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btn_HelpBack.Font = new System.Drawing.Font("Copperplate Gothic Light", 15.75F);
             this.btn_HelpBack.Location = new System.Drawing.Point(619, 389);
             this.btn_HelpBack.Name = "btn_HelpBack";
             this.btn_HelpBack.Size = new System.Drawing.Size(111, 38);
@@ -202,6 +195,14 @@
             this.OptionsPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 40F));
             this.OptionsPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 10F));
             this.OptionsPanel.Controls.Add(this.btn_OptionsBack, 2, 7);
+            this.OptionsPanel.Controls.Add(this.label1, 1, 1);
+            this.OptionsPanel.Controls.Add(this.label2, 1, 2);
+            this.OptionsPanel.Controls.Add(this.label3, 1, 3);
+            this.OptionsPanel.Controls.Add(this.label4, 1, 4);
+            this.OptionsPanel.Controls.Add(this.chk_Mute, 2, 1);
+            this.OptionsPanel.Controls.Add(this.chk_RSM, 2, 2);
+            this.OptionsPanel.Controls.Add(this.chk_decel, 2, 3);
+            this.OptionsPanel.Controls.Add(this.chk_Mouse, 2, 4);
             this.OptionsPanel.ForeColor = System.Drawing.SystemColors.ButtonFace;
             this.OptionsPanel.Location = new System.Drawing.Point(-1, -2);
             this.OptionsPanel.Name = "OptionsPanel";
@@ -223,6 +224,7 @@
             this.btn_OptionsBack.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.btn_OptionsBack.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btn_OptionsBack.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btn_OptionsBack.Font = new System.Drawing.Font("Copperplate Gothic Light", 15.75F);
             this.btn_OptionsBack.Location = new System.Drawing.Point(619, 381);
             this.btn_OptionsBack.Name = "btn_OptionsBack";
             this.btn_OptionsBack.Size = new System.Drawing.Size(111, 38);
@@ -230,6 +232,96 @@
             this.btn_OptionsBack.Text = "Back";
             this.btn_OptionsBack.UseVisualStyleBackColor = true;
             this.btn_OptionsBack.Click += new System.EventHandler(this.btn_OptionsBack_Click);
+            // 
+            // label1
+            // 
+            this.label1.Anchor = System.Windows.Forms.AnchorStyles.Right;
+            this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("Copperplate Gothic Bold", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.Location = new System.Drawing.Point(428, 181);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(51, 16);
+            this.label1.TabIndex = 2;
+            this.label1.Text = "Mute";
+            // 
+            // label2
+            // 
+            this.label2.Anchor = System.Windows.Forms.AnchorStyles.Right;
+            this.label2.AutoSize = true;
+            this.label2.Font = new System.Drawing.Font("Copperplate Gothic Bold", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label2.Location = new System.Drawing.Point(248, 211);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(231, 16);
+            this.label2.TabIndex = 3;
+            this.label2.Text = "Realistic Space Movement";
+            // 
+            // label3
+            // 
+            this.label3.Anchor = System.Windows.Forms.AnchorStyles.Right;
+            this.label3.AutoSize = true;
+            this.label3.Font = new System.Drawing.Font("Copperplate Gothic Bold", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label3.Location = new System.Drawing.Point(263, 241);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(216, 16);
+            this.label3.TabIndex = 4;
+            this.label3.Text = "Automatic Deceleration";
+            // 
+            // label4
+            // 
+            this.label4.Anchor = System.Windows.Forms.AnchorStyles.Right;
+            this.label4.AutoSize = true;
+            this.label4.Font = new System.Drawing.Font("Copperplate Gothic Bold", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label4.Location = new System.Drawing.Point(234, 271);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(245, 16);
+            this.label4.TabIndex = 5;
+            this.label4.Text = "Mouse Directional Control";
+            // 
+            // chk_Mute
+            // 
+            this.chk_Mute.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.chk_Mute.AutoSize = true;
+            this.chk_Mute.Location = new System.Drawing.Point(485, 182);
+            this.chk_Mute.Name = "chk_Mute";
+            this.chk_Mute.Size = new System.Drawing.Size(15, 14);
+            this.chk_Mute.TabIndex = 6;
+            this.chk_Mute.UseVisualStyleBackColor = true;
+            this.chk_Mute.CheckedChanged += new System.EventHandler(this.chk_Mute_CheckedChanged);
+            // 
+            // chk_RSM
+            // 
+            this.chk_RSM.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.chk_RSM.AutoSize = true;
+            this.chk_RSM.Checked = true;
+            this.chk_RSM.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.chk_RSM.Location = new System.Drawing.Point(485, 212);
+            this.chk_RSM.Name = "chk_RSM";
+            this.chk_RSM.Size = new System.Drawing.Size(15, 14);
+            this.chk_RSM.TabIndex = 7;
+            this.chk_RSM.UseVisualStyleBackColor = true;
+            this.chk_RSM.CheckedChanged += new System.EventHandler(this.chk_RSM_CheckedChanged);
+            // 
+            // chk_decel
+            // 
+            this.chk_decel.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.chk_decel.AutoSize = true;
+            this.chk_decel.Location = new System.Drawing.Point(485, 242);
+            this.chk_decel.Name = "chk_decel";
+            this.chk_decel.Size = new System.Drawing.Size(15, 14);
+            this.chk_decel.TabIndex = 8;
+            this.chk_decel.UseVisualStyleBackColor = true;
+            this.chk_decel.CheckedChanged += new System.EventHandler(this.chk_decel_CheckedChanged);
+            // 
+            // chk_Mouse
+            // 
+            this.chk_Mouse.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.chk_Mouse.AutoSize = true;
+            this.chk_Mouse.Location = new System.Drawing.Point(485, 272);
+            this.chk_Mouse.Name = "chk_Mouse";
+            this.chk_Mouse.Size = new System.Drawing.Size(15, 14);
+            this.chk_Mouse.TabIndex = 9;
+            this.chk_Mouse.UseVisualStyleBackColor = true;
+            this.chk_Mouse.CheckedChanged += new System.EventHandler(this.chk_Mouse_CheckedChanged);
             // 
             // TitleScreen
             // 
@@ -241,13 +333,15 @@
             this.Controls.Add(this.OptionsPanel);
             this.Controls.Add(this.HelpPanel);
             this.Controls.Add(this.MainPanel);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Name = "TitleScreen";
-            this.Text = "Form1";
+            this.ShowIcon = false;
+            this.Text = "Shard";
             this.Load += new System.EventHandler(this.Form1_Load);
             this.MainPanel.ResumeLayout(false);
             this.HelpPanel.ResumeLayout(false);
-            this.HelpPanel.PerformLayout();
             this.OptionsPanel.ResumeLayout(false);
+            this.OptionsPanel.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -260,10 +354,17 @@
         private System.Windows.Forms.Button btn_options;
         private System.Windows.Forms.Button btn_about;
         private System.Windows.Forms.TableLayoutPanel HelpPanel;
-        private System.Windows.Forms.Label lbl_HelpInfo;
         private System.Windows.Forms.Button btn_HelpBack;
         private System.Windows.Forms.TableLayoutPanel OptionsPanel;
         private System.Windows.Forms.Button btn_OptionsBack;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.CheckBox chk_Mute;
+        private System.Windows.Forms.CheckBox chk_RSM;
+        private System.Windows.Forms.CheckBox chk_decel;
+        private System.Windows.Forms.CheckBox chk_Mouse;
     }
 }
 

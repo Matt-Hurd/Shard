@@ -12,6 +12,12 @@ namespace Shard
     public partial class TitleScreen : Form
     {
         private LoginForm login;
+
+        public bool mute = false;
+        public bool rsm = false;
+        public bool decel = true;
+        public bool mouse = false;
+
         public TitleScreen()
         {
             login = new LoginForm(this);
@@ -25,12 +31,14 @@ namespace Shard
             btn_options.FlatAppearance.BorderSize = 0;
             btn_start.FlatAppearance.BorderSize = 0;
             btn_HelpBack.FlatAppearance.BorderSize = 0;
+            btn_OptionsBack.FlatAppearance.BorderSize = 0;
 
             btn_about.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
             btn_help.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
             btn_options.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
             btn_start.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
             btn_HelpBack.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
+            btn_OptionsBack.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
         }
 
         private void button_MouseEnter(object sender, EventArgs e)
@@ -78,6 +86,26 @@ namespace Shard
         private void btn_OptionsBack_Click(object sender, EventArgs e)
         {
             OptionsPanel.Visible = false;
+        }
+
+        private void chk_Mute_CheckedChanged(object sender, EventArgs e)
+        {
+            mute = chk_Mute.Checked;
+        }
+
+        private void chk_RSM_CheckedChanged(object sender, EventArgs e)
+        {
+            rsm = chk_RSM.Checked;
+        }
+
+        private void chk_decel_CheckedChanged(object sender, EventArgs e)
+        {
+            decel = chk_decel.Checked;
+        }
+
+        private void chk_Mouse_CheckedChanged(object sender, EventArgs e)
+        {
+            mouse = chk_Mouse.Checked;
         }
     }
 }

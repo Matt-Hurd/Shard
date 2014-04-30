@@ -163,6 +163,7 @@
   <ItemGroup>
     <Content Include="Game.ico" />
     <Content Include="GameThumbnail.png" />
+    <None Include="Resources\InstructionsScreen1.png" />
     <None Include="Resources\shard.png" />
   </ItemGroup>
   <ItemGroup>

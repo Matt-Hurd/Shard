@@ -76,6 +76,8 @@ namespace Shard
         protected Rectangle currentRect;
         protected Rectangle centerRect;
 
+        private TitleScreen ts;
+
         public ShardGame()
         {
             graphics = new GraphicsDeviceManager(this);
@@ -83,11 +85,12 @@ namespace Shard
             username = "debugMode";
         }
 
-        public ShardGame(String username)
+        public ShardGame(String username, TitleScreen ts)
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
             this.username = username;
+            this.ts = ts;
         }
 
         protected override void Initialize()
@@ -115,12 +118,24 @@ namespace Shard
             //Visual
             debugVisible = true;
             staticBackground = false;
+
             //In-Game
             gamePaused = false;
-            gameMuted = false;
-            realisticSpaceMovement = false;
-            automaticDeceleration = true;
-            mouseDirectionalControl = false;
+            if (ts == null)
+            {
+                gameMuted = false;
+                realisticSpaceMovement = false;
+                automaticDeceleration = true;
+                mouseDirectionalControl = false;
+            }
+            else
+            {
+                gameMuted = ts.mute;
+                realisticSpaceMovement = ts.rsm;
+                automaticDeceleration = ts.decel;
+                mouseDirectionalControl = ts.mouse;
+            }
+
 
             shardObjects = new List<ShardObject>();
             shardMenus = new List<GameMenu>();
@@ -394,6 +409,8 @@ namespace Shard
                 }
             }
 
+            soundPlayer.LoadSounds(Content);
+
             if (database.isEmpty() || skipLoadingFromDatabase)
             {
                 //Player Creation
@@ -412,8 +429,6 @@ namespace Shard
                 player.Water = 1000;
                 player.MaximumHealth = player.Health;
                 shardObjects.Add(player);
-
-                soundPlayer.LoadSounds(Content);
 
                 //Add boss for testing
                 BossShip boss = new BossShip(200, 200);

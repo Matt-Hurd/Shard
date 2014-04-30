@@ -98,7 +98,7 @@ namespace Shard
 
         private void StartGame(object username)
         {
-            ShardGame game = new ShardGame((String)username);
+            ShardGame game = new ShardGame((String)username, ts);
             game.Run();
         }
 

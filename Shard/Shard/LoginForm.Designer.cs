@@ -40,10 +40,10 @@
             // usernameLabel
             // 
             this.usernameLabel.AutoSize = true;
-            this.usernameLabel.Font = new System.Drawing.Font("News706 BT", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.usernameLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.usernameLabel.Location = new System.Drawing.Point(10, 10);
             this.usernameLabel.Name = "usernameLabel";
-            this.usernameLabel.Size = new System.Drawing.Size(90, 19);
+            this.usernameLabel.Size = new System.Drawing.Size(91, 20);
             this.usernameLabel.TabIndex = 0;
             this.usernameLabel.Text = "Username";
             // 
@@ -57,10 +57,10 @@
             // passwordLabel
             // 
             this.passwordLabel.AutoSize = true;
-            this.passwordLabel.Font = new System.Drawing.Font("News706 BT", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.passwordLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.passwordLabel.Location = new System.Drawing.Point(10, 55);
             this.passwordLabel.Name = "passwordLabel";
-            this.passwordLabel.Size = new System.Drawing.Size(86, 19);
+            this.passwordLabel.Size = new System.Drawing.Size(86, 20);
             this.passwordLabel.TabIndex = 2;
             this.passwordLabel.Text = "Password";
             // 
@@ -74,7 +74,7 @@
             // 
             // loginButton
             // 
-            this.loginButton.Font = new System.Drawing.Font("News706 BT", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.loginButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.loginButton.ForeColor = System.Drawing.SystemColors.ControlText;
             this.loginButton.Location = new System.Drawing.Point(14, 103);
             this.loginButton.Name = "loginButton";
@@ -86,7 +86,7 @@
             // 
             // registerButton
             // 
-            this.registerButton.Font = new System.Drawing.Font("News706 BT", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.registerButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.registerButton.Location = new System.Drawing.Point(114, 103);
             this.registerButton.Name = "registerButton";
             this.registerButton.Size = new System.Drawing.Size(100, 30);
@@ -98,10 +98,10 @@
             // termsAndConditionsCheckBox
             // 
             this.termsAndConditionsCheckBox.AutoSize = true;
-            this.termsAndConditionsCheckBox.Font = new System.Drawing.Font("News706 BT", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.termsAndConditionsCheckBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.termsAndConditionsCheckBox.Location = new System.Drawing.Point(114, 139);
             this.termsAndConditionsCheckBox.Name = "termsAndConditionsCheckBox";
-            this.termsAndConditionsCheckBox.Size = new System.Drawing.Size(146, 18);
+            this.termsAndConditionsCheckBox.Size = new System.Drawing.Size(148, 17);
             this.termsAndConditionsCheckBox.TabIndex = 6;
             this.termsAndConditionsCheckBox.Text = "Terms and Conditions";
             this.termsAndConditionsCheckBox.UseVisualStyleBackColor = true;
@@ -118,8 +118,11 @@
             this.Controls.Add(this.passwordLabel);
             this.Controls.Add(this.usernameTextBox);
             this.Controls.Add(this.usernameLabel);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Name = "LoginForm";
-            this.Text = "Four Elements";
+            this.ShowIcon = false;
+            this.Text = "Login";
+            this.TopMost = true;
             this.Load += new System.EventHandler(this.LoginForm_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
