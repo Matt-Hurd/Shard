@@ -14,6 +14,8 @@ namespace Shard
 {
     class EuclideanMath
     {
+        private static Random randomGenerator = new Random();
+
         public static double DistanceBetween(Vector2 point1, Vector2 point2)
         {
             return Math.Sqrt(Math.Pow(point2.X - point1.X, 2) + Math.Pow(point2.Y - point1.Y, 2));
@@ -32,6 +34,33 @@ namespace Shard
                 return 0;
             else
                 return 1;
+        }
+
+        public static double GetMean(int[] values)
+        {
+            int total = 0;
+            foreach(int num in values)
+                total += num;
+            return ((double)total / (double)values.Length);
+        }
+
+        public static int RandomInteger(int min, int max)
+        {
+            return (min + (int)(randomGenerator.NextDouble() * ((max - min) + 1)));
+        }
+
+        public static int[] GenerateValueArray(int size, int meanLevel)
+        {
+            int[] values = new int[size];
+            for (int i = 0; i < values.Length; i++)
+                values[i] = RandomInteger(1, 5);
+            if((int)Math.Round(GetMean(values)) == meanLevel)
+                return values;
+            else
+            {
+                values = null;
+                return GenerateValueArray(size, meanLevel);
+            }
         }
     }
 }

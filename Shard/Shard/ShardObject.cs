@@ -234,7 +234,6 @@ namespace Shard
         {
             //Application of Damage
             Health -= damage;
-
             CreateDamageGraphic(damage, Color.Red);
         }
 

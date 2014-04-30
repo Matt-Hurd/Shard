@@ -32,7 +32,7 @@ namespace Shard
 
         public override void GetImageSource(GameImageSourceDirectory sourceDirectory)
         {
-            this.ImageSource = sourceDirectory.GetSourceRectangle("noImageLarge");
+            this.ImageSource = sourceDirectory.GetSourceRectangle("pirateShipBoss");
         }
 
         public override XElement toNode()
@@ -42,6 +42,25 @@ namespace Shard
                              parent.Attributes(),
                              parent.Elements());
             return newXml;
+        }
+
+        public override void Update(List<ShardObject> shardObjects, GameTime gameTime)
+        {
+            base.Update(shardObjects, gameTime);
+            SpawnSeeker(3);
+        }
+
+        private void SpawnSeeker(int meanLevel)
+        {
+            EnemyShip evil = new Seeker((int)(0), (int)(0));
+            evil.MaximumHealth = 20;
+            evil.Health = evil.MaximumHealth;
+            evil.GunLevel = 2;
+            evil.MissileLevel = 1;
+            evil.ArmorLevel = 1;
+            evil.Velocity = 0;
+            //evil.GetImageSource();
+            //shardObjects.Add(evil);
         }
 
         #region Scaling Changes

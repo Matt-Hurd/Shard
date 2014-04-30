@@ -434,6 +434,8 @@ namespace Shard
                 BossShip boss = new BossShip(200, 200);
                 boss.MaximumHealth = 1000;
                 boss.Health = boss.MaximumHealth;
+                boss.FollowingDistance = 200;
+                boss.ActivationRange = 750;
                 boss.Velocity = 0;
                 boss.GetImageSource(gameSourceDirectory);
                 shardObjects.Add(boss);
