@@ -11,14 +11,14 @@ namespace Shard
         /// </summary>
         static void Main(string[] args)
         {
-            using (ShardGame game = new ShardGame())
-            {
-                game.Run();
-            }
+            //using (ShardGame game = new ShardGame())
+            //{
+            //    game.Run();
+            //}
 
-            //Application.EnableVisualStyles();
-            //Application.SetCompatibleTextRenderingDefault(false);
-            //Application.Run(new TitleScreen());
+            Application.EnableVisualStyles();
+            Application.SetCompatibleTextRenderingDefault(false);
+            Application.Run(new TitleScreen());
         }
     }
 #endif

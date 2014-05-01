@@ -102,10 +102,5 @@ namespace Shard
         {
             decel = chk_decel.Checked;
         }
-
-        private void chk_Mouse_CheckedChanged(object sender, EventArgs e)
-        {
-            mouse = chk_Mouse.Checked;
-        }
     }
 }

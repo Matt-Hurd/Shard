@@ -16,7 +16,7 @@ namespace Shard
     public class ShardGame : Microsoft.Xna.Framework.Game
     {
         //debug option
-        private bool skipLoadingFromDatabase = true;
+        private bool skipLoadingFromDatabase = false;
 
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
@@ -133,7 +133,7 @@ namespace Shard
                 gameMuted = ts.mute;
                 realisticSpaceMovement = ts.rsm;
                 automaticDeceleration = ts.decel;
-                mouseDirectionalControl = ts.mouse;
+                mouseDirectionalControl = false;
             }
 
 
@@ -187,7 +187,7 @@ namespace Shard
             GameMenu introMenu = new GameMenu(this);
             introMenu.Name = "Intro";
             introMenu.SetGamePauseEffect(true);
-            introMenu.Active = true;
+            introMenu.Active = false;
             introMenu.AddMenuImage(menuBackground);
 
             MenuImage closeButtonImage3 = new MenuImage(new Vector2(0, (int)menuBackground.Y), menuSourceDirectory.GetSourceRectangle("menuExitButton"), .5f);
@@ -402,7 +402,7 @@ namespace Shard
 
             #endregion
 
-            gamePaused = true;
+            gamePaused = false;
 
             #endregion
 
@@ -436,14 +436,14 @@ namespace Shard
                 player.Width = player.ImageSource.Width;
                 player.Height = player.ImageSource.Height;
                 player.Health = 100;
-                player.GunLevel = 5;
-                player.MissileLevel = 5;
-                player.ArmorLevel = 5;
-                player.SpeedLevel = 5;
-                player.Energy = 1000;
-                player.Ore = 1000;
-                player.Oxygen = 1000;
-                player.Water = 1000;
+                player.GunLevel = 1;
+                player.MissileLevel = 1;
+                player.ArmorLevel = 1;
+                player.SpeedLevel = 1;
+                player.Energy = 100;
+                player.Ore = 100;
+                player.Oxygen = 20;
+                player.Water = 15;
                 player.MaximumHealth = player.Health;
                 shardObjects.Add(player);
 
@@ -460,6 +460,7 @@ namespace Shard
 
                 GenerateRandomWorld(-200, -200, 4000, 4000);
 
+                ToggleMenu("Intro");
 
                 //Add a bunch of debris for testing purposes
                 //int numDebris = 0;

@@ -40,11 +40,9 @@
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
-            this.label4 = new System.Windows.Forms.Label();
             this.chk_Mute = new System.Windows.Forms.CheckBox();
             this.chk_RSM = new System.Windows.Forms.CheckBox();
             this.chk_decel = new System.Windows.Forms.CheckBox();
-            this.chk_Mouse = new System.Windows.Forms.CheckBox();
             this.MainPanel.SuspendLayout();
             this.HelpPanel.SuspendLayout();
             this.OptionsPanel.SuspendLayout();
@@ -198,23 +196,21 @@
             this.OptionsPanel.Controls.Add(this.label1, 1, 1);
             this.OptionsPanel.Controls.Add(this.label2, 1, 2);
             this.OptionsPanel.Controls.Add(this.label3, 1, 3);
-            this.OptionsPanel.Controls.Add(this.label4, 1, 4);
             this.OptionsPanel.Controls.Add(this.chk_Mute, 2, 1);
             this.OptionsPanel.Controls.Add(this.chk_RSM, 2, 2);
             this.OptionsPanel.Controls.Add(this.chk_decel, 2, 3);
-            this.OptionsPanel.Controls.Add(this.chk_Mouse, 2, 4);
             this.OptionsPanel.ForeColor = System.Drawing.SystemColors.ButtonFace;
             this.OptionsPanel.Location = new System.Drawing.Point(-1, -2);
             this.OptionsPanel.Name = "OptionsPanel";
             this.OptionsPanel.RowCount = 8;
             this.OptionsPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 175F));
             this.OptionsPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 29F));
-            this.OptionsPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
-            this.OptionsPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
-            this.OptionsPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
-            this.OptionsPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
+            this.OptionsPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 74F));
+            this.OptionsPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 70F));
+            this.OptionsPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 17F));
+            this.OptionsPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 11F));
             this.OptionsPanel.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.OptionsPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.OptionsPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 8F));
             this.OptionsPanel.Size = new System.Drawing.Size(967, 477);
             this.OptionsPanel.TabIndex = 2;
             this.OptionsPanel.Visible = false;
@@ -225,7 +221,7 @@
             this.btn_OptionsBack.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btn_OptionsBack.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btn_OptionsBack.Font = new System.Drawing.Font("Copperplate Gothic Light", 15.75F);
-            this.btn_OptionsBack.Location = new System.Drawing.Point(619, 381);
+            this.btn_OptionsBack.Location = new System.Drawing.Point(619, 407);
             this.btn_OptionsBack.Name = "btn_OptionsBack";
             this.btn_OptionsBack.Size = new System.Drawing.Size(111, 38);
             this.btn_OptionsBack.TabIndex = 1;
@@ -249,7 +245,7 @@
             this.label2.Anchor = System.Windows.Forms.AnchorStyles.Right;
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Copperplate Gothic Bold", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(248, 211);
+            this.label2.Location = new System.Drawing.Point(248, 233);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(231, 16);
             this.label2.TabIndex = 3;
@@ -260,22 +256,11 @@
             this.label3.Anchor = System.Windows.Forms.AnchorStyles.Right;
             this.label3.AutoSize = true;
             this.label3.Font = new System.Drawing.Font("Copperplate Gothic Bold", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label3.Location = new System.Drawing.Point(263, 241);
+            this.label3.Location = new System.Drawing.Point(263, 305);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(216, 16);
             this.label3.TabIndex = 4;
             this.label3.Text = "Automatic Deceleration";
-            // 
-            // label4
-            // 
-            this.label4.Anchor = System.Windows.Forms.AnchorStyles.Right;
-            this.label4.AutoSize = true;
-            this.label4.Font = new System.Drawing.Font("Copperplate Gothic Bold", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label4.Location = new System.Drawing.Point(234, 271);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(245, 16);
-            this.label4.TabIndex = 5;
-            this.label4.Text = "Mouse Directional Control";
             // 
             // chk_Mute
             // 
@@ -294,7 +279,7 @@
             this.chk_RSM.AutoSize = true;
             this.chk_RSM.Checked = true;
             this.chk_RSM.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chk_RSM.Location = new System.Drawing.Point(485, 212);
+            this.chk_RSM.Location = new System.Drawing.Point(485, 234);
             this.chk_RSM.Name = "chk_RSM";
             this.chk_RSM.Size = new System.Drawing.Size(15, 14);
             this.chk_RSM.TabIndex = 7;
@@ -305,23 +290,12 @@
             // 
             this.chk_decel.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.chk_decel.AutoSize = true;
-            this.chk_decel.Location = new System.Drawing.Point(485, 242);
+            this.chk_decel.Location = new System.Drawing.Point(485, 306);
             this.chk_decel.Name = "chk_decel";
             this.chk_decel.Size = new System.Drawing.Size(15, 14);
             this.chk_decel.TabIndex = 8;
             this.chk_decel.UseVisualStyleBackColor = true;
             this.chk_decel.CheckedChanged += new System.EventHandler(this.chk_decel_CheckedChanged);
-            // 
-            // chk_Mouse
-            // 
-            this.chk_Mouse.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.chk_Mouse.AutoSize = true;
-            this.chk_Mouse.Location = new System.Drawing.Point(485, 272);
-            this.chk_Mouse.Name = "chk_Mouse";
-            this.chk_Mouse.Size = new System.Drawing.Size(15, 14);
-            this.chk_Mouse.TabIndex = 9;
-            this.chk_Mouse.UseVisualStyleBackColor = true;
-            this.chk_Mouse.CheckedChanged += new System.EventHandler(this.chk_Mouse_CheckedChanged);
             // 
             // TitleScreen
             // 
@@ -360,11 +334,9 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.Label label4;
         private System.Windows.Forms.CheckBox chk_Mute;
         private System.Windows.Forms.CheckBox chk_RSM;
         private System.Windows.Forms.CheckBox chk_decel;
-        private System.Windows.Forms.CheckBox chk_Mouse;
     }
 }
 
