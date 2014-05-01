@@ -18,8 +18,8 @@ namespace Shard
      */
     class Bruiser : Follower
     {
-        public Bruiser(int xPosition, int yPosition)
-            : base(xPosition, yPosition)
+        public Bruiser(int xPosition, int yPosition, ref SoundPlayer sp)
+            : base(xPosition, yPosition, ref sp)
         {
             GunLevel = 1;
             MissileLevel = 1;
@@ -28,8 +28,8 @@ namespace Shard
             Health = 100;
         }
 
-        public Bruiser(XElement node)
-            : base(node)
+        public Bruiser(XElement node, ref SoundPlayer sp)
+            : base(node, ref sp)
         {
         }
 

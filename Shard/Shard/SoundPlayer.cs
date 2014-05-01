@@ -8,7 +8,7 @@ using Microsoft.Xna.Framework.Content;
 
 namespace Shard
 {
-    class SoundPlayer
+    public class SoundPlayer
     {
 
         private Dictionary<string, SoundEffect> sounds;
@@ -33,6 +33,8 @@ namespace Shard
             SoundEffect sfx;
             sounds.Add("playerShoot", sfx = Content.Load<SoundEffect>("Sounds/playerShoot"));
             sounds.Add("playerMissile", sfx = Content.Load<SoundEffect>("Sounds/playerMissile"));
+            sounds.Add("enemyShoot", sfx = Content.Load<SoundEffect>("Sounds/enemyShoot"));
+            sounds.Add("enemyMissile", sfx = Content.Load<SoundEffect>("Sounds/enemyMissile"));
 
         }
     }

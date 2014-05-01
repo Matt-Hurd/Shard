@@ -18,15 +18,15 @@ namespace Shard
         private double activationRange;
         private Ship playerReference;
 
-        public EnemyShip(int xPosition, int yPosition) : base(xPosition, yPosition, false) 
+        public EnemyShip(int xPosition, int yPosition, ref SoundPlayer sp) : base(xPosition, yPosition, false, ref sp) 
         {
             ActivationRange = 700.0;
             Alignment = Shard.Alignment.EVIL;
             playerReference = null;
         }
 
-        public EnemyShip(XElement node)
-            : base(0, 0, false)
+        public EnemyShip(XElement node, ref SoundPlayer sp)
+            : base(0, 0, false, ref sp)
         {
             X = Convert.ToDouble(node.Element("x").Value);
             Y = Convert.ToDouble(node.Element("y").Value);

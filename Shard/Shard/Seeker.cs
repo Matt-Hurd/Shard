@@ -11,7 +11,7 @@ namespace Shard
      */
     class Seeker : Follower
     {
-        public Seeker(int xPosition, int yPosition) : base(xPosition, yPosition) 
+        public Seeker(int xPosition, int yPosition, ref SoundPlayer sp) : base(xPosition, yPosition, ref sp) 
         {
             GunLevel = 1;
             MissileLevel = 0;
@@ -19,8 +19,8 @@ namespace Shard
             Health = 30;
         }
 
-        public Seeker(XElement node)
-            : base(node)
+        public Seeker(XElement node, ref SoundPlayer sp)
+            : base(node, ref sp)
         {
         }
 

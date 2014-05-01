@@ -25,8 +25,9 @@ namespace Shard
         protected int reloadTime;
         protected int rearmTime;
         private bool isPlayer;
+        private SoundPlayer sp;
 
-        public Ship(int xPosition, int yPosition, bool isPlayer)
+        public Ship(int xPosition, int yPosition, bool isPlayer, ref SoundPlayer soundPlayer)
         {
             this.X = xPosition;
             this.Y = yPosition;
@@ -45,9 +46,10 @@ namespace Shard
             this.reloadTime = 0;
             this.rearmTime = 0;
             this.isPlayer = isPlayer;
+            sp = soundPlayer;
         }
 
-        public Ship(XElement node)
+        public Ship(XElement node, ref SoundPlayer soundPlayer)
         {
             X = Convert.ToDouble(node.Element("x").Value);
             Y = Convert.ToDouble(node.Element("y").Value);
@@ -68,6 +70,7 @@ namespace Shard
             rearmTime = Convert.ToInt32(node.Element("rearmTime").Value);
             isPlayer = Convert.ToBoolean(node.Element("isPlayer").Value);
             MaximumHealth = Convert.ToDouble(node.Element("maximumHealth").Value);
+            sp = soundPlayer;
         }
 
         #region Modifying and Returning Fields
@@ -416,6 +419,10 @@ namespace Shard
                 Projectile bullet = GetGunBullet(sourceDirectory);
                 if (bullet != null)
                 {
+                    if (!isPlayer)
+                    {
+                        sp.getSound("enemyShoot").Play();
+                    }
                     shardObjects.Add(bullet);
                     reloadTime = this.GetReloadTime();
                 }
@@ -430,6 +437,10 @@ namespace Shard
                 Missile missile = GetMissile(sourceDirectory);
                 if (missile != null)
                 {
+                    if (!isPlayer)
+                    {
+                        sp.getSound("enemyMissile").Play();
+                    }
                     missile.SelectTarget(shardObjects);
                     missile.Direction = this.Direction;
                     missile.Velocity = missile.TravelSpeed / 2;
