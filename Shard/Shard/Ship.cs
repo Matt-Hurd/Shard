@@ -64,6 +64,7 @@ namespace Shard
             Water = Convert.ToInt32(node.Element("Water").Value);
             gunLevel = Convert.ToInt32(node.Element("gunLevel").Value);
             missileLevel = Convert.ToInt32(node.Element("missileLevel").Value);
+            speedLevel = Convert.ToInt32(node.Element("speedLevel").Value);
             laserLevel = Convert.ToInt32(node.Element("laserLevel").Value);
             armorLevel = Convert.ToInt32(node.Element("armorLevel").Value);
             reloadTime = Convert.ToInt32(node.Element("reloadTime").Value);
