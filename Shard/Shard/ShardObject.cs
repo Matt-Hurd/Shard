@@ -177,7 +177,17 @@ namespace Shard
 
         #endregion
 
-        #region Field Modification
+        #region Fields
+
+        public List<ShardObject> ListReference
+        {
+            get
+            {
+                if(HasListReference())
+                    return shardObjectListReference;
+                return null;
+            }
+        }
 
         public virtual bool Solid
         {
@@ -234,7 +244,13 @@ namespace Shard
         {
             //Application of Damage
             Health -= damage;
-            CreateDamageGraphic(damage, Color.Red);
+            if(alignment == Alignment.EVIL)
+                CreateDamageGraphic(damage, Color.Red);
+            else if (alignment == Alignment.GOOD)
+                CreateDamageGraphic(damage, Color.Yellow);
+            else if (alignment == Alignment.NEUTRAL)
+                CreateDamageGraphic(damage, Color.White);
+            
         }
 
         public virtual ShardGraphic CreateDamageGraphic(int damage, Color color)

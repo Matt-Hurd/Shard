@@ -68,7 +68,7 @@ namespace Shard
 
         //Database
         private XMLDatabase database;
-        private float bgZoomZ;
+        //private float bgZoomZ;
         protected Camera bgCam;
         protected double bgHM, bgVM;
 
@@ -141,9 +141,6 @@ namespace Shard
             shardMenus = new List<GameMenu>();
 
             player = new Ship(0, 0, true);
-            player.Alignment = Shard.Alignment.GOOD;
-            player.GunLevel = 1;
-            player.MissileLevel = 1;
 
             camera = new Camera(player.Width / 2, player.Height / 2);
             camera.ScreenWidth = GraphicsDevice.Viewport.Width;
@@ -153,7 +150,7 @@ namespace Shard
             isZooming = false;
 
             bgCam = new Camera(0, 0);
-            bgZoomZ = 1.3f;
+            //bgZoomZ = 1.3f;
             bgHM = 0;
             bgVM = 0;
 
@@ -419,10 +416,10 @@ namespace Shard
                 player.Width = player.ImageSource.Width;
                 player.Height = player.ImageSource.Height;
                 player.Health = 100;
-                player.GunLevel = 1;
-                player.MissileLevel = 1;
-                player.ArmorLevel = 1;
-                player.SpeedLevel = 1;
+                player.GunLevel = 5;
+                player.MissileLevel = 5;
+                player.ArmorLevel = 5;
+                player.SpeedLevel = 5;
                 player.Energy = 1000;
                 player.Ore = 1000;
                 player.Oxygen = 1000;
@@ -472,6 +469,7 @@ namespace Shard
                     evil.ArmorLevel = 1;
                     evil.Velocity = 0;
                     evil.GetImageSource(gameSourceDirectory);
+                    evil.GiveListReference(shardObjects);
                     shardObjects.Add(evil);
                 }
                 SaveGame();
@@ -946,6 +944,11 @@ namespace Shard
                     collisionQuadtree.Retrieve(potentialCollisions, so);
                     if (so is EnemyShip)
                     {
+                        if (so is BossShip)
+                        {
+                            if (((BossShip)so).GameReference == null)
+                                ((BossShip)so).GameReference = this;
+                        }
                         EnemyShip e = (EnemyShip)so;
                         if (!e.HasPlayerReference())
                             e.SetPlayerReference(player);

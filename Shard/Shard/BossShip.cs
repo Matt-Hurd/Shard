@@ -15,9 +15,12 @@ namespace Shard
 {
     class BossShip : Follower
     {
+        private ShardGame gameReference;
+
         public BossShip(int xPosition, int yPosition)
             : base(xPosition, yPosition)
         {
+            gameReference = null;
             GunLevel = 1;
             MissileLevel = 1;
             SpeedLevel = 1;
@@ -44,23 +47,69 @@ namespace Shard
             return newXml;
         }
 
+        public ShardGame GameReference
+        {
+            get { return gameReference; }
+            set { gameReference = value; }
+        }
+
         public override void Update(List<ShardObject> shardObjects, GameTime gameTime)
         {
             base.Update(shardObjects, gameTime);
-            SpawnSeeker(3);
+            if(EuclideanMath.RandomInteger(0,500) == 13)
+                SpawnSeeker(3);
+            if(EuclideanMath.RandomInteger(0,1000) == 13)
+                SpawnThug(3);
         }
 
         private void SpawnSeeker(int meanLevel)
         {
-            EnemyShip evil = new Seeker((int)(0), (int)(0));
-            evil.MaximumHealth = 20;
-            evil.Health = evil.MaximumHealth;
-            evil.GunLevel = 2;
-            evil.MissileLevel = 1;
-            evil.ArmorLevel = 1;
-            evil.Velocity = 0;
-            //evil.GetImageSource();
-            //shardObjects.Add(evil);
+            EnemyShip ship = new Seeker(0,0);
+            ship.MaximumHealth = 30;
+            ship.Health = ship.MaximumHealth;
+            ship.GunLevel = 5;
+            ship.SpeedLevel = 3;
+            ship.MissileLevel = 2;
+            ship.ArmorLevel = 1;
+            ship.Velocity = 0;
+            ship.GetImageSource(gameReference.GetGameSourceDirectory());
+            ship.Width = ship.ImageSource.Width;
+            ship.Height = ship.ImageSource.Height;
+            Vector2 openCoords = GetOpenCoordinatesForShipSpawning(ship);
+            ship.X = openCoords.X;
+            ship.Y = openCoords.Y;
+            this.ListReference.Add(ship);
+        }
+
+        private void SpawnThug(int meanLevel)
+        {
+            EnemyShip ship = new Thug(0, 0);
+            ship.MaximumHealth = 1000;
+            ship.Health = ship.MaximumHealth;
+            ship.GunLevel = 5;
+            ship.SpeedLevel = 3;
+            ship.MissileLevel = 2;
+            ship.ArmorLevel = 5;
+            ship.Velocity = 0;
+            ship.GetImageSource(gameReference.GetGameSourceDirectory());
+            ship.Width = ship.ImageSource.Width;
+            ship.Height = ship.ImageSource.Height;
+            Vector2 openCoords = GetOpenCoordinatesForShipSpawning(ship);
+            ship.X = openCoords.X;
+            ship.Y = openCoords.Y;
+            this.ListReference.Add(ship);
+        }
+
+        private Vector2 GetOpenCoordinatesForShipSpawning(Ship ship)
+        {
+            Rectangle spawnBounds = new Rectangle((int)this.X - (int)ship.Width - 4, (int)this.Y - (int)ship.Height - 4, (int)this.Width + (int)ship.Width * 2 + 8, (int)this.Height + (int)ship.Height * 2 + 8);
+            int potentialX = EuclideanMath.RandomInteger(spawnBounds.X - (int)ship.Width, spawnBounds.X + spawnBounds.Width + (int)ship.Width);
+            while(!(potentialX <= spawnBounds.X || potentialX >= spawnBounds.X + spawnBounds.Width))
+                potentialX = EuclideanMath.RandomInteger(spawnBounds.X - (int)ship.Width, spawnBounds.X + spawnBounds.Width + (int)ship.Width);
+            int potentialY = EuclideanMath.RandomInteger(spawnBounds.Y - (int)ship.Height, spawnBounds.Y + spawnBounds.Height + (int)ship.Height);
+            while (!(potentialY <= spawnBounds.Y || potentialY >= spawnBounds.Y + spawnBounds.Height))
+                potentialY = EuclideanMath.RandomInteger(spawnBounds.Y - (int)ship.Height, spawnBounds.Y + spawnBounds.Height + (int)ship.Height);
+            return new Vector2(potentialX, potentialY);
         }
 
         #region Scaling Changes

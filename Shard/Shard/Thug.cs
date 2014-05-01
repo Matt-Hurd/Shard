@@ -44,10 +44,11 @@ namespace Shard
                 case 2:
                     return 2;
                 case 3:
-                case 4:
                     return 3;
-                case 5:
+                case 4:
                     return 4;
+                case 5:
+                    return 6;
                 default:
                     return 0;
 
@@ -82,10 +83,11 @@ namespace Shard
                 case 2:
                     return 2;
                 case 3:
-                case 4:
                     return 3;
-                case 5:
+                case 4:
                     return 4;
+                case 5:
+                    return 9;
                 default:
                     return 0;
 
