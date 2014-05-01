@@ -1427,7 +1427,10 @@ namespace Shard
                         new XElement("y", backgrounds[7].Y)),
                     new XElement("bg9",
                         new XElement("x", backgrounds[8].X),
-                        new XElement("y", backgrounds[8].Y))
+                        new XElement("y", backgrounds[8].Y)),
+                    new XElement("m",
+                        new XElement("hm", bgHM),
+                        new XElement("vm", bgVM))
                         ));
             database.save();
         }
@@ -1498,12 +1501,20 @@ namespace Shard
                         bgHM = 0;
                         foreach (XElement x in xe.Elements())
                         {
-                            backgrounds[bgcount] = new Rectangle();
-                            backgrounds[bgcount].Height = background.Bounds.Height;
-                            backgrounds[bgcount].Width = background.Bounds.Width;
-                            backgrounds[bgcount].X = Convert.ToInt32(x.Element("x").Value);
-                            backgrounds[bgcount].Y = Convert.ToInt32(x.Element("y").Value);
-                            bgcount++;
+                            if (x.Name != "m")
+                            {
+                                backgrounds[bgcount] = new Rectangle();
+                                backgrounds[bgcount].Height = background.Bounds.Height;
+                                backgrounds[bgcount].Width = background.Bounds.Width;
+                                backgrounds[bgcount].X = Convert.ToInt32(x.Element("x").Value);
+                                backgrounds[bgcount].Y = Convert.ToInt32(x.Element("y").Value);
+                                bgcount++;
+                            }
+                            else if (xe.Name == "m")
+                            {
+                                bgHM = Convert.ToDouble(x.Element("hm").Value);
+                                bgVM = Convert.ToDouble(x.Element("vm").Value);
+                            }
                         }
                         break;
                     default:
