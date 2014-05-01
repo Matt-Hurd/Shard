@@ -87,7 +87,7 @@ namespace Shard
                 case 4:
                     return 4;
                 case 5:
-                    return 9;
+                    return 6;
                 default:
                     return 0;
 

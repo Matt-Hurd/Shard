@@ -44,9 +44,19 @@ namespace Shard
             return ((double)total / (double)values.Length);
         }
 
+        public static int RandomInteger()
+        {
+            return RandomInteger(Int32.MinValue, Int32.MaxValue);
+        }
+
         public static int RandomInteger(int min, int max)
         {
             return (min + (int)(randomGenerator.NextDouble() * ((max - min) + 1)));
+        }
+
+        public static double RandomDouble()
+        {
+            return randomGenerator.NextDouble();
         }
 
         public static int[] GenerateValueArray(int size, int meanLevel)

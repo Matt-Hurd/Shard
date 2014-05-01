@@ -116,7 +116,7 @@ namespace Shard
 
             //Default Options
             //Visual
-            debugVisible = true;
+            debugVisible = false;
             staticBackground = false;
 
             //In-Game
@@ -235,6 +235,24 @@ namespace Shard
 
             shardMenus.Add(pauseMenu);
 
+            #endregion
+
+            #region Win Menu
+
+            GameMenu winMenu = new GameMenu(this);
+            winMenu.Name = "Win";
+            winMenu.SetGamePauseEffect(true);
+            winMenu.Active = false;
+            winMenu.AddMenuImage(menuBackground);
+
+            string winningText = "You Win!";
+            MenuText winText = new MenuText(new Vector2((int)menuBackground.X + menuBackground.Width / 2 - menuFont.MeasureString(winningText).X / 2 + 1, (int)menuBackground.Y + menuBackground.Height / 2 - menuFont.MeasureString(winningText).Y / 2), winningText, menuFont);
+            winMenu.AddMenuText(winText);
+
+            winMenu.AddButton(close);
+
+            shardMenus.Add(winMenu);
+            
             #endregion
 
             #region Options Menu
@@ -384,6 +402,8 @@ namespace Shard
 
             #endregion
 
+            gamePaused = true;
+
             #endregion
 
             //Background Loading
@@ -435,43 +455,47 @@ namespace Shard
                 boss.ActivationRange = 750;
                 boss.Velocity = 0;
                 boss.GetImageSource(gameSourceDirectory);
-                shardObjects.Add(boss);
+
+                //shardObjects.Add(boss);
+
+                GenerateRandomWorld(-200, -200, 4000, 4000);
+
 
                 //Add a bunch of debris for testing purposes
-                int numDebris = 0;
-                Random random = new Random();
-                for (int i = 0; i < numDebris; i++)
-                {
-                    //Debris debris = new Debris(random.Next(-GraphicsDevice.Viewport.Width,GraphicsDevice.Viewport.Width), random.Next(-GraphicsDevice.Viewport.Height,GraphicsDevice.Viewport.Height));
-                    Debris debris = new Debris(random.Next(GraphicsDevice.Viewport.Width), random.Next(GraphicsDevice.Viewport.Height));
-                    debris.Alignment = Shard.Alignment.NEUTRAL;
-                    debris.Health = 10;
-                    debris.Energy = 10;
-                    debris.Ore = 10;
-                    debris.Oxygen = 10;
-                    debris.Water = 10;
-                    debris.Direction = random.NextDouble() * Math.PI * 2;
-                    debris.ImageSource = gameSourceDirectory.GetSourceRectangle("asteroid_medium1_shaded");
-                    debris.Width = debris.ImageSource.Width;
-                    debris.Height = debris.ImageSource.Height;
-                    shardObjects.Add(debris);
-                }
+                //int numDebris = 0;
+                //Random random = new Random();
+                //for (int i = 0; i < numDebris; i++)
+                //{
+                //    //Debris debris = new Debris(random.Next(-GraphicsDevice.Viewport.Width,GraphicsDevice.Viewport.Width), random.Next(-GraphicsDevice.Viewport.Height,GraphicsDevice.Viewport.Height));
+                //    Debris debris = new Debris(random.Next(GraphicsDevice.Viewport.Width), random.Next(GraphicsDevice.Viewport.Height));
+                //    debris.Alignment = Shard.Alignment.NEUTRAL;
+                //    debris.Health = 10;
+                //    debris.Energy = 10;
+                //    debris.Ore = 10;
+                //    debris.Oxygen = 10;
+                //    debris.Water = 10;
+                //    debris.Direction = random.NextDouble() * Math.PI * 2;
+                //    debris.ImageSource = gameSourceDirectory.GetSourceRectangle("asteroid_medium1_shaded");
+                //    debris.Width = debris.ImageSource.Width;
+                //    debris.Height = debris.ImageSource.Height;
+                //    shardObjects.Add(debris);
+                //}
 
-                //Add evil ships
-                int numEnemies = 0;
-                for (int i = 0; i < numEnemies; i++)
-                {
-                    EnemyShip evil = new Bruiser((int)(random.NextDouble() * 1000), (int)(random.NextDouble() * 1000));
-                    evil.MaximumHealth = 20;
-                    evil.Health = evil.MaximumHealth;
-                    evil.GunLevel = 2;
-                    evil.MissileLevel = 1;
-                    evil.ArmorLevel = 1;
-                    evil.Velocity = 0;
-                    evil.GetImageSource(gameSourceDirectory);
-                    evil.GiveListReference(shardObjects);
-                    shardObjects.Add(evil);
-                }
+                ////Add evil ships
+                //int numEnemies = 0;
+                //for (int i = 0; i < numEnemies; i++)
+                //{
+                //    EnemyShip evil = new Bruiser((int)(random.NextDouble() * 1000), (int)(random.NextDouble() * 1000));
+                //    evil.MaximumHealth = 20;
+                //    evil.Health = evil.MaximumHealth;
+                //    evil.GunLevel = 2;
+                //    evil.MissileLevel = 1;
+                //    evil.ArmorLevel = 1;
+                //    evil.Velocity = 0;
+                //    evil.GetImageSource(gameSourceDirectory);
+                //    evil.GiveListReference(shardObjects);
+                //    shardObjects.Add(evil);
+                //}
                 SaveGame();
             }
             else
@@ -569,6 +593,327 @@ namespace Shard
         #endregion
 
         protected override void UnloadContent(){}
+
+        protected virtual void GenerateRandomWorld(int startingX, int startingY, int width, int height)
+        {
+            #region Debris Creation
+
+            int numberSmallDebris = 100;
+            int numberMediumDebris = 100;
+            int numberLargeDebris = 50;
+
+            #region Small Debris
+
+            for (int i = 0; i < numberSmallDebris; i++)
+            {
+                Debris debris = new Debris(EuclideanMath.RandomInteger(startingX, startingX + width), EuclideanMath.RandomInteger(startingY, startingY + height));
+                debris.Alignment = Shard.Alignment.NEUTRAL;
+                debris.Health = 15;
+                if (EuclideanMath.RandomInteger(0, 2) == 1)
+                    debris.Energy = EuclideanMath.RandomInteger(0, 3);
+                if (EuclideanMath.RandomInteger(0, 2) == 1)
+                    debris.Ore = EuclideanMath.RandomInteger(0, 5);
+                if (EuclideanMath.RandomInteger(0, 2) == 1)
+                    debris.Oxygen = EuclideanMath.RandomInteger(0, 3);
+                if (EuclideanMath.RandomInteger(0, 2) == 1)
+                    debris.Water = EuclideanMath.RandomInteger(0, 5);
+                debris.Direction = EuclideanMath.RandomDouble() * Math.PI * 2;
+                int image = EuclideanMath.RandomInteger(0, 2);
+                switch(image)
+                {
+                    case 0:
+                        debris.ImageSource = gameSourceDirectory.GetSourceRectangle("smallAsteroid1_shaded");
+                        break;
+                    case 1:
+                        debris.ImageSource = gameSourceDirectory.GetSourceRectangle("smallAsteroid2");
+                        break;
+                    default:
+                        debris.ImageSource = gameSourceDirectory.GetSourceRectangle("smallAsteroid3");
+                        break;
+                }
+                debris.Width = debris.ImageSource.Width;
+                debris.Height = debris.ImageSource.Height;
+                shardObjects.Add(debris);
+            }
+
+            #endregion
+
+            #region Medium Debris
+
+            for (int i = 0; i < numberMediumDebris; i++)
+            {
+                Debris debris = new Debris(EuclideanMath.RandomInteger(startingX, startingX + width), EuclideanMath.RandomInteger(startingY, startingY + height));
+                debris.Alignment = Shard.Alignment.NEUTRAL;
+                debris.Health = EuclideanMath.RandomInteger(35,60);
+                if(EuclideanMath.RandomInteger(0,2) == 1)
+                    debris.Energy = EuclideanMath.RandomInteger(0, 5);
+                if (EuclideanMath.RandomInteger(0, 2) == 1)
+                    debris.Ore = EuclideanMath.RandomInteger(0, 7);
+                if (EuclideanMath.RandomInteger(0, 2) == 1)
+                    debris.Oxygen = EuclideanMath.RandomInteger(0, 5);
+                if (EuclideanMath.RandomInteger(0, 2) == 1)
+                    debris.Water = EuclideanMath.RandomInteger(0, 7);
+                debris.Direction = EuclideanMath.RandomDouble() * Math.PI * 2;
+                int image = EuclideanMath.RandomInteger(0, 1);
+                switch (image)
+                {
+                    case 0:
+                        debris.ImageSource = gameSourceDirectory.GetSourceRectangle("asteroid_medium1_shaded");
+                        break;
+                    default:
+                        debris.ImageSource = gameSourceDirectory.GetSourceRectangle("asteroid_medium3_shaded");
+                        break;
+                }
+                debris.Width = debris.ImageSource.Width;
+                debris.Height = debris.ImageSource.Height;
+                shardObjects.Add(debris);
+            }
+
+            #endregion
+
+            #region Large Debris
+
+            for (int i = 0; i < numberLargeDebris; i++)
+            {
+                Debris debris = new Debris(EuclideanMath.RandomInteger(startingX, startingX + width), EuclideanMath.RandomInteger(startingY, startingY + height));
+                debris.Alignment = Shard.Alignment.NEUTRAL;
+                debris.Health = EuclideanMath.RandomInteger(35, 60);
+                if (EuclideanMath.RandomInteger(0, 2) == 1)
+                    debris.Energy = EuclideanMath.RandomInteger(0, 8);
+                if (EuclideanMath.RandomInteger(0, 2) == 1)
+                    debris.Ore = EuclideanMath.RandomInteger(0, 11);
+                if (EuclideanMath.RandomInteger(0, 2) == 1)
+                    debris.Oxygen = EuclideanMath.RandomInteger(0, 8);
+                if (EuclideanMath.RandomInteger(0, 2) == 1)
+                    debris.Water = EuclideanMath.RandomInteger(0, 11);
+                debris.Direction = EuclideanMath.RandomDouble() * Math.PI * 2;
+                debris.ImageSource = gameSourceDirectory.GetSourceRectangle("asteroid_large1_shaded");
+                debris.Width = debris.ImageSource.Width;
+                debris.Height = debris.ImageSource.Height;
+                shardObjects.Add(debris);
+            }
+
+            #endregion
+
+            #endregion
+
+            #region Enemy Creation
+
+            int numberWeakEnemies = 35;
+            int numberMediumEnemies = 25;
+            int numberStrongEnemies = 15;
+            int numberSuperEnemies = 7;
+
+            #region Weaker Enemies, Top Left
+
+            for (int i = 0; i < numberWeakEnemies; i++)
+            {
+                EnemyShip enemy;
+                int shipType = EuclideanMath.RandomInteger(0, 1);
+                switch (shipType)
+                {
+                    case 0:
+                        enemy = new Seeker(0, 0);
+                        ((Seeker)enemy).FollowingDistance = EuclideanMath.RandomInteger(150, 250);
+                        break;
+                    default:
+                        enemy = new Thug(0,0);
+                        ((Thug)enemy).FollowingDistance = EuclideanMath.RandomInteger(100, 200);
+                        break;
+                }
+                enemy.Alignment = Alignment.EVIL;
+                enemy.GetImageSource(gameSourceDirectory);
+                enemy.Width = enemy.ImageSource.Width;
+                enemy.Height = enemy.ImageSource.Height;
+                enemy.X = EuclideanMath.RandomInteger(startingX, startingX + width / 2);
+                enemy.Y = EuclideanMath.RandomInteger(startingY, startingY + height / 2);
+                if (EuclideanMath.RandomInteger(0, 1) == 1)
+                    enemy.Energy = EuclideanMath.RandomInteger(1, 6);
+                if (EuclideanMath.RandomInteger(0, 2) == 1)
+                    enemy.Ore = EuclideanMath.RandomInteger(0, 5);
+                if (EuclideanMath.RandomInteger(0, 1) == 1)
+                    enemy.Oxygen = EuclideanMath.RandomInteger(1, 6);
+                if (EuclideanMath.RandomInteger(0, 2) == 1)
+                    enemy.Water = EuclideanMath.RandomInteger(0, 5);
+                enemy.Direction = EuclideanMath.RandomDouble() * Math.PI * 2;
+                enemy.Velocity = 0;
+                enemy.GiveListReference(shardObjects);
+
+                enemy.ActivationRange = 250;
+
+                enemy.MaximumHealth = EuclideanMath.RandomInteger(15,35);
+                enemy.Health = enemy.MaximumHealth;
+                enemy.GunLevel = EuclideanMath.RandomInteger(1,3);
+                enemy.MissileLevel = EuclideanMath.RandomInteger(1, 2);
+                enemy.SpeedLevel = EuclideanMath.RandomInteger(1, 2);
+                enemy.ArmorLevel = EuclideanMath.RandomInteger(1, 3);
+
+                shardObjects.Add(enemy);
+            }
+
+            #endregion
+
+            #region Medium Enemies, Top Right
+
+            for (int i = 0; i < numberMediumEnemies; i++)
+            {
+                EnemyShip enemy;
+                int shipType = EuclideanMath.RandomInteger(0, 1);
+                switch (shipType)
+                {
+                    case 0:
+                        enemy = new Seeker(0, 0);
+                        ((Seeker)enemy).FollowingDistance = EuclideanMath.RandomInteger(150, 250);
+                        break;
+                    case 1:
+                        enemy = new Thug(0, 0);
+                        ((Thug)enemy).FollowingDistance = EuclideanMath.RandomInteger(100, 200);
+                        break;
+                    default:
+                        enemy = new Bruiser(0, 0);
+                        ((Bruiser)enemy).FollowingDistance = EuclideanMath.RandomInteger(175, 300);
+                        break;
+                }
+                enemy.Alignment = Alignment.EVIL;
+                enemy.GetImageSource(gameSourceDirectory);
+                enemy.Width = enemy.ImageSource.Width;
+                enemy.Height = enemy.ImageSource.Height;
+                enemy.X = EuclideanMath.RandomInteger(startingX + width / 2, startingX + width);
+                enemy.Y = EuclideanMath.RandomInteger(startingY, startingY + height / 2);
+                if (EuclideanMath.RandomInteger(0, 1) == 1)
+                    enemy.Energy = EuclideanMath.RandomInteger(3, 8);
+                if (EuclideanMath.RandomInteger(0, 2) == 1)
+                    enemy.Ore = EuclideanMath.RandomInteger(0, 7);
+                if (EuclideanMath.RandomInteger(0, 1) == 1)
+                    enemy.Oxygen = EuclideanMath.RandomInteger(3, 8);
+                if (EuclideanMath.RandomInteger(0, 2) == 1)
+                    enemy.Water = EuclideanMath.RandomInteger(0, 7);
+                enemy.Direction = EuclideanMath.RandomDouble() * Math.PI * 2;
+                enemy.Velocity = 0;
+                enemy.GiveListReference(shardObjects);
+
+                enemy.ActivationRange = 250;
+
+                enemy.MaximumHealth = EuclideanMath.RandomInteger(30, 55);
+                enemy.Health = enemy.MaximumHealth;
+                enemy.GunLevel = EuclideanMath.RandomInteger(2, 4);
+                enemy.MissileLevel = EuclideanMath.RandomInteger(1, 3);
+                enemy.SpeedLevel = EuclideanMath.RandomInteger(1, 3);
+                enemy.ArmorLevel = EuclideanMath.RandomInteger(1, 3);
+
+                shardObjects.Add(enemy);
+            }
+
+            #endregion
+
+            #region Strong Enemies, Bottom Right
+
+            for (int i = 0; i < numberStrongEnemies; i++)
+            {
+                EnemyShip enemy;
+                int shipType = EuclideanMath.RandomInteger(0, 2);
+                switch (shipType)
+                {
+                    case 0:
+                        enemy = new Seeker(0, 0);
+                        ((Seeker)enemy).FollowingDistance = EuclideanMath.RandomInteger(150, 250);
+                        break;
+                    case 1:
+                        enemy = new Thug(0, 0);
+                        ((Thug)enemy).FollowingDistance = EuclideanMath.RandomInteger(100, 200);
+                        break;
+                    default:
+                        enemy = new Bruiser(0, 0);
+                        ((Bruiser)enemy).FollowingDistance = EuclideanMath.RandomInteger(175, 300);
+                        break;
+                }
+                enemy.Alignment = Alignment.EVIL;
+                enemy.GetImageSource(gameSourceDirectory);
+                enemy.Width = enemy.ImageSource.Width;
+                enemy.Height = enemy.ImageSource.Height;
+                enemy.X = EuclideanMath.RandomInteger(startingX + width / 2, startingX + width);
+                enemy.Y = EuclideanMath.RandomInteger(startingY + height / 2, startingY + height);
+                if (EuclideanMath.RandomInteger(0, 1) == 1)
+                    enemy.Energy = EuclideanMath.RandomInteger(5, 12);
+                if (EuclideanMath.RandomInteger(0, 2) == 1)
+                    enemy.Ore = EuclideanMath.RandomInteger(0, 9);
+                if (EuclideanMath.RandomInteger(0, 1) == 1)
+                    enemy.Oxygen = EuclideanMath.RandomInteger(5, 12);
+                if (EuclideanMath.RandomInteger(0, 2) == 1)
+                    enemy.Water = EuclideanMath.RandomInteger(0, 9);
+                enemy.Direction = EuclideanMath.RandomDouble() * Math.PI * 2;
+                enemy.Velocity = 0;
+                enemy.GiveListReference(shardObjects);
+
+                enemy.ActivationRange = 250;
+
+                enemy.MaximumHealth = EuclideanMath.RandomInteger(45, 70);
+                enemy.Health = enemy.MaximumHealth;
+                enemy.GunLevel = EuclideanMath.RandomInteger(2, 5);
+                enemy.MissileLevel = EuclideanMath.RandomInteger(2, 4);
+                enemy.SpeedLevel = EuclideanMath.RandomInteger(2, 4);
+                enemy.ArmorLevel = EuclideanMath.RandomInteger(2, 5);
+
+                shardObjects.Add(enemy);
+            }
+
+            #endregion
+
+            #region Super Enemies, Bottom Left
+
+            for (int i = 0; i < numberSuperEnemies; i++)
+            {
+                EnemyShip enemy = new Bruiser(0, 0);
+                ((Bruiser)enemy).FollowingDistance = EuclideanMath.RandomInteger(175, 300);
+                enemy.Alignment = Alignment.EVIL;
+                enemy.GetImageSource(gameSourceDirectory);
+                enemy.Width = enemy.ImageSource.Width;
+                enemy.Height = enemy.ImageSource.Height;
+                enemy.X = EuclideanMath.RandomInteger(startingX, startingX + width / 2);
+                enemy.Y = EuclideanMath.RandomInteger(startingY + height / 2, startingY + height);
+                if (EuclideanMath.RandomInteger(0, 1) == 1)
+                    enemy.Energy = EuclideanMath.RandomInteger(15, 30);
+                if (EuclideanMath.RandomInteger(0, 2) == 1)
+                    enemy.Ore = EuclideanMath.RandomInteger(10, 20);
+                if (EuclideanMath.RandomInteger(0, 1) == 1)
+                    enemy.Oxygen = EuclideanMath.RandomInteger(15, 30);
+                if (EuclideanMath.RandomInteger(0, 2) == 1)
+                    enemy.Water = EuclideanMath.RandomInteger(10, 20);
+                enemy.Direction = EuclideanMath.RandomDouble() * Math.PI * 2;
+                enemy.Velocity = 0;
+                enemy.GiveListReference(shardObjects);
+
+                enemy.ActivationRange = 250;
+
+                enemy.MaximumHealth = EuclideanMath.RandomInteger(75, 100);
+                enemy.Health = enemy.MaximumHealth;
+                enemy.GunLevel = EuclideanMath.RandomInteger(3, 5);
+                enemy.MissileLevel = EuclideanMath.RandomInteger(3, 5);
+                enemy.SpeedLevel = EuclideanMath.RandomInteger(3, 5);
+                enemy.ArmorLevel = EuclideanMath.RandomInteger(3, 5);
+
+                shardObjects.Add(enemy);
+            }
+
+            #endregion
+
+            #region Boss Spawning
+
+            BossShip boss = new BossShip(startingX + 200, startingY + height - 200);
+            boss.MaximumHealth = 1000;
+            boss.Health = boss.MaximumHealth;
+            boss.FollowingDistance = 200;
+            boss.ActivationRange = 750;
+            boss.Velocity = 0;
+            boss.GetImageSource(gameSourceDirectory);
+
+            shardObjects.Add(boss);
+
+            #endregion
+
+            #endregion
+
+        }
 
         protected override void Update(GameTime gameTime)
         {
@@ -1246,6 +1591,18 @@ namespace Shard
             spriteBatch.Draw(spritesheet, new Rectangle(0, 0, healthBarSource.Width, healthBarSource.Height), healthBarSource, Color.White, 0f, Vector2.Zero, SpriteEffects.None, 0f);
             spriteBatch.Draw(spritesheet, new Rectangle(4, 5, (int)(healthBarGradient.Width * (player.Health / (double)player.MaximumHealth)), healthBarGradient.Height), healthBarGradient, Color.White, 0f, Vector2.Zero, SpriteEffects.None, 1.0f);
             spriteBatch.End();
+
+            //Draw HUD
+            spriteBatch.Begin(SpriteSortMode.BackToFront, null);
+            string playerInfo = "(" + (int)player.X + ", " + (int)player.Y + ")";
+            spriteBatch.DrawString(debugFont, playerInfo, new Vector2(127, 73), Color.LightBlue);
+            if (player.X < -200 || player.Y < -200 || player.X > 3800 || player.Y > 3800)
+            {
+                string danger = "Danger!\nEntering Dead Space!\nTurn Back!";
+                spriteBatch.DrawString(debugFont, danger, new Vector2(127, 73 + debugFont.MeasureString(playerInfo).Y + 2), Color.Red);
+            }
+            spriteBatch.End();
+
 
             //Draw Resource Display
             spriteBatch.Begin(SpriteSortMode.BackToFront, null);

@@ -56,10 +56,13 @@ namespace Shard
         public override void Update(List<ShardObject> shardObjects, GameTime gameTime)
         {
             base.Update(shardObjects, gameTime);
-            if(EuclideanMath.RandomInteger(0,500) == 13)
-                SpawnSeeker(3);
-            if(EuclideanMath.RandomInteger(0,1000) == 13)
-                SpawnThug(3);
+            if (IsWithinActivationRange())
+            {
+                if (EuclideanMath.RandomInteger(0, 500) == 13)
+                    SpawnSeeker(3);
+                if (EuclideanMath.RandomInteger(0, 1000) == 13)
+                    SpawnThug(3);
+            }
         }
 
         private void SpawnSeeker(int meanLevel)
@@ -84,7 +87,7 @@ namespace Shard
         private void SpawnThug(int meanLevel)
         {
             EnemyShip ship = new Thug(0, 0);
-            ship.MaximumHealth = 1000;
+            ship.MaximumHealth = 80;
             ship.Health = ship.MaximumHealth;
             ship.GunLevel = 5;
             ship.SpeedLevel = 3;
@@ -110,6 +113,12 @@ namespace Shard
             while (!(potentialY <= spawnBounds.Y || potentialY >= spawnBounds.Y + spawnBounds.Height))
                 potentialY = EuclideanMath.RandomInteger(spawnBounds.Y - (int)ship.Height, spawnBounds.Y + spawnBounds.Height + (int)ship.Height);
             return new Vector2(potentialX, potentialY);
+        }
+
+        public override void Destroy(List<ShardObject> shardObjects, GameImageSourceDirectory sourceDirectory)
+        {
+            GameReference.ToggleMenu("Win");
+            base.Destroy(shardObjects, sourceDirectory);
         }
 
         #region Scaling Changes

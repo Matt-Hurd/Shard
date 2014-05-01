@@ -1,6 +1,6 @@
-asteroid_large1_shaded = 200 128 64 64
+asteroid_large1_shaded = 204 130 58 58
 asteroid_medium1_shaded = 328 64 32 32
-asteroid_medium3_shaded = 190 192 32 32
+asteroid_medium3_shaded = 191 192 31 32
 healthBar = 0 176 190 63
 healthBarOutline = 0 0 200 176
 enemyHealthBar = 222 231 32 6

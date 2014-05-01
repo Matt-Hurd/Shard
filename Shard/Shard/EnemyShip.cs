@@ -90,6 +90,12 @@ namespace Shard
 
         #endregion
 
+        public override void ApplyDamage(int damage)
+        {
+            base.ApplyDamage(damage);
+            ActivationRange = 800;
+        }
+
         public virtual double ActivationRange
         {
             get
