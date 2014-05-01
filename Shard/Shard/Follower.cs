@@ -21,13 +21,13 @@ namespace Shard
 
         private double followingDistance;
 
-        public Follower(int xPosition, int yPosition) : base(xPosition, yPosition) 
+        public Follower(int xPosition, int yPosition, ref SoundPlayer sp) : base(xPosition, yPosition, ref sp) 
         {
             followingDistance = 100.0;
         }
 
-        public Follower(XElement node)
-            : base(node)
+        public Follower(XElement node, ref SoundPlayer sp)
+            : base(node, ref sp)
         {
             followingDistance = Convert.ToDouble(node.Element("followingDistance").Value);
         }

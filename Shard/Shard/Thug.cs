@@ -11,7 +11,8 @@ namespace Shard
      */
     class Thug : Follower
     {
-        public Thug(int xPosition, int yPosition) : base(xPosition, yPosition) 
+        public Thug(int xPosition, int yPosition, ref SoundPlayer sp)
+            : base(xPosition, yPosition, ref sp) 
         {
             GunLevel = 1;
             MissileLevel = 1;
@@ -19,8 +20,8 @@ namespace Shard
             Health = 50;
         }
 
-        public Thug(XElement node)
-            : base(node)
+        public Thug(XElement node, ref SoundPlayer sp)
+            : base(node, ref sp)
         {
         }
 

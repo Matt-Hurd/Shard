@@ -17,8 +17,8 @@ namespace Shard
     {
         private ShardGame gameReference;
 
-        public BossShip(int xPosition, int yPosition)
-            : base(xPosition, yPosition)
+        public BossShip(int xPosition, int yPosition, ref SoundPlayer sp)
+            : base(xPosition, yPosition, ref sp)
         {
             gameReference = null;
             GunLevel = 1;
@@ -28,8 +28,8 @@ namespace Shard
             Health = 100;
         }
 
-        public BossShip(XElement node)
-            : base(node)
+        public BossShip(XElement node, ref SoundPlayer sp)
+            : base(node, ref sp)
         {
         }
 
@@ -67,7 +67,7 @@ namespace Shard
 
         private void SpawnSeeker(int meanLevel)
         {
-            EnemyShip ship = new Seeker(0,0);
+            EnemyShip ship = new Seeker(0,0, ref gameReference.soundPlayer);
             ship.MaximumHealth = 30;
             ship.Health = ship.MaximumHealth;
             ship.GunLevel = 5;
@@ -86,7 +86,7 @@ namespace Shard
 
         private void SpawnThug(int meanLevel)
         {
-            EnemyShip ship = new Thug(0, 0);
+            EnemyShip ship = new Thug(0, 0, ref gameReference.soundPlayer);
             ship.MaximumHealth = 80;
             ship.Health = ship.MaximumHealth;
             ship.GunLevel = 5;

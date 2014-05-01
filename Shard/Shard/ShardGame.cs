@@ -58,7 +58,7 @@ namespace Shard
         Ship player;
         int maximumPlayerHealth;
 
-        SoundPlayer soundPlayer;
+        public SoundPlayer soundPlayer;
 
         protected Camera camera;
         protected float zoomZ;
@@ -140,7 +140,7 @@ namespace Shard
             shardObjects = new List<ShardObject>();
             shardMenus = new List<GameMenu>();
 
-            player = new Ship(0, 0, true);
+            player = new Ship(0, 0, true, ref soundPlayer);
 
             camera = new Camera(player.Width / 2, player.Height / 2);
             camera.ScreenWidth = GraphicsDevice.Viewport.Width;
@@ -448,7 +448,7 @@ namespace Shard
                 shardObjects.Add(player);
 
                 //Add boss for testing
-                BossShip boss = new BossShip(200, 200);
+                BossShip boss = new BossShip(200, 200, ref soundPlayer);
                 boss.MaximumHealth = 1000;
                 boss.Health = boss.MaximumHealth;
                 boss.FollowingDistance = 200;
@@ -714,11 +714,11 @@ namespace Shard
                 switch (shipType)
                 {
                     case 0:
-                        enemy = new Seeker(0, 0);
+                        enemy = new Seeker(0, 0, ref soundPlayer);
                         ((Seeker)enemy).FollowingDistance = EuclideanMath.RandomInteger(150, 250);
                         break;
                     default:
-                        enemy = new Thug(0,0);
+                        enemy = new Thug(0, 0, ref soundPlayer);
                         ((Thug)enemy).FollowingDistance = EuclideanMath.RandomInteger(100, 200);
                         break;
                 }
@@ -763,15 +763,15 @@ namespace Shard
                 switch (shipType)
                 {
                     case 0:
-                        enemy = new Seeker(0, 0);
+                        enemy = new Seeker(0, 0, ref soundPlayer);
                         ((Seeker)enemy).FollowingDistance = EuclideanMath.RandomInteger(150, 250);
                         break;
                     case 1:
-                        enemy = new Thug(0, 0);
+                        enemy = new Thug(0, 0, ref soundPlayer);
                         ((Thug)enemy).FollowingDistance = EuclideanMath.RandomInteger(100, 200);
                         break;
                     default:
-                        enemy = new Bruiser(0, 0);
+                        enemy = new Bruiser(0, 0, ref soundPlayer);
                         ((Bruiser)enemy).FollowingDistance = EuclideanMath.RandomInteger(175, 300);
                         break;
                 }
@@ -816,15 +816,15 @@ namespace Shard
                 switch (shipType)
                 {
                     case 0:
-                        enemy = new Seeker(0, 0);
+                        enemy = new Seeker(0, 0, ref soundPlayer);
                         ((Seeker)enemy).FollowingDistance = EuclideanMath.RandomInteger(150, 250);
                         break;
                     case 1:
-                        enemy = new Thug(0, 0);
+                        enemy = new Thug(0, 0, ref soundPlayer);
                         ((Thug)enemy).FollowingDistance = EuclideanMath.RandomInteger(100, 200);
                         break;
                     default:
-                        enemy = new Bruiser(0, 0);
+                        enemy = new Bruiser(0, 0, ref soundPlayer);
                         ((Bruiser)enemy).FollowingDistance = EuclideanMath.RandomInteger(175, 300);
                         break;
                 }
@@ -864,7 +864,7 @@ namespace Shard
 
             for (int i = 0; i < numberSuperEnemies; i++)
             {
-                EnemyShip enemy = new Bruiser(0, 0);
+                EnemyShip enemy = new Bruiser(0, 0, ref soundPlayer);
                 ((Bruiser)enemy).FollowingDistance = EuclideanMath.RandomInteger(175, 300);
                 enemy.Alignment = Alignment.EVIL;
                 enemy.GetImageSource(gameSourceDirectory);
@@ -900,7 +900,7 @@ namespace Shard
 
             #region Boss Spawning
 
-            BossShip boss = new BossShip(startingX + 200, startingY + height - 200);
+            BossShip boss = new BossShip(startingX + 200, startingY + height - 200, ref soundPlayer);
             boss.MaximumHealth = 1000;
             boss.Health = boss.MaximumHealth;
             boss.FollowingDistance = 200;
@@ -1415,7 +1415,7 @@ namespace Shard
                 switch (xe.Name.ToString())
                 {
                     case "ship":
-                        Ship tempShip = new Ship(xe);
+                        Ship tempShip = new Ship(xe, ref soundPlayer);
                         shardObjects.Add(tempShip);
                         if (tempShip.IsPlayer)
                         {
@@ -1435,28 +1435,28 @@ namespace Shard
                         shardObjects.Add(tempDebris);
                         break;
                     case "enemyShip":
-                        EnemyShip tempEnemy = new EnemyShip(xe);
+                        EnemyShip tempEnemy = new EnemyShip(xe, ref soundPlayer);
                         tempEnemy.ImageSource = gameSourceDirectory.GetSourceRectangle("pirateShip1_colored");
                         tempEnemy.Width = tempEnemy.ImageSource.Width;
                         tempEnemy.Height = tempEnemy.ImageSource.Height;
                         shardObjects.Add(tempEnemy);
                         break;
                     case "bruiser":
-                        EnemyShip tempBruiser = new Bruiser(xe);
+                        EnemyShip tempBruiser = new Bruiser(xe, ref soundPlayer);
                         tempBruiser.GetImageSource(gameSourceDirectory);
                         tempBruiser.Width = tempBruiser.ImageSource.Width;
                         tempBruiser.Height = tempBruiser.ImageSource.Height;
                         shardObjects.Add(tempBruiser);
                         break;
                     case "bossship":
-                        EnemyShip tempBoss = new BossShip(xe);
+                        EnemyShip tempBoss = new BossShip(xe, ref soundPlayer);
                         tempBoss.GetImageSource(gameSourceDirectory);
                         tempBoss.Width = tempBoss.ImageSource.Width;
                         tempBoss.Height = tempBoss.ImageSource.Height;
                         shardObjects.Add(tempBoss);
                         break;
                     case "thug":
-                        EnemyShip tempThug = new Thug(xe);
+                        EnemyShip tempThug = new Thug(xe, ref soundPlayer);
                         tempThug.ImageSource = gameSourceDirectory.GetSourceRectangle("pirateShip1_colored");
                         tempThug.Width = tempThug.ImageSource.Width;
                         tempThug.Height = tempThug.ImageSource.Height;
