@@ -610,14 +610,14 @@ namespace Shard
                 Debris debris = new Debris(EuclideanMath.RandomInteger(startingX, startingX + width), EuclideanMath.RandomInteger(startingY, startingY + height));
                 debris.Alignment = Shard.Alignment.NEUTRAL;
                 debris.Health = 15;
-                if (EuclideanMath.RandomInteger(0, 2) == 1)
-                    debris.Energy = EuclideanMath.RandomInteger(0, 3);
-                if (EuclideanMath.RandomInteger(0, 2) == 1)
-                    debris.Ore = EuclideanMath.RandomInteger(0, 5);
-                if (EuclideanMath.RandomInteger(0, 2) == 1)
-                    debris.Oxygen = EuclideanMath.RandomInteger(0, 3);
-                if (EuclideanMath.RandomInteger(0, 2) == 1)
-                    debris.Water = EuclideanMath.RandomInteger(0, 5);
+
+                if (EuclideanMath.RandomInteger(0, 1) == 1)
+                    debris.Energy = EuclideanMath.RandomInteger(1, 3);
+                debris.Ore = EuclideanMath.RandomInteger(1, 4);
+                if (EuclideanMath.RandomInteger(0, 1) == 1)
+                    debris.Oxygen = EuclideanMath.RandomInteger(1, 3);
+                debris.Water = EuclideanMath.RandomInteger(1, 4);
+
                 debris.Direction = EuclideanMath.RandomDouble() * Math.PI * 2;
                 int image = EuclideanMath.RandomInteger(0, 2);
                 switch(image)
@@ -646,14 +646,14 @@ namespace Shard
                 Debris debris = new Debris(EuclideanMath.RandomInteger(startingX, startingX + width), EuclideanMath.RandomInteger(startingY, startingY + height));
                 debris.Alignment = Shard.Alignment.NEUTRAL;
                 debris.Health = EuclideanMath.RandomInteger(35,60);
-                if(EuclideanMath.RandomInteger(0,2) == 1)
-                    debris.Energy = EuclideanMath.RandomInteger(0, 5);
-                if (EuclideanMath.RandomInteger(0, 2) == 1)
-                    debris.Ore = EuclideanMath.RandomInteger(0, 7);
-                if (EuclideanMath.RandomInteger(0, 2) == 1)
-                    debris.Oxygen = EuclideanMath.RandomInteger(0, 5);
-                if (EuclideanMath.RandomInteger(0, 2) == 1)
-                    debris.Water = EuclideanMath.RandomInteger(0, 7);
+
+                if (EuclideanMath.RandomInteger(0, 1) == 1)
+                    debris.Energy = EuclideanMath.RandomInteger(2, 4);
+                debris.Ore = EuclideanMath.RandomInteger(3, 7);
+                if (EuclideanMath.RandomInteger(0, 1) == 1)
+                    debris.Oxygen = EuclideanMath.RandomInteger(2, 4);
+                debris.Water = EuclideanMath.RandomInteger(3, 7);
+
                 debris.Direction = EuclideanMath.RandomDouble() * Math.PI * 2;
                 int image = EuclideanMath.RandomInteger(0, 1);
                 switch (image)
@@ -679,14 +679,14 @@ namespace Shard
                 Debris debris = new Debris(EuclideanMath.RandomInteger(startingX, startingX + width), EuclideanMath.RandomInteger(startingY, startingY + height));
                 debris.Alignment = Shard.Alignment.NEUTRAL;
                 debris.Health = EuclideanMath.RandomInteger(35, 60);
-                if (EuclideanMath.RandomInteger(0, 2) == 1)
-                    debris.Energy = EuclideanMath.RandomInteger(0, 8);
-                if (EuclideanMath.RandomInteger(0, 2) == 1)
-                    debris.Ore = EuclideanMath.RandomInteger(0, 11);
-                if (EuclideanMath.RandomInteger(0, 2) == 1)
-                    debris.Oxygen = EuclideanMath.RandomInteger(0, 8);
-                if (EuclideanMath.RandomInteger(0, 2) == 1)
-                    debris.Water = EuclideanMath.RandomInteger(0, 11);
+
+                if (EuclideanMath.RandomInteger(0, 1) == 1)
+                    debris.Energy = EuclideanMath.RandomInteger(3, 8);
+                debris.Ore = EuclideanMath.RandomInteger(5, 12);
+                if (EuclideanMath.RandomInteger(0, 1) == 1)
+                    debris.Oxygen = EuclideanMath.RandomInteger(3, 8);
+                debris.Water = EuclideanMath.RandomInteger(5, 12);
+
                 debris.Direction = EuclideanMath.RandomDouble() * Math.PI * 2;
                 debris.ImageSource = gameSourceDirectory.GetSourceRectangle("asteroid_large1_shaded");
                 debris.Width = debris.ImageSource.Width;
@@ -700,8 +700,8 @@ namespace Shard
 
             #region Enemy Creation
 
-            int numberWeakEnemies = 35;
-            int numberMediumEnemies = 25;
+            int numberWeakEnemies = 25;
+            int numberMediumEnemies = 20;
             int numberStrongEnemies = 15;
             int numberSuperEnemies = 7;
 
@@ -728,14 +728,14 @@ namespace Shard
                 enemy.Height = enemy.ImageSource.Height;
                 enemy.X = EuclideanMath.RandomInteger(startingX, startingX + width / 2);
                 enemy.Y = EuclideanMath.RandomInteger(startingY, startingY + height / 2);
+
+                enemy.Energy = EuclideanMath.RandomInteger(2, 7);
                 if (EuclideanMath.RandomInteger(0, 1) == 1)
-                    enemy.Energy = EuclideanMath.RandomInteger(1, 6);
-                if (EuclideanMath.RandomInteger(0, 2) == 1)
-                    enemy.Ore = EuclideanMath.RandomInteger(0, 5);
+                    enemy.Ore = EuclideanMath.RandomInteger(1, 5);
+                enemy.Oxygen = EuclideanMath.RandomInteger(2, 7);
                 if (EuclideanMath.RandomInteger(0, 1) == 1)
-                    enemy.Oxygen = EuclideanMath.RandomInteger(1, 6);
-                if (EuclideanMath.RandomInteger(0, 2) == 1)
-                    enemy.Water = EuclideanMath.RandomInteger(0, 5);
+                    enemy.Water = EuclideanMath.RandomInteger(1, 5);
+
                 enemy.Direction = EuclideanMath.RandomDouble() * Math.PI * 2;
                 enemy.Velocity = 0;
                 enemy.GiveListReference(shardObjects);
@@ -744,10 +744,10 @@ namespace Shard
 
                 enemy.MaximumHealth = EuclideanMath.RandomInteger(15,35);
                 enemy.Health = enemy.MaximumHealth;
-                enemy.GunLevel = EuclideanMath.RandomInteger(1,3);
+                enemy.GunLevel = EuclideanMath.RandomInteger(1,2);
                 enemy.MissileLevel = EuclideanMath.RandomInteger(1, 2);
                 enemy.SpeedLevel = EuclideanMath.RandomInteger(1, 2);
-                enemy.ArmorLevel = EuclideanMath.RandomInteger(1, 3);
+                enemy.ArmorLevel = 1;
 
                 shardObjects.Add(enemy);
             }
@@ -781,14 +781,14 @@ namespace Shard
                 enemy.Height = enemy.ImageSource.Height;
                 enemy.X = EuclideanMath.RandomInteger(startingX + width / 2, startingX + width);
                 enemy.Y = EuclideanMath.RandomInteger(startingY, startingY + height / 2);
+
+                enemy.Energy = EuclideanMath.RandomInteger(3, 9);
                 if (EuclideanMath.RandomInteger(0, 1) == 1)
-                    enemy.Energy = EuclideanMath.RandomInteger(3, 8);
-                if (EuclideanMath.RandomInteger(0, 2) == 1)
-                    enemy.Ore = EuclideanMath.RandomInteger(0, 7);
+                    enemy.Ore = EuclideanMath.RandomInteger(2, 6);
+                enemy.Oxygen = EuclideanMath.RandomInteger(3, 9);
                 if (EuclideanMath.RandomInteger(0, 1) == 1)
-                    enemy.Oxygen = EuclideanMath.RandomInteger(3, 8);
-                if (EuclideanMath.RandomInteger(0, 2) == 1)
-                    enemy.Water = EuclideanMath.RandomInteger(0, 7);
+                    enemy.Water = EuclideanMath.RandomInteger(2, 6);
+
                 enemy.Direction = EuclideanMath.RandomDouble() * Math.PI * 2;
                 enemy.Velocity = 0;
                 enemy.GiveListReference(shardObjects);
@@ -800,7 +800,7 @@ namespace Shard
                 enemy.GunLevel = EuclideanMath.RandomInteger(2, 4);
                 enemy.MissileLevel = EuclideanMath.RandomInteger(1, 3);
                 enemy.SpeedLevel = EuclideanMath.RandomInteger(1, 3);
-                enemy.ArmorLevel = EuclideanMath.RandomInteger(1, 3);
+                enemy.ArmorLevel = EuclideanMath.RandomInteger(1, 2);
 
                 shardObjects.Add(enemy);
             }
@@ -834,14 +834,14 @@ namespace Shard
                 enemy.Height = enemy.ImageSource.Height;
                 enemy.X = EuclideanMath.RandomInteger(startingX + width / 2, startingX + width);
                 enemy.Y = EuclideanMath.RandomInteger(startingY + height / 2, startingY + height);
+
+                enemy.Energy = EuclideanMath.RandomInteger(5, 12);
                 if (EuclideanMath.RandomInteger(0, 1) == 1)
-                    enemy.Energy = EuclideanMath.RandomInteger(5, 12);
-                if (EuclideanMath.RandomInteger(0, 2) == 1)
-                    enemy.Ore = EuclideanMath.RandomInteger(0, 9);
+                    enemy.Ore = EuclideanMath.RandomInteger(3, 8);
+                enemy.Oxygen = EuclideanMath.RandomInteger(5, 12);
                 if (EuclideanMath.RandomInteger(0, 1) == 1)
-                    enemy.Oxygen = EuclideanMath.RandomInteger(5, 12);
-                if (EuclideanMath.RandomInteger(0, 2) == 1)
-                    enemy.Water = EuclideanMath.RandomInteger(0, 9);
+                    enemy.Water = EuclideanMath.RandomInteger(3, 8);
+
                 enemy.Direction = EuclideanMath.RandomDouble() * Math.PI * 2;
                 enemy.Velocity = 0;
                 enemy.GiveListReference(shardObjects);
@@ -853,7 +853,7 @@ namespace Shard
                 enemy.GunLevel = EuclideanMath.RandomInteger(2, 5);
                 enemy.MissileLevel = EuclideanMath.RandomInteger(2, 4);
                 enemy.SpeedLevel = EuclideanMath.RandomInteger(2, 4);
-                enemy.ArmorLevel = EuclideanMath.RandomInteger(2, 5);
+                enemy.ArmorLevel = EuclideanMath.RandomInteger(2, 3);
 
                 shardObjects.Add(enemy);
             }
@@ -872,14 +872,14 @@ namespace Shard
                 enemy.Height = enemy.ImageSource.Height;
                 enemy.X = EuclideanMath.RandomInteger(startingX, startingX + width / 2);
                 enemy.Y = EuclideanMath.RandomInteger(startingY + height / 2, startingY + height);
+
+                enemy.Energy = EuclideanMath.RandomInteger(10, 20);
                 if (EuclideanMath.RandomInteger(0, 1) == 1)
-                    enemy.Energy = EuclideanMath.RandomInteger(15, 30);
-                if (EuclideanMath.RandomInteger(0, 2) == 1)
-                    enemy.Ore = EuclideanMath.RandomInteger(10, 20);
+                    enemy.Ore = EuclideanMath.RandomInteger(6, 14);
+                enemy.Oxygen = EuclideanMath.RandomInteger(10, 20);
                 if (EuclideanMath.RandomInteger(0, 1) == 1)
-                    enemy.Oxygen = EuclideanMath.RandomInteger(15, 30);
-                if (EuclideanMath.RandomInteger(0, 2) == 1)
-                    enemy.Water = EuclideanMath.RandomInteger(10, 20);
+                    enemy.Water = EuclideanMath.RandomInteger(6, 14);
+
                 enemy.Direction = EuclideanMath.RandomDouble() * Math.PI * 2;
                 enemy.Velocity = 0;
                 enemy.GiveListReference(shardObjects);

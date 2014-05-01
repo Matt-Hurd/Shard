@@ -24,7 +24,7 @@ namespace Shard
             targetReference = null;
             travelSpeed = 1;
             Damage = 1;
-            targetSelectDistance = 800.0;
+            targetSelectDistance = 400.0;
         }
 
         public virtual ShardObject Target

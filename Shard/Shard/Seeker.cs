@@ -11,7 +11,8 @@ namespace Shard
      */
     class Seeker : Follower
     {
-        public Seeker(int xPosition, int yPosition) : base(xPosition, yPosition) 
+        public Seeker(int xPosition, int yPosition)
+            : base(xPosition, yPosition)
         {
             GunLevel = 1;
             MissileLevel = 0;
@@ -49,9 +50,29 @@ namespace Shard
                     return 3;
                 default:
                     return 0;
-                    
+
             }
         }
+
+        public override int GetDamageReductionFromArmor()
+        {
+            switch (ArmorLevel)
+            {
+                case 1:
+                case 2:
+                    return 0;
+                case 3:
+                    return 1;
+                case 4:
+                    return 2;
+                case 5:
+                    return 3;
+                default:
+                    return 0;
+
+            }
+        }
+
 
         protected override int GetReloadTime()
         {

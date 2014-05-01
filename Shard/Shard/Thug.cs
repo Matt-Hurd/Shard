@@ -133,6 +133,25 @@ namespace Shard
             }
         }
 
+        public override int GetDamageReductionFromArmor()
+        {
+            switch (ArmorLevel)
+            {
+                case 1:
+                    return 0;
+                case 2:
+                case 3:
+                    return 1;
+                case 4:
+                    return 2;
+                case 5:
+                    return 3;
+                default:
+                    return 0;
+
+            }
+        }
+
         //Should be Overriden for ships with different scaling
         public override double GetMaxSpeed()
         {

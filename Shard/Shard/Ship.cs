@@ -363,15 +363,15 @@ namespace Shard
             switch (MissileLevel)
             {
                 case 1:
-                    return 2;
+                    return 3;
                 case 2:
-                    return 6;
+                    return 5;
                 case 3:
-                    return 10;
+                    return 8;
                 case 4:
-                    return 14;
+                    return 11;
                 case 5:
-                    return 18;
+                    return 15;
                 default:
                     return 2;
             }
