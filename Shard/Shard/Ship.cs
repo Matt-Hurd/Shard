@@ -39,10 +39,11 @@ namespace Shard
             this.Ore = 0;
             this.Oxygen = 0;
             this.Water = 0;
-            this.gunLevel = 0;
-            this.missileLevel = 0;
-            this.laserLevel = 0;
-            this.armorLevel = 0;
+            this.gunLevel = 1;
+            this.missileLevel = 1;
+            this.laserLevel = 1;
+            this.armorLevel = 1;
+            this.speedLevel = 1;
             this.reloadTime = 0;
             this.rearmTime = 0;
             this.isPlayer = isPlayer;
