@@ -78,6 +78,8 @@ namespace Shard
 
         private TitleScreen ts;
 
+        private bool fixSkipping = true;
+
         public ShardGame()
         {
             graphics = new GraphicsDeviceManager(this);
@@ -108,6 +110,7 @@ namespace Shard
             soundPlayer = new SoundPlayer();
 
             songy = Content.Load<Song>("Sounds/Musicmusic");
+            MediaPlayer.IsRepeating = true;
             MediaPlayer.Play(songy);
 
             //Database
@@ -918,6 +921,7 @@ namespace Shard
 
         protected override void Update(GameTime gameTime)
         {
+            if (fixSkipping) Paused = false;
             GamePadState currentGamePad = GamePad.GetState(PlayerIndex.One);
             KeyboardState currentKeyboard = Keyboard.GetState();
             MouseState currentMouse = Mouse.GetState();
@@ -1365,7 +1369,11 @@ namespace Shard
                 }
 
                 camera.SetPosition((float)player.X, (float)player.Y, 0);
-
+                if (fixSkipping)
+                {
+                    Paused = true;
+                    fixSkipping = false;
+                }
             }
 
             foreach (GameMenu menu in shardMenus)
@@ -1510,7 +1518,7 @@ namespace Shard
                                 backgrounds[bgcount].Y = Convert.ToInt32(x.Element("y").Value);
                                 bgcount++;
                             }
-                            else if (xe.Name == "m")
+                            else if (x.Name == "m")
                             {
                                 bgHM = Convert.ToDouble(x.Element("hm").Value);
                                 bgVM = Convert.ToDouble(x.Element("vm").Value);
@@ -1521,6 +1529,7 @@ namespace Shard
                         break;
                 }
             }
+            fixSkipping = true;
         }
 
         //Helper Methods

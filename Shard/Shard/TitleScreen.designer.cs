@@ -205,8 +205,8 @@
             this.OptionsPanel.RowCount = 8;
             this.OptionsPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 175F));
             this.OptionsPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 29F));
-            this.OptionsPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 74F));
-            this.OptionsPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 70F));
+            this.OptionsPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 97F));
+            this.OptionsPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 47F));
             this.OptionsPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 17F));
             this.OptionsPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 11F));
             this.OptionsPanel.RowStyles.Add(new System.Windows.Forms.RowStyle());
@@ -245,7 +245,7 @@
             this.label2.Anchor = System.Windows.Forms.AnchorStyles.Right;
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Copperplate Gothic Bold", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(248, 233);
+            this.label2.Location = new System.Drawing.Point(248, 244);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(231, 16);
             this.label2.TabIndex = 3;
@@ -256,7 +256,7 @@
             this.label3.Anchor = System.Windows.Forms.AnchorStyles.Right;
             this.label3.AutoSize = true;
             this.label3.Font = new System.Drawing.Font("Copperplate Gothic Bold", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label3.Location = new System.Drawing.Point(263, 305);
+            this.label3.Location = new System.Drawing.Point(263, 316);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(216, 16);
             this.label3.TabIndex = 4;
@@ -279,7 +279,7 @@
             this.chk_RSM.AutoSize = true;
             this.chk_RSM.Checked = true;
             this.chk_RSM.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chk_RSM.Location = new System.Drawing.Point(485, 234);
+            this.chk_RSM.Location = new System.Drawing.Point(485, 245);
             this.chk_RSM.Name = "chk_RSM";
             this.chk_RSM.Size = new System.Drawing.Size(15, 14);
             this.chk_RSM.TabIndex = 7;
@@ -290,7 +290,7 @@
             // 
             this.chk_decel.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.chk_decel.AutoSize = true;
-            this.chk_decel.Location = new System.Drawing.Point(485, 306);
+            this.chk_decel.Location = new System.Drawing.Point(485, 317);
             this.chk_decel.Name = "chk_decel";
             this.chk_decel.Size = new System.Drawing.Size(15, 14);
             this.chk_decel.TabIndex = 8;
