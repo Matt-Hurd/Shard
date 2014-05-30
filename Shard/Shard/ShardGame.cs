@@ -380,7 +380,7 @@ namespace Shard
             MenuImage saveButtonImage = new MenuImage(new Vector2((int)menuBackground.X + 16, (int)menuBackground.Y + 36), menuSourceDirectory.GetSourceRectangle("emptyButton"), .5f);
             Button save = new SaveButton(this, saveButtonImage);
             saveMenu.AddButton(save);
-            MenuText saveText = new MenuText(new Vector2((int)saveButtonImage.X + saveButtonImage.Width + 12, (int)saveButtonImage.Y), "Save: \nLast Save: " + SaveTime, menuFont);
+            MenuText saveText = new MenuText(new Vector2((int)saveButtonImage.X + saveButtonImage.Width + 12, (int)saveButtonImage.Y), "Save: \nLast Save: " + DateTime.Now, menuFont);
             saveMenu.AddMenuText(saveText);
 
             MenuImage loadButtonImage = new MenuImage(new Vector2((int)saveButtonImage.X, (int)saveButtonImage.Y + saveButtonImage.Height + 8), menuSourceDirectory.GetSourceRectangle("emptyButton"), .5f);
@@ -616,7 +616,7 @@ namespace Shard
 
                 if (EuclideanMath.RandomInteger(0, 1) == 1)
                     debris.Energy = EuclideanMath.RandomInteger(1, 3);
-                debris.Ore = EuclideanMath.RandomInteger(1, 4);
+                debris.Ore = EuclideanMath.RandomInteger(2, 5);
                 if (EuclideanMath.RandomInteger(0, 1) == 1)
                     debris.Oxygen = EuclideanMath.RandomInteger(1, 3);
                 debris.Water = EuclideanMath.RandomInteger(1, 4);
@@ -652,7 +652,7 @@ namespace Shard
 
                 if (EuclideanMath.RandomInteger(0, 1) == 1)
                     debris.Energy = EuclideanMath.RandomInteger(2, 4);
-                debris.Ore = EuclideanMath.RandomInteger(3, 7);
+                debris.Ore = EuclideanMath.RandomInteger(4, 9);
                 if (EuclideanMath.RandomInteger(0, 1) == 1)
                     debris.Oxygen = EuclideanMath.RandomInteger(2, 4);
                 debris.Water = EuclideanMath.RandomInteger(3, 7);
@@ -685,7 +685,7 @@ namespace Shard
 
                 if (EuclideanMath.RandomInteger(0, 1) == 1)
                     debris.Energy = EuclideanMath.RandomInteger(3, 8);
-                debris.Ore = EuclideanMath.RandomInteger(5, 12);
+                debris.Ore = EuclideanMath.RandomInteger(7, 15);
                 if (EuclideanMath.RandomInteger(0, 1) == 1)
                     debris.Oxygen = EuclideanMath.RandomInteger(3, 8);
                 debris.Water = EuclideanMath.RandomInteger(5, 12);
@@ -1374,6 +1374,7 @@ namespace Shard
                     Paused = true;
                     fixSkipping = false;
                 }
+                Paused = false;
             }
 
             foreach (GameMenu menu in shardMenus)
@@ -1446,6 +1447,7 @@ namespace Shard
         public void RestartGame()
         {
             LoadGame(database);
+            gamePaused = false;
         }
 
         protected void LoadGame(XMLDatabase db)
@@ -1530,6 +1532,7 @@ namespace Shard
                 }
             }
             fixSkipping = true;
+            gamePaused = false;
         }
 
         //Helper Methods

@@ -562,7 +562,7 @@ namespace Shard
         public override void PreformMouseClickAction()
         {
             GameReference.RestartGame();
-            MenuReference.Active = false;
+            GameReference.ToggleMenu(MenuReference.Name);
         }
     }
 
