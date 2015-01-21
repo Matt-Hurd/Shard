@@ -18,16 +18,16 @@ TCEA Rules Checklist:
 ✔ Title Screen  
   ✔ Begin Game  
   ✔ Instructions  
-  ✖ Options  
+  ✔ Options  
   ✔ Quit Program  
   
 ✔ Menu  
   ✔ Load Game  
   ✔ Save Game  
-  ✖ Exit Game (I assume this means it'll open up the Title Screen)  
+  ✔ Exit Game (I assume this means it'll open up the Title Screen)  
   ✔ Exit Application  
   
-✔✖ Incoorporate Elements Meaningfully (I think we need a tad more emphasis)
+✔ Incoorporate Elements Meaningfully (I think we need a tad more emphasis)
 
 ✔ No Unusual Server Technologies
 
@@ -35,7 +35,7 @@ NA Kinect Usage
 
 NA Webcam
 
-✖ Game Play Instructions
+✔ Game Play Instructions
 
 ✔ Game Summary
 
